@@ -5,7 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 /**
- * Created by matthiasdietrich on 05.10.17.
+ * Abstraction layer for handling user input
+ * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class InputManager {
 
@@ -25,6 +26,27 @@ public class InputManager {
 
     public boolean isJump() {
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAction() {
+        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHotkey1() {
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHotkey2() {
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
             return true;
         }
         return false;

@@ -3,9 +3,11 @@ package de.ilovemondays.game.actors;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * Created by matthiasdietrich on 05.10.17.
+ * The Player is controlled by the user
+ * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class Player extends BaseActor {
+    private final int MOVEMENT_SPEED = 3;
     private Texture texture;
 
     public Player() {
@@ -21,10 +23,10 @@ public class Player extends BaseActor {
     }
 
     public void moveLeft() {
-        setX(getX() - 3);
+        setX(getX() - MOVEMENT_SPEED);
     }
 
     public void moveRight() {
-        setX(getX() + 3);
+        setX(getX() + MOVEMENT_SPEED);
     }
 }
