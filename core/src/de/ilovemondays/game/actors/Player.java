@@ -11,6 +11,7 @@ public class Player extends BaseActor {
     private Texture texture;
 
     public Player() {
+        super();
         texture = new Texture("actors/dummy/dummy.png");
     }
 

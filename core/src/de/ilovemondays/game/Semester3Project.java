@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -49,8 +48,27 @@ public class Semester3Project extends ApplicationAdapter {
 
 		// Box2D
 		Box2D.init();
-		world = new World(new Vector2(0, -10), true);
+		world = new World(new Vector2(0, -100), true);
 		debugRenderer = new Box2DDebugRenderer();
+
+		// @TODO: ugly testing incoming:
+		BodyDef playerDef = new BodyDef();
+		playerDef.type = BodyDef.BodyType.DynamicBody;
+		playerDef.fixedRotation = true;
+		playerDef.position.set(new Vector2(player.getX() + 28/GameConstants.SCALE_FACTOR_BOX2D, player.getY()+32/GameConstants.SCALE_FACTOR_BOX2D));
+		Body playerBody = world.createBody(playerDef);
+
+		PolygonShape playerBox = new PolygonShape();
+		playerBox.setAsBox(28/GameConstants.SCALE_FACTOR_BOX2D, 32/GameConstants.SCALE_FACTOR_BOX2D);
+		FixtureDef playerFix = new FixtureDef();
+		playerFix.shape = playerBox;
+		playerFix.density = 0.0f;
+		playerFix.restitution = 0.3f;
+		playerBody.createFixture(playerFix);
+		playerBox.dispose();
+
+
+
 
 		for (int collisionHeight = 0; collisionHeight <= collision.getHeight();  collisionHeight++) {
 			for (int collisionWidth = 0; collisionWidth <= collision.getWidth();  collisionWidth++) {
