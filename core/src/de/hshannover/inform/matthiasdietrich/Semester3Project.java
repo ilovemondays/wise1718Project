@@ -1,9 +1,11 @@
-package de.ilovemondays.game;
+package de.hshannover.inform.matthiasdietrich;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,15 +13,19 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import de.ilovemondays.game.actors.Player;
-import de.ilovemondays.game.constants.GameConstants;
-import de.ilovemondays.game.input.InputManager;
+import de.hshannover.inform.matthiasdietrich.actors.PlayerController;
+import de.hshannover.inform.matthiasdietrich.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.input.InputManager;
+import de.hshannover.inform.matthiasdietrich.actors.Player;
 
 public class Semester3Project extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
-	private Player player;
 	private InputManager input;
+
+	private Player player;
+	private Sprite playerSprite;
+	private PlayerController playerController;
 
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
@@ -33,12 +39,8 @@ public class Semester3Project extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 384, 216);
+		camera.setToOrtho(false, scale(384), scale(216));
 
-		// @TODO: muss eigentlich erst bei klick auf "Spiel Starten" erstellt werden
-		player = new Player();
-		player.setX(70);
-		player.setY(70);
 		input = new InputManager();
 
 		// @TODO: In eigene Map-Loading Klasse auslagern
@@ -48,28 +50,10 @@ public class Semester3Project extends ApplicationAdapter {
 
 		// Box2D
 		Box2D.init();
-		world = new World(new Vector2(0, -100), true);
+		world = new World(new Vector2(0, -10f), true);
 		debugRenderer = new Box2DDebugRenderer();
 
 		// @TODO: ugly testing incoming:
-		BodyDef playerDef = new BodyDef();
-		playerDef.type = BodyDef.BodyType.DynamicBody;
-		playerDef.fixedRotation = true;
-		playerDef.position.set(new Vector2(player.getX() + 28/GameConstants.SCALE_FACTOR_BOX2D, player.getY()+32/GameConstants.SCALE_FACTOR_BOX2D));
-		Body playerBody = world.createBody(playerDef);
-
-		PolygonShape playerBox = new PolygonShape();
-		playerBox.setAsBox(28/GameConstants.SCALE_FACTOR_BOX2D, 32/GameConstants.SCALE_FACTOR_BOX2D);
-		FixtureDef playerFix = new FixtureDef();
-		playerFix.shape = playerBox;
-		playerFix.density = 0.0f;
-		playerFix.restitution = 0.3f;
-		playerBody.createFixture(playerFix);
-		playerBox.dispose();
-
-
-
-
 		for (int collisionHeight = 0; collisionHeight <= collision.getHeight();  collisionHeight++) {
 			for (int collisionWidth = 0; collisionWidth <= collision.getWidth();  collisionWidth++) {
 				if(collision.getCell(collisionWidth, collisionHeight) != null) {
@@ -77,6 +61,16 @@ public class Semester3Project extends ApplicationAdapter {
 				}
 			}
 		}
+
+		// @TODO: muss eigentlich erst bei klick auf "Spiel Starten" erstellt werden
+		playerController = new PlayerController();
+		world.setContactListener(playerController);
+		player = new Player(world);
+		player.setX(3);
+		player.setY(3);
+		Texture test = new Texture("actors/dummy/dummy.png");
+		playerSprite = adjustSize(new Sprite(test));
+		player.spawn();
 	}
 
 	// @TODO: eigene klasse erstellen:
@@ -85,7 +79,7 @@ public class Semester3Project extends ApplicationAdapter {
 		BodyDef groundBodyDef = new BodyDef();
 		// Set its world position
 		// @TODO: Die Konstanten sind unlesbar:
-		groundBodyDef.position.set(new Vector2((x * GameConstants.TILE_WIDTH)+GameConstants.TILE_WIDTH/GameConstants.SCALE_FACTOR_BOX2D, (y*GameConstants.TILE_WIDTH)+GameConstants.TILE_WIDTH/GameConstants.SCALE_FACTOR_BOX2D));
+		groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH, y*GameConstants.TILE_WIDTH));
 
 		// Create a body from the defintion and add it to the world
 		Body groundBody = world.createBody(groundBodyDef);
@@ -94,9 +88,14 @@ public class Semester3Project extends ApplicationAdapter {
 		PolygonShape groundBox = new PolygonShape();
 		// Set the polygon shape as a box which is twice the size of our view port and 20 high
 		// (setAsBox takes half-width and half-height as arguments)
-		groundBox.setAsBox(GameConstants.TILE_WIDTH/GameConstants.SCALE_FACTOR_BOX2D, GameConstants.TILE_WIDTH/GameConstants.SCALE_FACTOR_BOX2D);
+		groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/2);
+
 		// Create a fixture from our polygon shape and add it to our ground body
-		groundBody.createFixture(groundBox, 0.0f);
+		FixtureDef groundFix = new FixtureDef();
+		groundFix.shape = groundBox;
+		groundFix.density = 1.0f;
+		groundFix.friction = 1.0f;
+		groundBody.createFixture(groundFix);
 		// Clean up after ourselves
 		groundBox.dispose();
 	}
@@ -111,13 +110,16 @@ public class Semester3Project extends ApplicationAdapter {
 		renderer.render();
 
 		batch.begin();
-		batch.draw(player.getTexture(), player.getX(),player.getY());
+		//batch.draw(player.getSprite(), player.getX(),player.getY());
+		playerSprite.setPosition(player.getX()-playerSprite.getWidth()/2, player.getY()-playerSprite.getHeight()/2);
+		playerSprite.draw(batch);
 		batch.end();
 
-		updatePlayer();
+		player.update();
+		playerMovement();
 
 		// Box2D
-		world.step(1/45f, 6, 2);
+		world.step(1/60f, 1, 1);
 		debugRenderer.render(world, camera.combined);
 	}
 	
@@ -127,12 +129,33 @@ public class Semester3Project extends ApplicationAdapter {
 		renderer.dispose();
 	}
 
-	private void updatePlayer() {
-		if (input.isLeft()) {
-			player.moveLeft();
+	private void playerMovement() {
+		if (input.isLeft() && player.getBody().getLinearVelocity().x > -GameConstants.MAX_VELOCITY) {
+			if(playerController.isPlayerCanMoveLeft()) {
+				player.moveLeft();
+			}
 		}
-		if (input.isRight()) {
-			player.moveRight();
+		if (input.isRight() && player.getBody().getLinearVelocity().x < GameConstants.MAX_VELOCITY) {
+			if(playerController.isPlayerCanMoveRight()) {
+				player.moveRight();
+			}
 		}
+		if (input.isJump()) {
+			System.out.println("can jump: "+playerController.isPlayerIsOnGround());
+			if(playerController.isPlayerIsOnGround()) {
+				System.out.println("jump");
+				player.jump();
+			}
+		}
+	}
+
+	// @TODO: das hier in helper/utility class auslagern
+	public float scale(float valueToBeScaled) {
+		return valueToBeScaled/GameConstants.SCALE;
+	}
+
+	public Sprite adjustSize(Sprite imageToBeScaled) {
+		imageToBeScaled.setSize(scale(imageToBeScaled.getWidth()), scale(imageToBeScaled.getHeight()));
+		return imageToBeScaled;
 	}
 }

@@ -1,4 +1,4 @@
-package de.ilovemondays.game.input;
+package de.hshannover.inform.matthiasdietrich.input;
 
 
 import com.badlogic.gdx.Gdx;

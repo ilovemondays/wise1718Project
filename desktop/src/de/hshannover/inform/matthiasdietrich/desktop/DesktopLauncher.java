@@ -1,8 +1,8 @@
-package de.ilovemondays.game.desktop;
+package de.hshannover.inform.matthiasdietrich.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import de.ilovemondays.game.Semester3Project;
+import de.hshannover.inform.matthiasdietrich.Semester3Project;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
