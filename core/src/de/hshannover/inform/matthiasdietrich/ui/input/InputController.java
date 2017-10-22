@@ -1,5 +1,4 @@
-package de.hshannover.inform.matthiasdietrich.input;
-
+package de.hshannover.inform.matthiasdietrich.ui.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,7 +7,19 @@ import com.badlogic.gdx.Input;
  * Abstraction layer for handling user input
  * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
-public class InputManager {
+public class InputController {
+    private static InputController inputController = null;
+
+    private InputController() {
+
+    }
+
+    public static InputController getInputController() {
+        if (inputController != null) {
+            return inputController;
+        }
+        return new InputController();
+    }
 
     public boolean isLeft() {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {

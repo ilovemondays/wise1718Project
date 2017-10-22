@@ -1,11 +1,11 @@
-package de.hshannover.inform.matthiasdietrich.actors;
+package de.hshannover.inform.matthiasdietrich.application.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import de.hshannover.inform.matthiasdietrich.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.*;
 
@@ -67,25 +67,25 @@ public class BaseActor extends Actor {
 
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = circle;
-        fixDef.density = 0.5f;
-        fixDef.restitution = 0.0f;
+        fixDef.density = 0.6f;
+        fixDef.restitution = 0.1f;
         fixDef.friction = 1f;
         body.createFixture(fixDef).setUserData("body");
 
         // Ground Sensor
-        shape.setAsBox(GameConstants.TILE_WIDTH/7f, GameConstants.TILE_WIDTH/7f, new Vector2(0, -GameConstants.TILE_WIDTH/2.2f), 0);
+        shape.setAsBox(GameConstants.TILE_WIDTH/6f, GameConstants.TILE_WIDTH/9f, new Vector2(0, -GameConstants.TILE_WIDTH/2.2f), 0);
         fixDef.shape = shape;
         fixDef.isSensor = true;
         body.createFixture(fixDef).setUserData("ground");
 
-        // Left Seonsor
-        shape.setAsBox(GameConstants.TILE_WIDTH/7f, GameConstants.TILE_WIDTH/7f, new Vector2(-GameConstants.TILE_WIDTH/2.2f, 0), 0);
+        // Left Sensor
+        shape.setAsBox(GameConstants.TILE_WIDTH/40f, GameConstants.TILE_WIDTH/10f, new Vector2(-GameConstants.TILE_WIDTH/2.4f, 0), 0);
         fixDef.shape = shape;
         fixDef.isSensor = true;
         body.createFixture(fixDef).setUserData("left");
 
-        // Left Seonsor
-        shape.setAsBox(GameConstants.TILE_WIDTH/7f, GameConstants.TILE_WIDTH/7f, new Vector2(GameConstants.TILE_WIDTH/2.2f, 0), 0);
+        // Right Sensor
+        shape.setAsBox(GameConstants.TILE_WIDTH/40f, GameConstants.TILE_WIDTH/10f, new Vector2(GameConstants.TILE_WIDTH/2.4f, 0), 0);
         fixDef.shape = shape;
         fixDef.isSensor = true;
         body.createFixture(fixDef).setUserData("right");
