@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
  * Created by matthiasdietrich on 24.10.17.
  */
 public class CertificateModel {
+    // @TODO: zertifikat positionen aus den level daten ziehen
     public void spawn(World world) {
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();

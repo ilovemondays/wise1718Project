@@ -7,6 +7,19 @@ public class GameModel {
     private int actLevel;
     private int certificatesFound;
     private int trials;
+    private static GameModel gameModel = null;
+
+    private GameModel() {
+        resetGame();
+    }
+
+    public static GameModel getInstance() {
+        if (gameModel != null) {
+            return gameModel;
+        }
+        gameModel= new GameModel();
+        return gameModel;
+    }
 
     public int getActLevel() {
         return actLevel;
@@ -30,5 +43,11 @@ public class GameModel {
 
     public void setTrials(int trials) {
         this.trials = trials;
+    }
+
+    public void resetGame() {
+        setActLevel(1);
+        setCertificatesFound(0);
+        setTrials(0);
     }
 }

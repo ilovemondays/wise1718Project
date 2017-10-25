@@ -2,6 +2,8 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -14,11 +16,13 @@ public class GameController implements Observer {
     private World world;
     private static ArrayList<Body> bodiesToDestroy;
     private static GameController gameController = null;
+    private GameModel gameModel;
 
     private GameController() {
         Box2D.init();
         world = new World(new Vector2(0, -10f), true);
         bodiesToDestroy = new ArrayList<Body>();
+        gameModel = GameModel.getInstance();
     }
 
     public static GameController getInstance() {
@@ -41,13 +45,17 @@ public class GameController implements Observer {
         return bodiesToDestroy;
     }
 
-    public void setBodiesToDestroy(ArrayList<Body> bodiesToDestroy) {
+    private void setBodiesToDestroy(ArrayList<Body> bodiesToDestroy) {
         this.bodiesToDestroy = bodiesToDestroy;
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof Fixture) {
+            if (((Fixture)arg).getUserData().equals("certificate")) {
+                gameModel.setCertificatesFound(gameModel.getCertificatesFound() + 1);
+                checkWinCondition();
+            }
             Body b = ((Fixture) arg).getBody();
             if(!bodiesToDestroy.contains(b)) {
                 bodiesToDestroy.add(b);
@@ -64,5 +72,11 @@ public class GameController implements Observer {
             getWorld().destroyBody(b);
         }
         getBodiesToDestroy().clear();
+    }
+
+    public void checkWinCondition() {
+        if (gameModel.getCertificatesFound() >= GameConstants.WIN_CONDITION) {
+            System.out.println("FOUND ALL CERTIFICATES IN THIS LEVEL!!!1");
+        }
     }
 }

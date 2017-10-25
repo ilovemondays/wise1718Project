@@ -37,22 +37,6 @@ public class PlayerController implements Observer {
     }
 
     /**
-     * checks if player is on ground
-     * @return
-     */
-    private int isPlayerIsOnGround() {
-        return playerIsOnGround;
-    }
-
-    private int isPlayerCanMoveLeft() {
-        return playerCanMoveLeft;
-    }
-
-    private int isPlayerCanMoveRight() {
-        return playerCanMoveRight;
-    }
-
-    /**
      * moves the player to the left
      */
     private void moveLeft() {
@@ -84,17 +68,17 @@ public class PlayerController implements Observer {
 
     private void updatePlayerMovement() {
         if (input.isLeft() && player.getBody().getLinearVelocity().x > -GameConstants.MAX_VELOCITY) {
-            if(isPlayerCanMoveLeft() <= 0) {
+            if(playerCanMoveLeft <= 0) {
                 moveLeft();
             }
         }
         if (input.isRight() && player.getBody().getLinearVelocity().x < GameConstants.MAX_VELOCITY) {
-            if(isPlayerCanMoveRight() <= 0) {
+            if(playerCanMoveRight <= 0) {
                 moveRight();
             }
         }
         if (input.isJump()) {
-            if(isPlayerIsOnGround() > 0) {
+            if(playerIsOnGround > 0) {
                 jump();
             }
         }

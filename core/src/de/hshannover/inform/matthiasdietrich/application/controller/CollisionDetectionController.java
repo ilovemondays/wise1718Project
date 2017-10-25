@@ -19,7 +19,7 @@ public class CollisionDetectionController extends Observable implements ContactL
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
 
-        // ITEMS
+        // CERTIFICATES
         if( a.getUserData() != null && a.getUserData().equals("certificate")) {
             setChanged();
             notifyObservers(a);
@@ -29,13 +29,13 @@ public class CollisionDetectionController extends Observable implements ContactL
             notifyObservers(b);
         }
 
-        // ITEMS
+        // SPIKES
         if( a.getUserData() != null && a.getUserData().equals("spike") ||
                 b.getUserData() != null && b.getUserData().equals("spike")) {
-            System.out.println("AUA!!1");
+                System.out.println("AUA!!1");
         }
 
-        // MOVEMENT
+        // PLAYER MOVEMENT
         if( a.getUserData() != null && a.getUserData().equals("ground") ||
                 b.getUserData() != null && b.getUserData().equals("ground")) {
             setChanged();

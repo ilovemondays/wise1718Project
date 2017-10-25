@@ -68,6 +68,10 @@ public class Semester3Project extends ApplicationAdapter {
 		// @TODO: test
 		CertificateModel cert = new CertificateModel();
 		cert.spawn(gameController.getWorld());
+		cert.spawn(gameController.getWorld());
+		cert.spawn(gameController.getWorld());
+		cert.spawn(gameController.getWorld());
+		cert.spawn(gameController.getWorld());
 	}
 
 	@Override
