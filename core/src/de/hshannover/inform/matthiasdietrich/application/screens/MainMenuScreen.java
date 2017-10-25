@@ -3,14 +3,17 @@ package de.hshannover.inform.matthiasdietrich.application.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
+import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
 public class MainMenuScreen implements Screen {
     final Semester3Project game;
+
     private InputController input;
 
     public MainMenuScreen(final Semester3Project game) {
@@ -27,6 +30,12 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.9f, 0.3f, 0.3f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.batch.begin();
+        game.font.draw(game.batch, "Hauptmenü", 100f, 400f);
+        game.font.draw(game.batch, "Start: Drücke Leertaste", 100, 350f);
+        game.font.draw(game.batch, "Ende: Drücke CMD+Q ;)", 100, 300f);
+        game.batch.end();
 
         if(input.isJump()) {
             game.setScreen(new GameScreen(game));

@@ -40,12 +40,14 @@ public class GameScreen implements Screen {
         levelController = new LevelController();
         collisionMapController = new CollisionMapController();
         gameController = GameController.getInstance();
+        gameController.startWorld();
         collisionDetectionController = new CollisionDetectionController();
 
         // Box2D
         debugRenderer = new Box2DDebugRenderer();
 
         // SETUP CONTROLLER
+
 
         // level/map
         levelController.setMap(1);
@@ -56,7 +58,7 @@ public class GameScreen implements Screen {
         playerController = PlayerController.getInstance();
         playerController.setInput(InputController.getInstance());
 
-        player = new PlayerActor(gameController.getWorld());
+        player = PlayerActor.getInstance(gameController.getWorld());
         playerController.setPlayer(player);
 
         // game
@@ -69,7 +71,11 @@ public class GameScreen implements Screen {
 
         // @TODO: test
         CertificateModel cert = new CertificateModel();
-        cert.spawn(gameController.getWorld());
+        cert.spawn(gameController.getWorld(), 4, 2);
+        cert.spawn(gameController.getWorld(), 4, 3);
+        cert.spawn(gameController.getWorld(), 4, 4);
+        cert.spawn(gameController.getWorld(), 5, 4);
+        cert.spawn(gameController.getWorld(), 6, 4);
     }
 
     @Override
@@ -90,6 +96,12 @@ public class GameScreen implements Screen {
 
         if(GameConstants.DEV_MODE) {
             debugRenderer.render(gameController.getWorld(), camera.combined);
+        }
+
+        if (gameController.checkWinCondition()) {
+            gameController.resetGameModel();
+            game.setScreen(new LevelCompletedScreen(game));
+            dispose();
         }
     }
 
@@ -115,6 +127,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        gameController.getWorld().dispose();
     }
 }

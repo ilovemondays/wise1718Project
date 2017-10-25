@@ -8,11 +8,11 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class CertificateModel {
     // @TODO: zertifikat positionen aus den level daten ziehen
-    public void spawn(World world) {
+    public void spawn(World world, float x, float y) {
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
         // Set its world position
-        groundBodyDef.position.set(new Vector2(4, 2));
+        groundBodyDef.position.set(new Vector2(x, y));
 
         // Create a body from the defintion and add it to the world
         Body groundBody = world.createBody(groundBodyDef);

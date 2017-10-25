@@ -19,10 +19,7 @@ public class GameController implements Observer {
     private GameModel gameModel;
 
     private GameController() {
-        Box2D.init();
-        world = new World(new Vector2(0, -10f), true);
-        bodiesToDestroy = new ArrayList<Body>();
-        gameModel = GameModel.getInstance();
+        startWorld();
     }
 
     public static GameController getInstance() {
@@ -31,6 +28,18 @@ public class GameController implements Observer {
         }
         gameController = new GameController();
         return gameController;
+    }
+
+    public void resetGameModel() {
+        gameModel.resetGame();
+    }
+
+    public void startWorld() {
+        Box2D.init();
+        world = new World(new Vector2(0, -10f), true);
+        bodiesToDestroy = new ArrayList<Body>();
+        gameModel = GameModel.getInstance();
+        gameModel.resetGame();
     }
 
     public World getWorld() {
@@ -74,9 +83,7 @@ public class GameController implements Observer {
         getBodiesToDestroy().clear();
     }
 
-    public void checkWinCondition() {
-        if (gameModel.getCertificatesFound() >= GameConstants.WIN_CONDITION) {
-            System.out.println("FOUND ALL CERTIFICATES IN THIS LEVEL!!!1");
-        }
+    public boolean checkWinCondition() {
+        return (gameModel.getCertificatesFound() >= GameConstants.WIN_CONDITION);
     }
 }

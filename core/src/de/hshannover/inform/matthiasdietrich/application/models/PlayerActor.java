@@ -7,10 +7,19 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class PlayerActor extends BaseActor {
-    float isTired;
+    private float isTired;
+    private static PlayerActor player = null;
 
-    public PlayerActor(World world) {
+    private PlayerActor(World world) {
         super(world);
+    }
+
+    public static PlayerActor getInstance(World world) {
+        if (player != null) {
+            return player;
+        }
+        player = new PlayerActor(world);
+        return player;
     }
 
     public float getIsTired() {
