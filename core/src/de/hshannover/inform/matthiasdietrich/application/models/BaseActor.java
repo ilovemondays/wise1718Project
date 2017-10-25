@@ -1,7 +1,5 @@
-package de.hshannover.inform.matthiasdietrich.application.actors;
+package de.hshannover.inform.matthiasdietrich.application.models;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,32 +15,11 @@ public class BaseActor extends Actor {
     private BodyDef bodyDef;
     private Body body;
     private World world;
-    private Texture texture;
-    private boolean isOnGround;
-
-    public Sprite getSprite() {
-        return sprite;
-    }
-
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-
-    private Sprite sprite;
 
     public BaseActor(World world) {
         this.world = world;
         bodyDef = new BodyDef();
-        texture = null;
         body = null;
-        sprite = null;
-    }
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
     }
 
     public Body getBody() {

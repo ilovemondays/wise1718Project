@@ -33,7 +33,7 @@ public class CollisionMapController {
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
         // Set its world position
-        groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH, y*GameConstants.TILE_WIDTH));
+        groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH+0.5f, y*GameConstants.TILE_WIDTH+0.5f));
 
         // Create a body from the defintion and add it to the world
         Body groundBody = world.createBody(groundBodyDef);

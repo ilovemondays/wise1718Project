@@ -1,19 +1,26 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import com.badlogic.gdx.physics.box2d.*;
-import de.hshannover.inform.matthiasdietrich.application.actors.Player;
+import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
+import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
+
+import java.util.Observable;
 
 /**
  * Created by matthiasdietrich on 14.10.17.
  */
-public class PlayerController implements ContactListener {
+public class PlayerController extends Observable implements ContactListener {
     private int playerIsOnGround = 0;
     private int playerCanMoveLeft = 0;
     private int playerCanMoveRight = 0;
-    private Player player;
-    private InputController inputController;
+    private PlayerActor player;
+    private InputController input;
+
+    public PlayerController() {
+        this.addObserver(new GameController());
+    }
 
     /**
      * Checks starting collision with player sensors
@@ -24,6 +31,23 @@ public class PlayerController implements ContactListener {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
 
+        // ITEMS
+        if( a.getUserData() != null && a.getUserData().equals("certificate")) {
+            setChanged();
+            notifyObservers(a);
+        }
+        if( b.getUserData() != null && b.getUserData().equals("certificate")) {
+            setChanged();
+            notifyObservers(b);
+        }
+
+        // ITEMS
+        if( a.getUserData() != null && a.getUserData().equals("spike") ||
+            b.getUserData() != null && b.getUserData().equals("spike")) {
+            System.out.println("AUA!!1");
+        }
+
+        // MOVEMENT
         if( a.getUserData() != null && a.getUserData().equals("ground") ||
             b.getUserData() != null && b.getUserData().equals("ground")) {
             playerIsOnGround++;
@@ -48,6 +72,7 @@ public class PlayerController implements ContactListener {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
 
+        // MOVEMENT
         if( a.getUserData() != null && a.getUserData().equals("ground") ||
             b.getUserData() != null && b.getUserData().equals("ground")) {
             playerIsOnGround--;
@@ -72,11 +97,11 @@ public class PlayerController implements ContactListener {
 
     }
 
-    public Player getPlayer() {
+    public PlayerActor getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(PlayerActor player) {
         this.player = player;
     }
 
@@ -101,7 +126,6 @@ public class PlayerController implements ContactListener {
      */
     private void moveLeft() {
         getPlayer().getBody().applyLinearImpulse(-0.12f, 0, 0, 0, true);
-        //getBody().applyForce(-10f, -2f, 1f, 0f, true);
     }
 
     /**
@@ -109,7 +133,6 @@ public class PlayerController implements ContactListener {
      */
     private void moveRight() {
         getPlayer().getBody().applyLinearImpulse(0.12f, 0, 0, 0, true);
-        //getBody().applyForce(10f, -2f, 1f, 0f, true);
     }
 
     /**
@@ -119,8 +142,8 @@ public class PlayerController implements ContactListener {
         getPlayer().getBody().applyForce(0f, 23f, 0f, 1f, true);
     }
 
-    public void setInputController(InputController inputController) {
-        this.inputController = inputController;
+    public void setInput(InputController input) {
+        this.input = input;
     }
 
     public void updatePlayer() {
@@ -129,17 +152,17 @@ public class PlayerController implements ContactListener {
     }
 
     private void updatePlayerMovement() {
-        if (inputController.isLeft() && player.getBody().getLinearVelocity().x > -GameConstants.MAX_VELOCITY) {
+        if (input.isLeft() && player.getBody().getLinearVelocity().x > -GameConstants.MAX_VELOCITY) {
             if(isPlayerCanMoveLeft() <= 0) {
                 moveLeft();
             }
         }
-        if (inputController.isRight() && player.getBody().getLinearVelocity().x < GameConstants.MAX_VELOCITY) {
+        if (input.isRight() && player.getBody().getLinearVelocity().x < GameConstants.MAX_VELOCITY) {
             if(isPlayerCanMoveRight() <= 0) {
                 moveRight();
             }
         }
-        if (inputController.isJump()) {
+        if (input.isJump()) {
             if(isPlayerIsOnGround() > 0) {
                 jump();
             }

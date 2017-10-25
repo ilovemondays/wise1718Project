@@ -14,11 +14,12 @@ public class InputController {
 
     }
 
-    public static InputController getInputController() {
+    public static InputController getInstance() {
         if (inputController != null) {
             return inputController;
         }
-        return new InputController();
+        inputController = new InputController();
+        return inputController;
     }
 
     public boolean isLeft() {

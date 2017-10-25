@@ -25,7 +25,6 @@ public class LevelController {
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
-
     }
 
     public TiledMapTileLayer getCollisionData() {
