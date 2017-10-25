@@ -14,5 +14,5 @@ public class GameConstants {
     public static final int CAMERA_Y = 216; // interpolated value for game window height
     public static final boolean DEV_MODE = true; // show debug information
 
-    public static final int WIN_CONDITION = 5;
+    public static final int WIN_CONDITION = 5; // collect # of certificates
 }

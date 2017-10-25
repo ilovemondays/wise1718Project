@@ -10,9 +10,7 @@ import com.badlogic.gdx.Input;
 public class InputController {
     private static InputController inputController = null;
 
-    private InputController() {
-
-    }
+    private InputController() {}
 
     public static InputController getInstance() {
         if (inputController != null) {
