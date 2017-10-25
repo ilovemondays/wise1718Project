@@ -12,4 +12,5 @@ public class GameConstants {
     public static final int MAX_VELOCITY = 5;
     public static final int CAMERA_X = 384;
     public static final int CAMERA_Y = 216;
+    public static final boolean DEV_MODE = true;
 }

@@ -1,100 +1,31 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
-import com.badlogic.gdx.physics.box2d.*;
-import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by matthiasdietrich on 14.10.17.
  */
-public class PlayerController extends Observable implements ContactListener {
+public class PlayerController implements Observer {
     private int playerIsOnGround = 0;
     private int playerCanMoveLeft = 0;
     private int playerCanMoveRight = 0;
     private PlayerActor player;
     private InputController input;
+    private static PlayerController playerController = null;
 
-    public PlayerController() {
-        this.addObserver(new GameController());
-    }
+    private PlayerController() {}
 
-    /**
-     * Checks starting collision with player sensors
-     * @param contact
-     */
-    @Override
-    public void beginContact(Contact contact) {
-        Fixture a = contact.getFixtureA();
-        Fixture b = contact.getFixtureB();
-
-        // ITEMS
-        if( a.getUserData() != null && a.getUserData().equals("certificate")) {
-            setChanged();
-            notifyObservers(a);
+    public static PlayerController getInstance() {
+        if(playerController != null) {
+            return playerController;
         }
-        if( b.getUserData() != null && b.getUserData().equals("certificate")) {
-            setChanged();
-            notifyObservers(b);
-        }
-
-        // ITEMS
-        if( a.getUserData() != null && a.getUserData().equals("spike") ||
-            b.getUserData() != null && b.getUserData().equals("spike")) {
-            System.out.println("AUA!!1");
-        }
-
-        // MOVEMENT
-        if( a.getUserData() != null && a.getUserData().equals("ground") ||
-            b.getUserData() != null && b.getUserData().equals("ground")) {
-            playerIsOnGround++;
-
-        }
-        if( a.getUserData() != null && a.getUserData().equals("left") ||
-            b.getUserData() != null && b.getUserData().equals("left")) {
-            playerCanMoveLeft++;
-        }
-        if( a.getUserData() != null && a.getUserData().equals("right") ||
-            b.getUserData() != null && b.getUserData().equals("right")) {
-            playerCanMoveRight++;
-        }
-    }
-
-    /**
-     * Checks ending collision with player sensors
-     * @param contact
-     */
-    @Override
-    public void endContact(Contact contact) {
-        Fixture a = contact.getFixtureA();
-        Fixture b = contact.getFixtureB();
-
-        // MOVEMENT
-        if( a.getUserData() != null && a.getUserData().equals("ground") ||
-            b.getUserData() != null && b.getUserData().equals("ground")) {
-            playerIsOnGround--;
-        }
-        if( a.getUserData() != null && a.getUserData().equals("left") ||
-            b.getUserData() != null && b.getUserData().equals("left")) {
-            playerCanMoveLeft--;
-        }
-        if( a.getUserData() != null && a.getUserData().equals("right") ||
-            b.getUserData() != null && b.getUserData().equals("right")) {
-            playerCanMoveRight--;
-        }
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
-
+        playerController = new PlayerController();
+        return playerController;
     }
 
     public PlayerActor getPlayer() {
@@ -165,6 +96,30 @@ public class PlayerController extends Observable implements ContactListener {
         if (input.isJump()) {
             if(isPlayerIsOnGround() > 0) {
                 jump();
+            }
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof String) {
+            if (arg.equals("playerOnGround")) {
+                playerIsOnGround++;
+            }
+            if (arg.equals("playerInAir")) {
+                playerIsOnGround--;
+            }
+            if (arg.equals("playerCanMoveLeft")) {
+                playerCanMoveLeft++;
+            }
+            if (arg.equals("playerCanMoveRight")) {
+                playerCanMoveRight++;
+            }
+            if (arg.equals("playerCannotMoveLeft")) {
+                playerCanMoveLeft--;
+            }
+            if (arg.equals("playerCannotMoveRight")) {
+                playerCanMoveRight--;
             }
         }
     }

@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
-import de.hshannover.inform.matthiasdietrich.application.controller.CollisionMapController;
-import de.hshannover.inform.matthiasdietrich.application.controller.GameController;
-import de.hshannover.inform.matthiasdietrich.application.controller.LevelController;
-import de.hshannover.inform.matthiasdietrich.application.controller.PlayerController;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.controller.*;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
@@ -26,6 +24,7 @@ public class Semester3Project extends ApplicationAdapter {
 
 	private LevelController levelController;
 	private CollisionMapController collisionMapController;
+	private CollisionDetectionController collisionDetectionController;
 
 	// Box2D
 	private Box2DDebugRenderer debugRenderer;
@@ -38,7 +37,8 @@ public class Semester3Project extends ApplicationAdapter {
 		// CONTROLLER
 		levelController = new LevelController();
 		collisionMapController = new CollisionMapController();
-		gameController = new GameController();
+		gameController = GameController.getInstance();
+		collisionDetectionController = new CollisionDetectionController();
 
 		// Box2D
 		debugRenderer = new Box2DDebugRenderer();
@@ -51,19 +51,21 @@ public class Semester3Project extends ApplicationAdapter {
 		collisionMapController.constructCollisionMap(gameController.getWorld());
 
 		// player
-		playerController = new PlayerController();
+		playerController = PlayerController.getInstance();
 		playerController.setInput(InputController.getInstance());
 
 		player = new PlayerActor(gameController.getWorld());
 		playerController.setPlayer(player);
 
 		// game
-		gameController.setContactListener(playerController);
+		gameController.setContactListener(collisionDetectionController);
 
+		// @TODO: test
 		player.setX(3);
 		player.setY(3);
 		player.spawn();
 
+		// @TODO: test
 		CertificateModel cert = new CertificateModel();
 		cert.spawn(gameController.getWorld());
 	}
@@ -79,7 +81,9 @@ public class Semester3Project extends ApplicationAdapter {
 		gameController.getWorld().step(1/60f, 1, 1);
 		gameController.destroyBodies();
 
-		debugRenderer.render(gameController.getWorld(), camera.combined);
+		if(GameConstants.DEV_MODE) {
+			debugRenderer.render(gameController.getWorld(), camera.combined);
+		}
 	}
 
 	@Override

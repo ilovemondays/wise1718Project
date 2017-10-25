@@ -13,11 +13,20 @@ import java.util.Observer;
 public class GameController implements Observer {
     private World world;
     private static ArrayList<Body> bodiesToDestroy;
+    private static GameController gameController = null;
 
-    public GameController() {
+    private GameController() {
         Box2D.init();
         world = new World(new Vector2(0, -10f), true);
         bodiesToDestroy = new ArrayList<Body>();
+    }
+
+    public static GameController getInstance() {
+        if (gameController != null) {
+            return gameController;
+        }
+        gameController = new GameController();
+        return gameController;
     }
 
     public World getWorld() {
