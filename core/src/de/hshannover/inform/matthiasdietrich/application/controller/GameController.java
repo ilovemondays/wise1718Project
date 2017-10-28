@@ -13,13 +13,13 @@ import java.util.Observer;
  * Created by matthiasdietrich on 24.10.17.
  */
 public class GameController implements Observer {
-    private World world;
+    private static World world;
     private static ArrayList<Body> bodiesToDestroy;
     private static GameController gameController = null;
     private GameModel gameModel;
 
     private GameController() {
-        startWorld();
+
     }
 
     public static GameController getInstance() {
@@ -35,8 +35,6 @@ public class GameController implements Observer {
     }
 
     public void startWorld() {
-        Box2D.init();
-        world = new World(new Vector2(0, -10f), true);
         bodiesToDestroy = new ArrayList<Body>();
         gameModel = GameModel.getInstance();
         gameModel.resetGame();
@@ -63,7 +61,6 @@ public class GameController implements Observer {
         if(arg instanceof Fixture) {
             if (((Fixture)arg).getUserData().equals("certificate")) {
                 gameModel.setCertificatesFound(gameModel.getCertificatesFound() + 1);
-                checkWinCondition();
             }
             Body b = ((Fixture) arg).getBody();
             if(!bodiesToDestroy.contains(b)) {

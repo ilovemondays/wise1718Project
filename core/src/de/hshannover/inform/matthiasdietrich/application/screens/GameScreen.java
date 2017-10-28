@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
@@ -47,7 +48,7 @@ public class GameScreen implements Screen {
         debugRenderer = new Box2DDebugRenderer();
 
         // SETUP CONTROLLER
-
+        gameController.setWorld(game.world);
 
         // level/map
         levelController.setMap(1);
@@ -127,6 +128,5 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        gameController.getWorld().dispose();
     }
 }

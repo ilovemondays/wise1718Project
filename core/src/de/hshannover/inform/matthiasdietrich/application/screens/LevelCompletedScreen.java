@@ -16,6 +16,7 @@ public class LevelCompletedScreen implements Screen {
     public LevelCompletedScreen(final Semester3Project game) {
         this.game = game;
         input = InputController.getInstance();
+        game.clearWorld();
     }
 
     @Override
