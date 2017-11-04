@@ -13,6 +13,8 @@ import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 
+import java.util.Random;
+// @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
@@ -35,7 +37,7 @@ public class GameScreen implements Screen {
         camera = new Camera();
 
         // CONTROLLER
-        levelController = new LevelController();
+        levelController = new LevelController(game.world);
 
         gameController = GameController.getInstance();
         gameController.startWorld();
@@ -51,6 +53,8 @@ public class GameScreen implements Screen {
         levelController.setMap(1);
         // collision layer
         levelController.getMapLayerController().constructCollisionMap(gameController.getWorld());
+        // trap layer
+        levelController.getMapLayerController().constructTrapMap(gameController.getWorld());
 
         // player
         playerController = PlayerController.getInstance();
@@ -62,11 +66,15 @@ public class GameScreen implements Screen {
         levelController.getMapLayerController().setPlayerPosition(game.world, player);
         player.spawn();
 
-        // collision detection
+        // distribute certificates in level
+        levelController.getMapLayerController().setCertificatesPosition(game.world, new CertificateModel());
+
+        // distribute goblins in level
+        levelController.spawnGoblins();
+
+        // set collision detection
         gameController.setContactListener(collisionDetectionController);
 
-        // distibute certificates in level
-        levelController.getMapLayerController().setCertificatesPosition(game.world, new CertificateModel());
     }
 
     @Override
@@ -91,6 +99,7 @@ public class GameScreen implements Screen {
 
         if (gameController.checkWinCondition()) {
             gameController.resetGameModel();
+            levelController.clear();
             game.setScreen(new LevelCompletedScreen(game));
             dispose();
         }

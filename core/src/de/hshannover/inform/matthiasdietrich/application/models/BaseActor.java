@@ -12,9 +12,9 @@ import static com.badlogic.gdx.physics.box2d.BodyDef.*;
  * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class BaseActor extends Actor {
-    private BodyDef bodyDef;
-    private Body body;
-    private World world;
+    protected BodyDef bodyDef;
+    protected Body body;
+    protected World world;
 
     public BaseActor(World world) {
         this.world = world;

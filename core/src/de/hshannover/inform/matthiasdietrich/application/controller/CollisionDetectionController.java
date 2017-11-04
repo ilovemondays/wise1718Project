@@ -30,8 +30,8 @@ public class CollisionDetectionController extends Observable implements ContactL
         }
 
         // SPIKES
-        if( a.getUserData() != null && a.getUserData().equals("spike") ||
-                b.getUserData() != null && b.getUserData().equals("spike")) {
+        if( a.getUserData() != null && a.getUserData().equals("trap") ||
+                b.getUserData() != null && b.getUserData().equals("trap")) {
                 System.out.println("AUA!!1");
         }
 

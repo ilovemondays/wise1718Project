@@ -3,6 +3,10 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.physics.box2d.World;
+import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
+
+import java.util.ArrayList;
 
 /**
  * Created by matthiasdietrich on 22.10.17.
@@ -10,6 +14,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class LevelController {
     private TiledMap map;
     private MapLayerController mapLayerController = new MapLayerController();
+    private World world;
+    private static ArrayList<GoblinActor> goblins = new ArrayList<GoblinActor>();
+
+    public LevelController(World world) {
+        this.world = world;
+    }
 
     public TiledMap getMap() {
         return map;
@@ -39,5 +49,16 @@ public class LevelController {
 
     public TiledMapTileLayer getMapData(String layer) {
         return (TiledMapTileLayer) getMap().getLayers().get(layer);
+    }
+
+    public void spawnGoblins() {
+        getMapLayerController().setMathGoblinPosition(new GoblinActor(world), goblins);
+        for (GoblinActor goblin : goblins) {
+            goblin.spawn();
+        }
+    }
+
+    public void clear() {
+        goblins.clear();
     }
 }
