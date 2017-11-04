@@ -31,7 +31,7 @@ public class LevelCompletedScreen implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "Level Erfolgreich beendet. wow.", 100f, 400f);
-        game.font.draw(game.batch, "Start: Nochmal!", 100, 350f);
+        game.font.draw(game.batch, "Nochmal!: Leertaste", 100, 350f);
         game.font.draw(game.batch, "Ende: Drücke CMD+Q ;)", 100, 300f);
         game.batch.end();
 

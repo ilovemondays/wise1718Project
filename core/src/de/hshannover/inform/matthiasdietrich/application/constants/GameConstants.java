@@ -1,8 +1,5 @@
 package de.hshannover.inform.matthiasdietrich.application.constants;
 
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  * Created by matthiasdietrich on 06.10.17.
  */

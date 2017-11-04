@@ -3,10 +3,8 @@ package de.hshannover.inform.matthiasdietrich.application.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
-import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 
 /**
  * Created by matthiasdietrich on 25.10.17.

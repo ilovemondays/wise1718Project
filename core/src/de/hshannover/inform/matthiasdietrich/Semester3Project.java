@@ -10,8 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import de.hshannover.inform.matthiasdietrich.application.screens.MainMenuScreen;
 
-import java.util.ArrayList;
-
 public class Semester3Project extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;

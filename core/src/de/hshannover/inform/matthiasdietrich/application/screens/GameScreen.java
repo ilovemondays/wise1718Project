@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
-
         camera = new Camera();
 
         // CONTROLLER
