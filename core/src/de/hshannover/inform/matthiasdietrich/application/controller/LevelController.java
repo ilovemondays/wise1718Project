@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
  */
 public class LevelController {
     private TiledMap map;
+    private MapLayerController mapLayerController = new MapLayerController();
 
     public TiledMap getMap() {
         return map;
@@ -25,9 +26,18 @@ public class LevelController {
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
+        mapLayerController.setCollisionMap(getMapData("collision"));
+        mapLayerController.setPlayerMap(getMapData("player"));
+        mapLayerController.setCertificatesMap(getMapData("certificates"));
+        mapLayerController.setMathGoblinMap(getMapData("goblin"));
+        mapLayerController.setTrapMap(getMapData("trap"));
     }
 
-    public TiledMapTileLayer getCollisionData() {
-        return (TiledMapTileLayer) getMap().getLayers().get("collision");
+    public MapLayerController getMapLayerController() {
+        return mapLayerController;
+    }
+
+    public TiledMapTileLayer getMapData(String layer) {
+        return (TiledMapTileLayer) getMap().getLayers().get(layer);
     }
 }

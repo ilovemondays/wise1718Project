@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
@@ -26,7 +25,6 @@ public class GameScreen implements Screen {
     private PlayerController playerController;
 
     private LevelController levelController;
-    private CollisionMapController collisionMapController;
     private CollisionDetectionController collisionDetectionController;
 
     private OrthographicCamera camera;
@@ -39,7 +37,7 @@ public class GameScreen implements Screen {
 
         // CONTROLLER
         levelController = new LevelController();
-        collisionMapController = new CollisionMapController();
+
         gameController = GameController.getInstance();
         gameController.startWorld();
         collisionDetectionController = new CollisionDetectionController();
@@ -52,31 +50,24 @@ public class GameScreen implements Screen {
 
         // level/map
         levelController.setMap(1);
-        collisionMapController.setCollisionMap(levelController.getCollisionData());
-        collisionMapController.constructCollisionMap(gameController.getWorld());
+        // collision layer
+        levelController.getMapLayerController().constructCollisionMap(gameController.getWorld());
 
         // player
         playerController = PlayerController.getInstance();
         playerController.setInput(InputController.getInstance());
-
-        player = PlayerActor.getInstance(gameController.getWorld());
+        player = PlayerActor.getInstance(game.world);
         playerController.setPlayer(player);
 
-        // game
-        gameController.setContactListener(collisionDetectionController);
-
-        // @TODO: test
-        player.setX(3);
-        player.setY(3);
+        // player position
+        levelController.getMapLayerController().setPlayerPosition(game.world, player);
         player.spawn();
 
-        // @TODO: test
-        CertificateModel cert = new CertificateModel();
-        cert.spawn(gameController.getWorld(), 4, 2);
-        cert.spawn(gameController.getWorld(), 4, 3);
-        cert.spawn(gameController.getWorld(), 4, 4);
-        cert.spawn(gameController.getWorld(), 5, 4);
-        cert.spawn(gameController.getWorld(), 6, 4);
+        // collision detection
+        gameController.setContactListener(collisionDetectionController);
+
+        // distibute certificates in level
+        levelController.getMapLayerController().setCertificatesPosition(game.world, new CertificateModel());
     }
 
     @Override
