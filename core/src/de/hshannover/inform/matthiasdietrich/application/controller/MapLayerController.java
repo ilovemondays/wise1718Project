@@ -1,11 +1,12 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
-import de.hshannover.inform.matthiasdietrich.application.models.BaseActor;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
@@ -19,8 +20,9 @@ public class MapLayerController {
     TiledMapTileLayer collisionMap;
     TiledMapTileLayer playerMap;
     TiledMapTileLayer certificatesMap;
-    TiledMapTileLayer MathGoblinMap;
-    TiledMapTileLayer TrapMap;
+    TiledMapTileLayer mathGoblinMap;
+    TiledMapTileLayer trapMap;
+    TiledMapTileLayer lightMap;
 
     public TiledMapTileLayer getCollisionMap() {
         return collisionMap;
@@ -47,19 +49,27 @@ public class MapLayerController {
     }
 
     public TiledMapTileLayer getMathGoblinMap() {
-        return MathGoblinMap;
+        return mathGoblinMap;
     }
 
     public void setMathGoblinMap(TiledMapTileLayer mathGoblinMap) {
-        MathGoblinMap = mathGoblinMap;
+        this.mathGoblinMap = mathGoblinMap;
     }
 
     public TiledMapTileLayer getTrapMap() {
-        return TrapMap;
+        return trapMap;
     }
 
     public void setTrapMap(TiledMapTileLayer trapMap) {
-        TrapMap = trapMap;
+        this.trapMap = trapMap;
+    }
+
+    public TiledMapTileLayer getLightMap() {
+        return lightMap;
+    }
+
+    public void setLightMap(TiledMapTileLayer lightMap) {
+        this.lightMap = lightMap;
     }
 
     /**
@@ -120,7 +130,7 @@ public class MapLayerController {
         // create a polygon shape
         PolygonShape groundBox = new PolygonShape();
         // achtung halbe-hoehe und halbe-weite:
-        groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/2);
+        groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/4f);
 
         FixtureDef groundFix = new FixtureDef();
         groundFix.shape = groundBox;
@@ -175,6 +185,20 @@ public class MapLayerController {
                 if (getMathGoblinMap().getCell(tileWidth, tileHeight) != null) {
                     goblin.setPosition(tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                     list.add(goblin);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get light position from map tmx data.
+     * @param world
+     */
+    public void setLightPosition(World world, RayHandler rayHandler) {
+        for (int tileHeight = 0; tileHeight <= getLightMap().getHeight();  tileHeight++) {
+            for (int tileWidth = 0; tileWidth <= getLightMap().getWidth(); tileWidth++) {
+                if (getLightMap().getCell(tileWidth, tileHeight) != null) {
+                    new PointLight(rayHandler, 500, new Color(.1f, .3f, .6f, .5f), 7f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }
         }

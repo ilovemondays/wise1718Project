@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
@@ -18,7 +19,7 @@ public class GameController implements Observer {
     private GameModel gameModel;
 
     private GameController() {
-
+        world = new World(new Vector2(0, -10f), true);
     }
 
     public static GameController getInstance() {
@@ -38,6 +39,7 @@ public class GameController implements Observer {
         gameModel = GameModel.getInstance();
         gameModel.resetGame();
     }
+
 
     public World getWorld() {
         return world;

@@ -1,7 +1,10 @@
 package de.hshannover.inform.matthiasdietrich.application.screens;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -13,7 +16,6 @@ import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 
-import java.util.Random;
 // @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
 /**
  * Created by matthiasdietrich on 25.10.17.
@@ -31,6 +33,7 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
+    private RayHandler rayHandler;
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
@@ -75,6 +78,14 @@ public class GameScreen implements Screen {
         // set collision detection
         gameController.setContactListener(collisionDetectionController);
 
+        //player.update();
+        //camera.translate(player.getX(), player.getY());
+        //camera.update();
+
+        rayHandler = new RayHandler(game.world);
+
+        rayHandler.setAmbientLight(new Color(.1f, .3f, .6f, .5f));
+        levelController.getMapLayerController().setLightPosition(game.world, rayHandler);
     }
 
     @Override
@@ -90,12 +101,17 @@ public class GameScreen implements Screen {
 
         playerController.updatePlayer();
 
+        camera.position.set(player.getX(), player.getY(), 0);
+        camera.update();
+
         gameController.getWorld().step(1/60f, 1, 1);
         gameController.destroyBodies(); // if there are any to destroy, like collected certificates
 
         if(GameConstants.DEV_MODE) {
             debugRenderer.render(gameController.getWorld(), camera.combined);
         }
+        rayHandler.setCombinedMatrix(camera);
+        rayHandler.updateAndRender();
 
         if (gameController.checkWinCondition()) {
             gameController.resetGameModel();

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class LevelController {
     private TiledMap map;
-    private MapLayerController mapLayerController = new MapLayerController();
+        private MapLayerController mapLayerController = new MapLayerController();
     private World world;
     private static ArrayList<GoblinActor> goblins = new ArrayList<GoblinActor>();
 
@@ -41,6 +41,7 @@ public class LevelController {
         mapLayerController.setCertificatesMap(getMapData("certificates"));
         mapLayerController.setMathGoblinMap(getMapData("goblin"));
         mapLayerController.setTrapMap(getMapData("trap"));
+        mapLayerController.setLightMap(getMapData("light"));
     }
 
     public MapLayerController getMapLayerController() {
