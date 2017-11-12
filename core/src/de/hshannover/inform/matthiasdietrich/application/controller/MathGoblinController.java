@@ -1,0 +1,58 @@
+package de.hshannover.inform.matthiasdietrich.application.controller;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.World;
+import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
+import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
+
+import java.util.ArrayList;
+
+/**
+ * Created by matthiasdietrich on 10.11.17.
+ */
+public class MathGoblinController {
+    private static MathGoblinController mathGoblinController = null;
+    private ArrayList<GoblinActor> goblins;
+    private final float shootIntervalTime = 3f;
+    private ProjectileController projectileController = ProjectileController.getInstance();
+    private World world;
+
+    private MathGoblinController(){}
+
+    public static MathGoblinController getInstance() {
+        if (mathGoblinController == null) {
+            mathGoblinController = new MathGoblinController();
+        }
+        return mathGoblinController;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public ArrayList<GoblinActor> getGoblins() {
+        return goblins;
+    }
+
+    public void setGoblins(ArrayList<GoblinActor> goblins) {
+        this.goblins = goblins;
+    }
+
+    public void update() {
+        for (GoblinActor goblin : goblins) {
+            // check if goblin can shoot
+            if(goblin.getTime() >= shootIntervalTime) {
+                goblin.setTime(0);
+                // spawn evil math projectile
+                projectileController.getProjectiles().add(new ProjectileActor(world, goblin.getX()+1, goblin.getY()+0.5f));
+            }
+            goblin.setTime(goblin.getTime() + Gdx.graphics.getDeltaTime());
+        }
+
+        projectileController.update();
+    }
+}

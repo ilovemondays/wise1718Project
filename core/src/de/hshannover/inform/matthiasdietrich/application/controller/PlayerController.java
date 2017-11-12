@@ -1,7 +1,9 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import com.badlogic.gdx.physics.box2d.Fixture;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
@@ -63,7 +65,12 @@ public class PlayerController implements Observer {
 
     public void updatePlayer() {
         updatePlayerMovement();
-        getPlayer().update();
+        player.update();
+        //System.out.println(player.getTired());
+    }
+
+    public boolean playerIsTired() {
+        return (player.getTired() >= 1);
     }
 
     private void updatePlayerMovement() {
@@ -86,7 +93,19 @@ public class PlayerController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+
         if(arg instanceof String) {
+            // TRAPS
+            if (arg.equals("player-hit-trap")) {
+                System.out.println("TRAP");
+                player.setTired(1);
+            }
+            if (arg.equals("player-hit-by-projectile")) {
+                System.out.println("PAFF");
+                player.setTired(player.getTired() + 0.1f);
+                System.out.println(player.getTired());
+            }
+            // MOVEMENT
             if (arg.equals("playerOnGround")) {
                 playerIsOnGround++;
             }

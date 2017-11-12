@@ -1,16 +1,20 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Timer;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 /**
  * Created by matthiasdietrich on 04.11.17.
  */
 public class GoblinActor extends BaseActor {
+    private float time;
 
     public GoblinActor(World world) {
         super(world);
+        time = 0;
     }
 
     @Override
@@ -32,5 +36,13 @@ public class GoblinActor extends BaseActor {
         body.createFixture(fixDef).setUserData("goblin");
 
         shape.dispose();
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
     }
 }

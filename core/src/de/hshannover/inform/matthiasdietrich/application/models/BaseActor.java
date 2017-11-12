@@ -15,6 +15,7 @@ public class BaseActor extends Actor {
     protected BodyDef bodyDef;
     protected Body body;
     protected World world;
+    protected String type = "BaseActor";
 
     public BaseActor(World world) {
         this.world = world;
@@ -28,6 +29,14 @@ public class BaseActor extends Actor {
 
     public void setBody(Body body) {
         this.body = body;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void spawn() {
@@ -46,8 +55,8 @@ public class BaseActor extends Actor {
         fixDef.shape = circle;
         fixDef.density = 0.6f;
         fixDef.restitution = 0.1f;
-        fixDef.friction = 1f;
-        body.createFixture(fixDef).setUserData("body");
+        fixDef.friction = 0.9f;
+        body.createFixture(fixDef).setUserData(this);
 
         // Ground Sensor
         shape.setAsBox(GameConstants.TILE_WIDTH/6f, GameConstants.TILE_WIDTH/9f, new Vector2(0, -GameConstants.TILE_WIDTH/2.2f), 0);

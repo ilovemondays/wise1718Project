@@ -1,9 +1,17 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
+import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
+import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -15,8 +23,18 @@ import java.util.Observer;
 public class GameController implements Observer {
     private static World world;
     private static ArrayList<Body> bodiesToDestroy;
+    private static ArrayList<PointLight> lightsToDestroy;
     private static GameController gameController = null;
     private GameModel gameModel;
+    private PlayerActor player;
+    private PlayerController playerController;
+    private LevelController levelController;
+    private CollisionDetectionController collisionDetectionController;
+    private MathGoblinController mathGoblinController;
+    // @TODO: Das hier in eine render/light class verschieben
+    private RayHandler rayHandler;
+    // @TODO: sound in einen audio manager verschieben
+    private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
 
     private GameController() {
         world = new World(new Vector2(0, -10f), true);
@@ -32,14 +50,67 @@ public class GameController implements Observer {
 
     public void resetGameModel() {
         gameModel.resetGame();
+
     }
 
-    public void startWorld() {
+    public void startWorld(World world) {
+        setWorld(world);
         bodiesToDestroy = new ArrayList<Body>();
+        lightsToDestroy = new ArrayList<PointLight>();
         gameModel = GameModel.getInstance();
         gameModel.resetGame();
+
+        levelController = new LevelController(world);
+        collisionDetectionController = new CollisionDetectionController();
+
+        // SETUP CONTROLLER
+        // level/map
+        levelController.setMap(1);
+        // collision layer
+        levelController.getMapLayerController().constructCollisionMap(getWorld());
+        // trap layer
+        levelController.getMapLayerController().constructTrapMap(getWorld());
+
+        // player
+        playerController = PlayerController.getInstance();
+        playerController.setInput(InputController.getInstance());
+        player = PlayerActor.getInstance(getWorld());
+        playerController.setPlayer(player);
+
+        // player position
+        levelController.getMapLayerController().setPlayerPosition(getWorld(), player);
+        player.spawn();
+
+        // distribute certificates in level
+        levelController.getMapLayerController().setCertificatesPosition(getWorld(), new CertificateModel());
+
+        // distribute goblins in level
+        // @TODO: levelController sollte nicht die goblins spawnen
+        levelController.spawnGoblins();
+        mathGoblinController = MathGoblinController.getInstance();
+        mathGoblinController.setGoblins(LevelController.getGoblins());
+        mathGoblinController.setWorld(getWorld());
+
+        // set collision detection
+        setContactListener(collisionDetectionController);
+
+        rayHandler = new RayHandler(getWorld());
+        rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
+        sound.play();
+        levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
     }
 
+    public void endWorld() {
+        levelController.clear();
+        sound.stop();
+        rayHandler.dispose();
+        sound.dispose();
+    }
+
+    public void nextLevel() {
+        gameModel.increaseLevel();
+        gameModel.setTrials(0);
+    }
 
     public World getWorld() {
         return world;
@@ -57,12 +128,54 @@ public class GameController implements Observer {
         this.bodiesToDestroy = bodiesToDestroy;
     }
 
+    public static ArrayList<PointLight> getLightsToDestroy() {
+        return lightsToDestroy;
+    }
+
+    public static void setLightsToDestroy(ArrayList<PointLight> lightsToDestroy) {
+        GameController.lightsToDestroy = lightsToDestroy;
+    }
+
+    public RayHandler getRayHandler() {
+        return rayHandler;
+    }
+
+    public void setRayHandler(RayHandler rayHandler) {
+        this.rayHandler = rayHandler;
+    }
+
+    public PlayerActor getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerActor player) {
+        this.player = player;
+    }
+
+    public void loop() {
+        getWorld().step(1/60f, 1, 1);
+        destroyBodies(); // if there are any to destroy, like collected certificates
+        destroyLights();
+        playerController.updatePlayer();
+        mathGoblinController.update();
+
+        if(playerController.playerIsTired()) {
+            System.out.println("play is tired");
+            gameModel.increaseTrials();
+            bodiesToDestroy.add(player.getBody());
+        }
+
+        if(gameModel.getTrials() >= 3) {
+            endWorld();
+        }
+
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof Fixture) {
-            if (((Fixture)arg).getUserData().equals("certificate")) {
-                gameModel.setCertificatesFound(gameModel.getCertificatesFound() + 1);
-            }
+        if(arg instanceof Fixture && ((Fixture)arg).getUserData() instanceof CertificateModel) {
+            System.out.println("CERT");
+            gameModel.increaseCertificates();
             Body b = ((Fixture) arg).getBody();
             if(!bodiesToDestroy.contains(b)) {
                 bodiesToDestroy.add(b);
@@ -79,6 +192,13 @@ public class GameController implements Observer {
             getWorld().destroyBody(b);
         }
         getBodiesToDestroy().clear();
+    }
+
+    public void destroyLights() {
+        for(PointLight p : getLightsToDestroy()) {
+            p.remove();
+        }
+        getLightsToDestroy().clear();
     }
 
     public boolean checkWinCondition() {

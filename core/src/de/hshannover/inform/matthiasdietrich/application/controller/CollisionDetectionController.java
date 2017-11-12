@@ -1,6 +1,9 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import com.badlogic.gdx.physics.box2d.*;
+import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
+import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
+import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 
 import java.util.Observable;
 
@@ -12,6 +15,7 @@ public class CollisionDetectionController extends Observable implements ContactL
     public CollisionDetectionController() {
         this.addObserver(GameController.getInstance());
         this.addObserver(PlayerController.getInstance());
+        this.addObserver(ProjectileController.getInstance());
     }
 
     @Override
@@ -20,19 +24,45 @@ public class CollisionDetectionController extends Observable implements ContactL
         Fixture b = contact.getFixtureB();
 
         // CERTIFICATES
-        if( a.getUserData() != null && a.getUserData().equals("certificate")) {
+        if( a.getUserData() != null && a.getUserData() instanceof CertificateModel) {
             setChanged();
             notifyObservers(a);
         }
-        if( b.getUserData() != null && b.getUserData().equals("certificate")) {
+        if( b.getUserData() != null && b.getUserData() instanceof CertificateModel) {
             setChanged();
             notifyObservers(b);
         }
 
-        // SPIKES
-        if( a.getUserData() != null && a.getUserData().equals("trap") ||
-                b.getUserData() != null && b.getUserData().equals("trap")) {
-                System.out.println("AUA!!1");
+        // TRAP
+        if( a.getUserData() != null && a.getUserData().equals("trap")) {
+            setChanged();
+            notifyObservers("player-hit-trap");
+        }
+        if( b.getUserData() != null && b.getUserData().equals("trap")) {
+            setChanged();
+            notifyObservers("player-hit-trap");
+        }
+
+        // PROJECTILES
+        if(a.getUserData() instanceof ProjectileActor) {
+            // tell projectile controller
+            setChanged();
+            notifyObservers(a);
+            if(b.getUserData() instanceof PlayerActor) {
+                // tell player controller
+                setChanged();
+                notifyObservers("player-hit-by-projectile");
+            }
+        }
+        if(b.getUserData() instanceof ProjectileActor) {
+            // tell projectile controller
+            setChanged();
+            notifyObservers(b);
+            if(a.getUserData() instanceof PlayerActor) {
+                // tell player controller
+                setChanged();
+                notifyObservers("player-hit-by-projectile");
+            }
         }
 
         // PLAYER MOVEMENT

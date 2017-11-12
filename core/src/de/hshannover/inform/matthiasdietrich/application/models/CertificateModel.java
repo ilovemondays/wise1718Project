@@ -28,7 +28,7 @@ public class CertificateModel {
         groundFix.density = 1.0f;
         groundFix.friction = 1.0f;
         groundFix.isSensor = true;
-        groundBody.createFixture(groundFix).setUserData("certificate");
+        groundBody.createFixture(groundFix).setUserData(this);
         // Clean up after ourselves
         groundBox.dispose();
     }

@@ -25,6 +25,10 @@ public class LevelController {
         return map;
     }
 
+    public static ArrayList<GoblinActor> getGoblins() {
+        return goblins;
+    }
+
     /**
      * load given level. range 1-6, default is 1;
      * @param level

@@ -154,6 +154,7 @@ public class MapLayerController {
             for (int tileWidth = 0; tileWidth <= getPlayerMap().getWidth(); tileWidth++) {
                 if (getPlayerMap().getCell(tileWidth, tileHeight) != null) {
                     player.setPosition(tileWidth, tileHeight);
+                    player.setStartingPoint(new Vector2(tileWidth, tileHeight));
                 }
             }
         }
@@ -175,7 +176,7 @@ public class MapLayerController {
     }
 
     /**
-     * Get goblin position from map tmx data. There should be only on player tile.
+     * Get goblin position from map tmx data.
      * @param goblin
      * @param list
      */
@@ -198,7 +199,7 @@ public class MapLayerController {
         for (int tileHeight = 0; tileHeight <= getLightMap().getHeight();  tileHeight++) {
             for (int tileWidth = 0; tileWidth <= getLightMap().getWidth(); tileWidth++) {
                 if (getLightMap().getCell(tileWidth, tileHeight) != null) {
-                    new PointLight(rayHandler, 500, new Color(.1f, .3f, .6f, .5f), 7f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
+                    new PointLight(rayHandler, 500, new Color(.1f, .5f, .7f, .7f), 20f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }
         }

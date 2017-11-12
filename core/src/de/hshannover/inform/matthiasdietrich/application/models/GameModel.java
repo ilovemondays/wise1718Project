@@ -29,6 +29,14 @@ public class GameModel {
         this.actLevel = actLevel;
     }
 
+    public void increaseLevel() {
+        actLevel++;
+    }
+
+    public void increaseCertificates() {
+        certificatesFound++;
+    }
+
     public int getCertificatesFound() {
         return certificatesFound;
     }
@@ -43,6 +51,10 @@ public class GameModel {
 
     public void setTrials(int trials) {
         this.trials = trials;
+    }
+
+    public void increaseTrials() {
+        trials++;
     }
 
     public void resetGame() {

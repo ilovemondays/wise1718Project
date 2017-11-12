@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -7,8 +8,9 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class PlayerActor extends BaseActor {
-    private float isTired;
+    private float tired;
     private static PlayerActor player = null;
+    private Vector2 startingPoint;
 
     private PlayerActor(World world) {
         super(world);
@@ -22,11 +24,19 @@ public class PlayerActor extends BaseActor {
         return player;
     }
 
-    public float getIsTired() {
-        return isTired;
+    public float getTired() {
+        return tired;
     }
 
-    public void setIsTired(float isTired) {
-        this.isTired = isTired;
+    public void setTired(float tired) {
+        this.tired = tired;
+    }
+
+    public Vector2 getStartingPoint() {
+        return startingPoint;
+    }
+
+    public void setStartingPoint(Vector2 startingPoint) {
+        this.startingPoint = startingPoint;
     }
 }
