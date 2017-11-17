@@ -84,6 +84,7 @@ public class GameScreen implements Screen {
         game.guiController.getLabelTrials().setText("VERSUCHE: "+gameController.getTrials());
         game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
         game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
+        game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
         stage.draw();
         game.batch.end();
     }

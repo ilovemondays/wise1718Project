@@ -166,7 +166,7 @@ public class GameController implements Observer {
 
     public void loop() {
         getWorld().step(1/60f, 1, 1);
-        destroyBodies(); // if there are any to destroy, like collected certificates
+        destroyBodies(); // if there are any to destroy, like collected certificates, projectiles...
         destroyLights();
         playerController.updatePlayer();
         mathGoblinController.update();

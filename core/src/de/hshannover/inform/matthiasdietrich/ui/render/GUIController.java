@@ -6,13 +6,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.util.Observable;
@@ -34,7 +30,8 @@ public class GUIController extends Observable {
     private TextButton buttonShowHelp;
     private TextButton.TextButtonStyle buttonStyleDefault;
     private Skin skinButton;
-    private Rectangle healthBar;
+    private ProgressBar healthBar;
+    private ProgressBar.ProgressBarStyle healthBarStyle;
 
     // Fonts
     private BitmapFont fontBold;
@@ -44,6 +41,7 @@ public class GUIController extends Observable {
 
     public GUIController() {
         stage = new Stage();
+        stage.setDebugAll(true);
         Gdx.input.setInputProcessor(stage);
 
         tableMainMenu = new Table();
@@ -91,19 +89,18 @@ public class GUIController extends Observable {
         labelCertificatesFound = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
         labelSemester = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
 
-        healthBar = new Rectangle();
-        healthBar.setSize(100, 10);
-
-        Pixmap pixmap = new Pixmap(100, 10, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.BLUE);
-        pixmap.fillRectangle(0, 0, 100, 10);
-        Texture texture = new Texture(pixmap);
-        pixmap.dispose();
+        healthBarStyle = new ProgressBar.ProgressBarStyle();
+        healthBar = new ProgressBar(0, 1, 0.1f,false, healthBarStyle);
+        healthBar.setWidth(200);
+        healthBar.setHeight(20);
+        healthBar.setVisible(true);
+        healthBar.setColor(Color.CORAL);
 
         tableGameHUD.add(labelTrials).padTop(10).padLeft(10);
         tableGameHUD.add(labelCertificatesFound).padTop(10).padLeft(10);
         tableGameHUD.add(labelSemester).padTop(10).padLeft(10);
-        // tableGameHUD.add(texture).padTop(10).padLeft(10);
+        tableGameHUD.add(healthBar).padTop(10).padLeft(10);
+
 
         // ADD MAIN MENU LISTENER
         buttonStartGame.addListener(new ChangeListener() {
@@ -148,6 +145,14 @@ public class GUIController extends Observable {
         stage.clear();
         stage.addActor(tableMainMenu);
         return stage;
+    }
+
+    public ProgressBar getHealthBar() {
+        return healthBar;
+    }
+
+    public void setPlayerHealth(float playerHealth) {
+        healthBar.setValue(playerHealth);
     }
 
     public void addMeAsObserver(Observer obj) {
