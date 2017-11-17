@@ -19,6 +19,7 @@ public class PlayerController implements Observer {
     private PlayerActor player;
     private InputController input;
     private static PlayerController playerController = null;
+    private boolean isHittingProjectile = false;
 
     private PlayerController() {}
 
@@ -56,7 +57,7 @@ public class PlayerController implements Observer {
      * moves the player up
      */
     public void jump() {
-        getPlayer().getBody().applyForce(0f, 23f, 0f, 1f, true);
+        getPlayer().getBody().applyForce(0f, 26f, 0f, 1f, true);
     }
 
     public void setInput(InputController input) {
@@ -100,10 +101,15 @@ public class PlayerController implements Observer {
                 System.out.println("TRAP");
                 player.setTired(1);
             }
-            if (arg.equals("player-hit-by-projectile")) {
-                System.out.println("PAFF");
-                player.setTired(player.getTired() + 0.1f);
-                System.out.println(player.getTired());
+            if (arg.equals("player-hit-by-projectile-START")) {
+                isHittingProjectile = true;
+            }
+            if (arg.equals("player-hit-by-projectile-END")) {
+                if(isHittingProjectile == true) {
+                    isHittingProjectile = false;
+                    player.setTired(player.getTired() + 0.1f);
+                    System.out.println(player.getTired());
+                }
             }
             // MOVEMENT
             if (arg.equals("playerOnGround")) {

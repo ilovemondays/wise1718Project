@@ -24,14 +24,8 @@ public class CollisionDetectionController extends Observable implements ContactL
         Fixture b = contact.getFixtureB();
 
         // CERTIFICATES
-        if( a.getUserData() != null && a.getUserData() instanceof CertificateModel) {
-            setChanged();
-            notifyObservers(a);
-        }
-        if( b.getUserData() != null && b.getUserData() instanceof CertificateModel) {
-            setChanged();
-            notifyObservers(b);
-        }
+        checkCertificatesStart(a);
+        checkCertificatesStart(b);
 
         // TRAP
         if( a.getUserData() != null && a.getUserData().equals("trap")) {
@@ -44,41 +38,26 @@ public class CollisionDetectionController extends Observable implements ContactL
         }
 
         // PROJECTILES
-        if(a.getUserData() instanceof ProjectileActor) {
-            // tell projectile controller
+        checkProjectiles(a,b);
+        if(checkProjectilesWithPlayer(a,b) || checkProjectilesWithPlayer(b,a)) {
             setChanged();
-            notifyObservers(a);
-            if(b.getUserData() instanceof PlayerActor) {
-                // tell player controller
-                setChanged();
-                notifyObservers("player-hit-by-projectile");
-            }
-        }
-        if(b.getUserData() instanceof ProjectileActor) {
-            // tell projectile controller
-            setChanged();
-            notifyObservers(b);
-            if(a.getUserData() instanceof PlayerActor) {
-                // tell player controller
-                setChanged();
-                notifyObservers("player-hit-by-projectile");
-            }
+            notifyObservers("player-hit-by-projectile-START");
         }
 
         // PLAYER MOVEMENT
-        if( a.getUserData() != null && a.getUserData().equals("ground") ||
-                b.getUserData() != null && b.getUserData().equals("ground")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-ground") ||
+                b.getUserData() != null && b.getUserData().equals("player-ground")) {
             setChanged();
             notifyObservers("playerOnGround");
 
         }
-        if( a.getUserData() != null && a.getUserData().equals("left") ||
-                b.getUserData() != null && b.getUserData().equals("left")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-left") ||
+                b.getUserData() != null && b.getUserData().equals("player-left")) {
             setChanged();
             notifyObservers("playerCanMoveLeft");
         }
-        if( a.getUserData() != null && a.getUserData().equals("right") ||
-                b.getUserData() != null && b.getUserData().equals("right")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-right") ||
+                b.getUserData() != null && b.getUserData().equals("player-right")) {
             setChanged();
             notifyObservers("playerCanMoveRight");
         }
@@ -90,20 +69,31 @@ public class CollisionDetectionController extends Observable implements ContactL
         Fixture b = contact.getFixtureB();
 
         // MOVEMENT
-        if( a.getUserData() != null && a.getUserData().equals("ground") ||
-                b.getUserData() != null && b.getUserData().equals("ground")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-ground") ||
+                b.getUserData() != null && b.getUserData().equals("player-ground")) {
             setChanged();
             notifyObservers("playerInAir");
         }
-        if( a.getUserData() != null && a.getUserData().equals("left") ||
-                b.getUserData() != null && b.getUserData().equals("left")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-left") ||
+                b.getUserData() != null && b.getUserData().equals("player-left")) {
             setChanged();
             notifyObservers("playerCannotMoveLeft");
         }
-        if( a.getUserData() != null && a.getUserData().equals("right") ||
-                b.getUserData() != null && b.getUserData().equals("right")) {
+        if( a.getUserData() != null && a.getUserData().equals("player-right") ||
+                b.getUserData() != null && b.getUserData().equals("player-right")) {
             setChanged();
             notifyObservers("playerCannotMoveRight");
+        }
+
+        // CERTIFICATES
+        checkCertificatesEnd(a);
+        checkCertificatesEnd(b);
+
+        // PROJECTILES
+        checkProjectiles(a,b);
+        if(checkProjectilesWithPlayer(a,b) || checkProjectilesWithPlayer(b,a)) {
+            setChanged();
+            notifyObservers("player-hit-by-projectile-END");
         }
     }
 
@@ -115,5 +105,40 @@ public class CollisionDetectionController extends Observable implements ContactL
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    private void checkCertificatesStart(Fixture obj1) {
+        if( obj1.getUserData() instanceof CertificateModel) {
+            setChanged();
+            notifyObservers(obj1);
+            setChanged();
+            notifyObservers("certificate-collected-START");
+        }
+    }
+
+    private void checkCertificatesEnd(Fixture obj) {
+        if( obj.getUserData() instanceof CertificateModel) {
+            setChanged();
+            notifyObservers("certificate-collected-END");
+        }
+    }
+
+    private void checkProjectiles(Fixture obj1, Fixture obj2) {
+        if(obj1.getUserData() instanceof ProjectileActor || obj2.getUserData() instanceof ProjectileActor) {
+            // tell projectile controller
+            setChanged();
+            notifyObservers(obj1);
+            setChanged();
+            notifyObservers(obj2);
+        }
+    }
+    private boolean checkProjectilesWithPlayer(Fixture obj1, Fixture obj2) {
+        if (obj2.getUserData() instanceof ProjectileActor) {
+            if(obj1.getUserData() instanceof PlayerActor ||
+                    (obj1.getUserData() instanceof String && obj1.getUserData().toString().contains("player"))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

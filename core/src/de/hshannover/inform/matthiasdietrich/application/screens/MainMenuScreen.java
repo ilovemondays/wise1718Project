@@ -5,23 +5,48 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen implements Screen, Observer {
     final Semester3Project game;
-
+    private Stage stage;
     private InputController input;
-    private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/title.mp3"));
+    //private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/title.mp3"));
 
 
     public MainMenuScreen(final Semester3Project game) {
         this.game = game;
         input = InputController.getInstance();
-        sound.play();
+        stage = game.guiController.getMainMenuStage();
+        game.guiController.addMeAsObserver(this);
+        //sound.play();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String) {
+            if (arg.equals("button-start-game")) {
+                game.setScreen(new GameScreen(game));
+                dispose();
+            }
+            if (arg.equals("button-exit-game")) {
+                dispose();
+                System.exit(0);
+            }
+            if (arg.equals("button-show-help")) {
+                System.out.println("HILFE SCREEN ANZEIGEN");
+            }
+        }
     }
 
     @Override
@@ -31,23 +56,27 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.9f, 0.3f, 0.3f, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
         game.batch.draw(new Texture("images/title.png"), 0, 0);
-        game.fontBold.draw(game.batch, "Study Race", 100f, 380);
-        game.fontLight.draw(game.batch, "Start: Drücke Leertaste", 100, 300f);
-        game.fontLight.draw(game.batch, "Ende: Drücke CMD+Q ;)", 100, 250f);
+        game.batch.end();
+
+        game.batch.begin();
+        stage.act();
+        stage.draw();
         game.batch.end();
 
         if(input.isJump()) {
-            game.setScreen(new GameScreen(game));
-            sound.stop();
-            sound.dispose();
-            dispose();
+            //game.setScreen(new GameScreen(game));
+            //sound.stop();
+            //sound.dispose();
+            //dispose();
         }
     }
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -73,4 +102,6 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
 
     }
+
+
 }

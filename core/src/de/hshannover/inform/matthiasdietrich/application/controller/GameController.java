@@ -31,10 +31,11 @@ public class GameController implements Observer {
     private LevelController levelController;
     private CollisionDetectionController collisionDetectionController;
     private MathGoblinController mathGoblinController;
+    private boolean isCollectingCertificate = false;
     // @TODO: Das hier in eine render/light class verschieben
     private RayHandler rayHandler;
     // @TODO: sound in einen audio manager verschieben
-    private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
+   // private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
 
     private GameController() {
         world = new World(new Vector2(0, -10f), true);
@@ -53,19 +54,29 @@ public class GameController implements Observer {
 
     }
 
+    public int getTrials(){
+        return gameModel.getTrials();
+    }
+    public int getCertificates(){
+        return gameModel.getCertificatesFound();
+    }
+    public int getLevel(){
+        return gameModel.getActLevel();
+    }
+
     public void startWorld(World world) {
         setWorld(world);
         bodiesToDestroy = new ArrayList<Body>();
         lightsToDestroy = new ArrayList<PointLight>();
         gameModel = GameModel.getInstance();
-        gameModel.resetGame();
 
         levelController = new LevelController(world);
         collisionDetectionController = new CollisionDetectionController();
 
         // SETUP CONTROLLER
         // level/map
-        levelController.setMap(1);
+        levelController.setMap(gameModel.getActLevel());
+        System.out.println(gameModel.getActLevel());
         // collision layer
         levelController.getMapLayerController().constructCollisionMap(getWorld());
         // trap layer
@@ -96,20 +107,21 @@ public class GameController implements Observer {
 
         rayHandler = new RayHandler(getWorld());
         rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
-        sound.play();
+        //sound.play();
         levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
     }
 
     public void endWorld() {
         levelController.clear();
-        sound.stop();
-        rayHandler.dispose();
-        sound.dispose();
+        //sound.stop();
+        //rayHandler.dispose();
+        //sound.dispose();
     }
 
     public void nextLevel() {
         gameModel.increaseLevel();
         gameModel.setTrials(0);
+        gameModel.setCertificatesFound(0);
     }
 
     public World getWorld() {
@@ -120,7 +132,7 @@ public class GameController implements Observer {
         this.world = world;
     }
 
-    public ArrayList<Body> getBodiesToDestroy() {
+    public static ArrayList<Body> getBodiesToDestroy() {
         return bodiesToDestroy;
     }
 
@@ -163,6 +175,12 @@ public class GameController implements Observer {
             System.out.println("play is tired");
             gameModel.increaseTrials();
             bodiesToDestroy.add(player.getBody());
+            player.setTired(0);
+            player.setBody(null);
+            player.setBodyDef(null);
+            player.setPosition(player.getStartingPoint().x, player.getStartingPoint().y);
+            player.spawn();
+
         }
 
         if(gameModel.getTrials() >= 3) {
@@ -174,11 +192,21 @@ public class GameController implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof Fixture && ((Fixture)arg).getUserData() instanceof CertificateModel) {
-            System.out.println("CERT");
-            gameModel.increaseCertificates();
             Body b = ((Fixture) arg).getBody();
             if(!bodiesToDestroy.contains(b)) {
                 bodiesToDestroy.add(b);
+            }
+        }
+
+        if(arg instanceof String) {
+            if (arg.equals("certificate-collected-START")) {
+                isCollectingCertificate = true;
+            }
+            if (arg.equals("certificate-collected-END")) {
+                if (isCollectingCertificate == true) {
+                    isCollectingCertificate = false;
+                    gameModel.increaseCertificates();
+                }
             }
         }
     }
@@ -203,5 +231,9 @@ public class GameController implements Observer {
 
     public boolean checkWinCondition() {
         return (gameModel.getCertificatesFound() >= GameConstants.WIN_CONDITION);
+    }
+
+    public boolean checkGameOverCondition() {
+        return (gameModel.getTrials() >= GameConstants.MAX_TRIALS);
     }
 }

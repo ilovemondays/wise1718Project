@@ -4,7 +4,7 @@ package de.hshannover.inform.matthiasdietrich.application.models;
  * Created by matthiasdietrich on 24.10.17.
  */
 public class GameModel {
-    private int actLevel;
+    private int actLevel = 1;
     private int certificatesFound;
     private int trials;
     private static GameModel gameModel = null;
@@ -31,6 +31,7 @@ public class GameModel {
 
     public void increaseLevel() {
         actLevel++;
+        System.out.println(actLevel);
     }
 
     public void increaseCertificates() {
@@ -58,7 +59,6 @@ public class GameModel {
     }
 
     public void resetGame() {
-        setActLevel(1);
         setCertificatesFound(0);
         setTrials(0);
     }

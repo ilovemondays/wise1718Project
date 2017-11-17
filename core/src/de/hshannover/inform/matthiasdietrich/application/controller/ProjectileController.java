@@ -8,7 +8,6 @@ import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Vector;
 
 /**
  * Created by matthiasdietrich on 10.11.17.
@@ -33,14 +32,14 @@ public class ProjectileController implements Observer {
     }
 
     public void update() {
-        // System.out.println(projectiles.size());
         for (ProjectileActor projectile : projectiles) {
             if (projectile.isSpawned() == false) {
                 Vector2 playerPosition = new Vector2(gameController.getPlayer().getX(), gameController.getPlayer().getY());
 
                 projectile.spawn(
                         // richtungsvektor zum spieler
-                        new Vector2(playerPosition.x - projectile.getX(), playerPosition.y - projectile.getY()),
+                        //new Vector2(playerPosition.x - projectile.getX(), playerPosition.y - projectile.getY()),
+                        new Vector2(1,0),
                         gameController.getRayHandler());
             }
             projectile.update();

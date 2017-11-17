@@ -19,6 +19,7 @@ public class GoblinActor extends BaseActor {
 
     @Override
     public void spawn() {
+        bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(new Vector2(getX(), getY()));

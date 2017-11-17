@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
@@ -21,12 +22,14 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
+    private Stage stage;
 
 
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
         camera = new Camera();
+        stage = game.guiController.getGameStage();
 
         // CONTROLLER
         gameController = GameController.getInstance();
@@ -69,6 +72,20 @@ public class GameScreen implements Screen {
             game.setScreen(new LevelCompletedScreen(game));
             dispose();
         }
+
+        if (gameController.checkGameOverCondition()) {
+            gameController.endWorld();
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+
+        game.batch.begin();
+        stage.act();
+        game.guiController.getLabelTrials().setText("VERSUCHE: "+gameController.getTrials());
+        game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
+        game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
+        stage.draw();
+        game.batch.end();
     }
 
     @Override

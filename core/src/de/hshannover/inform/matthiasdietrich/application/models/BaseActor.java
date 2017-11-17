@@ -19,7 +19,6 @@ public class BaseActor extends Actor {
 
     public BaseActor(World world) {
         this.world = world;
-        bodyDef = new BodyDef();
         body = null;
     }
 
@@ -39,7 +38,16 @@ public class BaseActor extends Actor {
         this.type = type;
     }
 
+    public BodyDef getBodyDef() {
+        return bodyDef;
+    }
+
+    public void setBodyDef(BodyDef bodyDef) {
+        this.bodyDef = bodyDef;
+    }
+
     public void spawn() {
+        bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(new Vector2(getX(), getY()));

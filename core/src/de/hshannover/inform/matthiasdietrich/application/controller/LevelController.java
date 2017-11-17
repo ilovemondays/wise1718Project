@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class LevelController {
     private TiledMap map;
-        private MapLayerController mapLayerController = new MapLayerController();
+    private MapLayerController mapLayerController = new MapLayerController();
     private World world;
     private static ArrayList<GoblinActor> goblins = new ArrayList<GoblinActor>();
 
@@ -37,6 +37,9 @@ public class LevelController {
         switch (level) {
             case 1:
                 this.map = new TmxMapLoader().load("maps/map.tmx");
+                break;
+            case 2:
+                this.map = new TmxMapLoader().load("maps/level-2.tmx");
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }

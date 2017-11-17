@@ -42,6 +42,7 @@ public class ProjectileActor extends BaseActor {
         this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung ist.
         spawned = true;
 
+        bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(new Vector2(getX(), getY()));
