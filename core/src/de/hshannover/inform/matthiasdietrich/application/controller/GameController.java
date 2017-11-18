@@ -38,7 +38,7 @@ public class GameController implements Observer {
    // private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
 
     private GameController() {
-        world = new World(new Vector2(0, -10f), true);
+        world = new World(new Vector2(0, -15f), true);
     }
 
     public static GameController getInstance() {

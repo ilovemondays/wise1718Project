@@ -56,9 +56,9 @@ public class PlayerActor extends BaseActor {
 
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = circle;
-        fixDef.density = 0.6f;
-        fixDef.restitution = 0.1f;
-        fixDef.friction = 0.9f;
+        fixDef.density = 0.5f;
+        fixDef.restitution = 0;
+        fixDef.friction = 1f;
         body.createFixture(fixDef).setUserData(this);
 
         // Ground Sensor

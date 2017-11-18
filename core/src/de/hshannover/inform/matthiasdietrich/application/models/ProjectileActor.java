@@ -59,7 +59,7 @@ public class ProjectileActor extends BaseActor {
         // Ground Sensor
         shape.setAsBox(GameConstants.TILE_WIDTH/6f, GameConstants.TILE_WIDTH/9f, new Vector2(0, -GameConstants.TILE_WIDTH/2.2f), 0);
         fixDef.shape = shape;
-        fixDef.isSensor = false;
+        fixDef.isSensor = true;
         fixDef.density = 0;
         body.createFixture(fixDef).setUserData(this);
 

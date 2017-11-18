@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -41,7 +43,7 @@ public class GUIController extends Observable {
 
     public GUIController() {
         stage = new Stage();
-        stage.setDebugAll(true);
+        // stage.setDebugAll(true);
         Gdx.input.setInputProcessor(stage);
 
         tableMainMenu = new Table();
@@ -89,12 +91,21 @@ public class GUIController extends Observable {
         labelCertificatesFound = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
         labelSemester = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
 
-        healthBarStyle = new ProgressBar.ProgressBarStyle();
-        healthBar = new ProgressBar(0, 1, 0.1f,false, healthBarStyle);
-        healthBar.setWidth(200);
-        healthBar.setHeight(20);
+        Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLUE);
+        pixmap.fill();
+
+        TextureRegionDrawable textureBar = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("testHandle.png"))));
+
+        Skin skin = new Skin();
+        skin.add("white", new Texture(pixmap));
+
+        healthBarStyle = new ProgressBar.ProgressBarStyle(skin.newDrawable("white", Color.DARK_GRAY), textureBar);
+        healthBarStyle.knobBefore = healthBarStyle.knob;
+        healthBar = new ProgressBar(0, 1f, 0.1f,false, healthBarStyle);
+        healthBar.setSize(100f, 32);
+        healthBar.setAnimateDuration(0.3f);
         healthBar.setVisible(true);
-        healthBar.setColor(Color.CORAL);
 
         tableGameHUD.add(labelTrials).padTop(10).padLeft(10);
         tableGameHUD.add(labelCertificatesFound).padTop(10).padLeft(10);

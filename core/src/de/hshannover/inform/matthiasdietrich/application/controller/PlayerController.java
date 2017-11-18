@@ -57,7 +57,7 @@ public class PlayerController implements Observer {
      * moves the player up
      */
     public void jump() {
-        getPlayer().getBody().applyForce(0f, 26f, 0f, 1f, true);
+        getPlayer().getBody().applyForce(0f, 24f, 0f, 1f, true);
     }
 
     public void setInput(InputController input) {
