@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen, Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof String) {
             if (arg.equals("button-start-game")) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new LevelCompletedScreen(game));
                 dispose();
             }
             if (arg.equals("button-exit-game")) {
@@ -59,21 +59,14 @@ public class MainMenuScreen implements Screen, Observer {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-        game.batch.draw(new Texture("images/title.png"), 0, 0);
-        game.batch.end();
+       game.batch.begin();
+       game.batch.draw(new Texture("images/title.png"), 0, 0);
+      game.batch.end();
 
         game.batch.begin();
         stage.act();
         stage.draw();
         game.batch.end();
-
-        if(input.isJump()) {
-            //game.setScreen(new GameScreen(game));
-            //sound.stop();
-            //sound.dispose();
-            //dispose();
-        }
     }
 
 

@@ -13,4 +13,12 @@ public class GameConstants {
 
     public static final int WIN_CONDITION = 5; // collect # of certificates
     public static final int MAX_TRIALS = 3; // max # of tirals before game over
+
+    public enum ActAnimation {
+        JUMP, RUN, IDLE
+    }
+
+    public enum Direction {
+        LEFT, RIGHT
+    }
 }

@@ -27,6 +27,8 @@ public class GUIController extends Observable {
     private Label labelTrials;
     private Label labelCertificatesFound;
     private Label labelSemester;
+    private Label labelTitle;
+    private Label labelSubTitle;
     private TextButton buttonStartGame;
     private TextButton buttonExitGame;
     private TextButton buttonShowHelp;
@@ -36,8 +38,9 @@ public class GUIController extends Observable {
     private ProgressBar.ProgressBarStyle healthBarStyle;
 
     // Fonts
-    private BitmapFont fontBold;
-    private BitmapFont fontLight;
+    private BitmapFont fontBig;
+    private BitmapFont fontSmall;
+    private BitmapFont fontTitle;
     public FreeTypeFontGenerator generator;
     public FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
@@ -53,65 +56,81 @@ public class GUIController extends Observable {
         tableGameHUD.setFillParent(true);
         tableGameHUD.top().left();
 
+        // TEXTURES
+        Pixmap pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        Skin skin = new Skin();
+        skin.add("white", new Texture(pixmap));
+
         // SETUP FONTS
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Raleway-ExtraBold.ttf"));
-        fontBold = generator.generateFont(parameter);
-        fontBold.setColor(1f, 1f, 1f, 1f);
+        parameter.size = 20;
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/WildYouth-Regular.otf"));
+        fontBig = generator.generateFont(parameter);
+        fontBig.setColor(1f, 1f, 1f, 1f);
 
         parameter.size = 16;
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Raleway-Light.ttf"));
-        fontLight = generator.generateFont(parameter);
+        fontSmall = generator.generateFont(parameter);
+
+        parameter.size = 128;
+        parameter.color = new Color(0xff3377ff);
+        parameter.shadowColor = new Color(0x333333ff);
+        parameter.shadowOffsetX = 1;
+        parameter.shadowOffsetY = 1;
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Last-Paradise.otf"));
+        fontTitle = generator.generateFont(parameter);
 
         // GUI ELEMENTS
         // MAIN MENU:
         skinButton = new Skin();
-        skinButton.add("default", fontBold);
+        skinButton.add("default", fontBig);
 
         buttonStyleDefault = new TextButton.TextButtonStyle();
+        buttonStyleDefault.up = skin.newDrawable("white", new Color(0xff3377ff));
+        buttonStyleDefault.over = skin.newDrawable("white", new Color(0x333333ff));
         buttonStyleDefault.font = skinButton.getFont("default");
-        buttonStyleDefault.fontColor = new Color(0xffffffcc);
-        buttonStyleDefault.overFontColor = new Color(0xffffffff);
+        buttonStyleDefault.fontColor = new Color(0x333333ff);
+        buttonStyleDefault.overFontColor = new Color(0xff3377ff);
         skinButton.add("default", buttonStyleDefault);
 
         buttonStartGame = new TextButton("START", skinButton);
+        buttonStartGame.pad(10);
         buttonShowHelp = new TextButton("HILFE", skinButton);
+        buttonShowHelp.pad(10);
         buttonExitGame = new TextButton("ENDE", skinButton);
+        buttonExitGame.pad(10);
 
+        labelTitle = new Label("Study Race", new Label.LabelStyle(fontTitle, Color.WHITE));
+        labelSubTitle = new Label("A Jump And Run Game", new Label.LabelStyle(fontSmall, Color.WHITE));
+
+        // tableMainMenu.setDebug(true);
+        tableMainMenu.add(labelTitle).colspan(3);
+        tableMainMenu.row();
+        tableMainMenu.add(labelSubTitle).colspan(3).padBottom(50).left();
+        tableMainMenu.row();
         tableMainMenu.add(buttonStartGame).pad(10);
-        tableMainMenu.row();
         tableMainMenu.add(buttonShowHelp).pad(10);
-        tableMainMenu.row();
         tableMainMenu.add(buttonExitGame).pad(10);
 
         // GAME HUD:
-        labelTrials = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
-        labelCertificatesFound = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
-        labelSemester = new Label("", new Label.LabelStyle(fontLight, Color.WHITE));
-
-        Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.BLUE);
-        pixmap.fill();
+        labelTrials = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
+        labelCertificatesFound = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
+        labelSemester = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
 
         TextureRegionDrawable textureBar = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("testHandle.png"))));
 
-        Skin skin = new Skin();
-        skin.add("white", new Texture(pixmap));
-
-        healthBarStyle = new ProgressBar.ProgressBarStyle(skin.newDrawable("white", Color.DARK_GRAY), textureBar);
+        healthBarStyle = new ProgressBar.ProgressBarStyle(skin.newDrawable("white", Color.GRAY), textureBar);
         healthBarStyle.knobBefore = healthBarStyle.knob;
         healthBar = new ProgressBar(0, 1f, 0.1f,false, healthBarStyle);
-        healthBar.setSize(100f, 32);
+        healthBar.setSize(100f, 16);
         healthBar.setAnimateDuration(0.3f);
-        healthBar.setVisible(true);
 
         tableGameHUD.add(labelTrials).padTop(10).padLeft(10);
         tableGameHUD.add(labelCertificatesFound).padTop(10).padLeft(10);
         tableGameHUD.add(labelSemester).padTop(10).padLeft(10);
         tableGameHUD.add(healthBar).padTop(10).padLeft(10);
-
 
         // ADD MAIN MENU LISTENER
         buttonStartGame.addListener(new ChangeListener() {

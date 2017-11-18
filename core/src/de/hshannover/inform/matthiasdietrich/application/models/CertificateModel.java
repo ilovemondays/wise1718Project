@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
+import box2dLight.PointLight;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -7,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
  * Created by matthiasdietrich on 24.10.17.
  */
 public class CertificateModel {
+    private PointLight light;
+
     public void spawn(World world, float x, float y) {
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
@@ -14,7 +17,7 @@ public class CertificateModel {
         groundBodyDef.position.set(new Vector2(x, y));
 
         // Create a body from the defintion and add it to the world
-        Body groundBody = world.createBody(groundBodyDef);
+        Body body = world.createBody(groundBodyDef);
 
         // Create a polygon shape
         PolygonShape groundBox = new PolygonShape();
@@ -28,7 +31,7 @@ public class CertificateModel {
         groundFix.density = 1.0f;
         groundFix.friction = 1.0f;
         groundFix.isSensor = true;
-        groundBody.createFixture(groundFix).setUserData(this);
+        body.createFixture(groundFix).setUserData(this);
         // Clean up after ourselves
         groundBox.dispose();
     }

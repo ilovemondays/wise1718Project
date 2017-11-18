@@ -10,6 +10,7 @@ import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
+import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
 // @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
 /**
@@ -23,7 +24,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
     private Stage stage;
-
+    private SpriteRenderer spriteRenderer;
 
 
     public GameScreen(final Semester3Project game) {
@@ -37,6 +38,9 @@ public class GameScreen implements Screen {
 
         // Box2D
         debugRenderer = new Box2DDebugRenderer();
+
+        // Render
+        spriteRenderer = new SpriteRenderer();
     }
 
     @Override
@@ -87,6 +91,8 @@ public class GameScreen implements Screen {
         game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
         stage.draw();
         game.batch.end();
+
+        spriteRenderer.render(game.batch);
     }
 
     @Override

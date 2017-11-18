@@ -11,11 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import de.hshannover.inform.matthiasdietrich.application.screens.MainMenuScreen;
 import de.hshannover.inform.matthiasdietrich.ui.render.GUIController;
+import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
 public class Semester3Project extends Game {
 	public SpriteBatch batch;
 	public World world;
 	public GUIController guiController;
+	public SpriteRenderer spriteRenderer;
 
     // UI TEST
     public Skin skin;
@@ -30,6 +32,7 @@ public class Semester3Project extends Game {
 		world = new World(new Vector2(0, -10f), true);
 		batch = new SpriteBatch();
         guiController = new GUIController();
+		spriteRenderer = new SpriteRenderer();
 
         this.setScreen(new MainMenuScreen(this));
 

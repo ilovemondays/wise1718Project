@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
@@ -20,6 +21,8 @@ public class PlayerController implements Observer {
     private InputController input;
     private static PlayerController playerController = null;
     private boolean isHittingProjectile = false;
+    private GameConstants.ActAnimation actAnimation = GameConstants.ActAnimation.IDLE;
+    private GameConstants.Direction actDirection = GameConstants.Direction.LEFT;
 
     private PlayerController() {}
 
@@ -39,25 +42,46 @@ public class PlayerController implements Observer {
         this.player = player;
     }
 
+    public GameConstants.ActAnimation getActAnimation () {
+        return actAnimation;
+    }
+
+    public void setActAnimation (GameConstants.ActAnimation actAnimation) {
+        this.actAnimation = actAnimation;
+    }
+
+    public GameConstants.Direction getActDirection () {
+        return actDirection;
+    }
+
+    public void setActDirection (GameConstants.Direction actDirection) {
+        this.actDirection = actDirection;
+    }
+
     /**
      * moves the player to the left
      */
     private void moveLeft() {
-        getPlayer().getBody().applyLinearImpulse(-0.12f, 0, 0, 0, true);
+        getPlayer().getBody().applyLinearImpulse(-0.07f, 0, 0, 0, true);
+        actAnimation = GameConstants.ActAnimation.RUN;
+        actDirection = GameConstants.Direction.LEFT;
     }
 
     /**
      * moves the player to the right
      */
     private void moveRight() {
-        getPlayer().getBody().applyLinearImpulse(0.12f, 0, 0, 0, true);
+        getPlayer().getBody().applyLinearImpulse(0.07f, 0, 0, 0, true);
+        actAnimation = GameConstants.ActAnimation.RUN;
+        actDirection = GameConstants.Direction.RIGHT;
     }
 
     /**
      * moves the player up
      */
     public void jump() {
-        getPlayer().getBody().applyForce(0f, 24f, 0f, 1f, true);
+        getPlayer().getBody().applyForce(0f, 15f, 0f, 1f, true);
+        actAnimation = GameConstants.ActAnimation.JUMP;
     }
 
     public void setInput(InputController input) {
@@ -67,7 +91,9 @@ public class PlayerController implements Observer {
     public void updatePlayer() {
         updatePlayerMovement();
         player.update();
-        //System.out.println(player.getTired());
+        if(!player.getBody().isAwake()) {
+            actAnimation = GameConstants.ActAnimation.IDLE;
+        }
     }
 
     public boolean playerIsTired() {

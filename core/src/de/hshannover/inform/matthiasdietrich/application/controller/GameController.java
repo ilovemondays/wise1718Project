@@ -38,7 +38,7 @@ public class GameController implements Observer {
    // private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
 
     private GameController() {
-        world = new World(new Vector2(0, -15f), true);
+        world = new World(new Vector2(0, -2f), true);
     }
 
     public static GameController getInstance() {
@@ -68,7 +68,11 @@ public class GameController implements Observer {
         setWorld(world);
         bodiesToDestroy = new ArrayList<Body>();
         lightsToDestroy = new ArrayList<PointLight>();
+
         gameModel = GameModel.getInstance();
+
+        rayHandler = new RayHandler(getWorld());
+        rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
 
         levelController = new LevelController(world);
         collisionDetectionController = new CollisionDetectionController();
@@ -105,8 +109,6 @@ public class GameController implements Observer {
         // set collision detection
         setContactListener(collisionDetectionController);
 
-        rayHandler = new RayHandler(getWorld());
-        rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
         //sound.play();
         levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
     }
