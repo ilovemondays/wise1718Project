@@ -60,8 +60,8 @@ public class MainMenuScreen implements Screen, Observer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
        game.batch.begin();
-       game.batch.draw(new Texture("images/title.png"), 0, 0);
-      game.batch.end();
+       game.batch.draw(new Texture("images/title.jpeg"), 0, 0);
+       game.batch.end();
 
         game.batch.begin();
         stage.act();

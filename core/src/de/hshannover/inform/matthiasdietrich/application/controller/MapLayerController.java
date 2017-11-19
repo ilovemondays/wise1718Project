@@ -17,21 +17,10 @@ import java.util.ArrayList;
 /**
  * Created by matthiasdietrich on 22.10.17.
  */
-public class MapLayerController {
-    TiledMapTileLayer collisionMap;
-    TiledMapTileLayer playerMap;
-    TiledMapTileLayer certificatesMap;
-    TiledMapTileLayer mathGoblinMap;
-    TiledMapTileLayer trapMap;
-    TiledMapTileLayer lightMap;
-
-    public TiledMapTileLayer getCollisionMap() {
-        return collisionMap;
-    }
-
-    public void setCollisionMap(TiledMapTileLayer collisionMap) {
-        this.collisionMap = collisionMap;
-    }
+class MapLayerController {
+    private TiledMapTileLayer playerMap;
+    private TiledMapTileLayer mathGoblinMap;
+    private TiledMapTileLayer lightMap;
 
     public TiledMapTileLayer getPlayerMap() {
         return playerMap;
@@ -39,14 +28,6 @@ public class MapLayerController {
 
     public void setPlayerMap(TiledMapTileLayer playerMap) {
         this.playerMap = playerMap;
-    }
-
-    public TiledMapTileLayer getCertificatesMap() {
-        return certificatesMap;
-    }
-
-    public void setCertificatesMap(TiledMapTileLayer certificatesMap) {
-        this.certificatesMap = certificatesMap;
     }
 
     public TiledMapTileLayer getMathGoblinMap() {
@@ -57,14 +38,6 @@ public class MapLayerController {
         this.mathGoblinMap = mathGoblinMap;
     }
 
-    public TiledMapTileLayer getTrapMap() {
-        return trapMap;
-    }
-
-    public void setTrapMap(TiledMapTileLayer trapMap) {
-        this.trapMap = trapMap;
-    }
-
     public TiledMapTileLayer getLightMap() {
         return lightMap;
     }
@@ -73,53 +46,17 @@ public class MapLayerController {
         this.lightMap = lightMap;
     }
 
-    public ArrayList<Point> getCollisionMapData() {
-        ArrayList<Point> collisionTiles = new ArrayList<Point>();
-        for (int collisionHeight = 0; collisionHeight <= getCollisionMap().getHeight();  collisionHeight++) {
-            for (int collisionWidth = 0; collisionWidth <= getCollisionMap().getWidth(); collisionWidth++) {
-                if (getCollisionMap().getCell(collisionWidth, collisionHeight) != null) {
-                    //createCollisionTile(world, collisionWidth, collisionHeight);
-                    collisionTiles.add(new Point(collisionWidth, collisionHeight));
+    public ArrayList<Point> getTiledMapData(TiledMapTileLayer mapData) {
+        ArrayList<Point> tiledMapTiles = new ArrayList<Point>();
+        for (int collisionHeight = 0; collisionHeight <= mapData.getHeight();  collisionHeight++) {
+            for (int collisionWidth = 0; collisionWidth <= mapData.getWidth(); collisionWidth++) {
+                if (mapData.getCell(collisionWidth, collisionHeight) != null) {
+                    tiledMapTiles.add(new Point(collisionWidth, collisionHeight));
                 }
             }
         }
-        return collisionTiles;
+        return tiledMapTiles;
     }
-
-    /**
-     * Takes the map tmx data and translates it into box2d bodies
-     * @param world
-     */
-    public void constructTrapMap(World world) {
-        for (int collisionHeight = 0; collisionHeight <= getTrapMap().getHeight();  collisionHeight++) {
-            for (int collisionWidth = 0; collisionWidth <= getTrapMap().getWidth(); collisionWidth++) {
-                if (getTrapMap().getCell(collisionWidth, collisionHeight) != null) {
-                    createTrapTile(world, collisionWidth, collisionHeight);
-                }
-            }
-        }
-    }
-
-    private void createTrapTile(World world, int x,int y) {
-        BodyDef groundBodyDef = new BodyDef();
-
-        // set its world position
-        groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH+0.5f, y*GameConstants.TILE_WIDTH+0.5f));
-        Body groundBody = world.createBody(groundBodyDef);
-
-        // create a polygon shape
-        PolygonShape groundBox = new PolygonShape();
-        // achtung halbe-hoehe und halbe-weite:
-        groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/4f);
-
-        FixtureDef groundFix = new FixtureDef();
-        groundFix.shape = groundBox;
-        groundFix.density = 1.0f;
-        groundFix.friction = 1.0f;
-        groundBody.createFixture(groundFix).setUserData("trap");;
-        groundBox.dispose();
-    }
-
 
     // @TODO: Das hier unten vereinheitlichen, alles redundanter code
 
@@ -135,21 +72,6 @@ public class MapLayerController {
                 if (getPlayerMap().getCell(tileWidth, tileHeight) != null) {
                     player.setPosition(tileWidth, tileHeight);
                     player.setStartingPoint(new Vector2(tileWidth, tileHeight));
-                }
-            }
-        }
-    }
-
-    /**
-     * Get cert position from map tmx data.
-     * @param world
-     * @param cert
-     */
-    public void setCertificatesPosition(World world, CertificateModel cert) {
-        for (int tileHeight = 0; tileHeight <= getCertificatesMap().getHeight();  tileHeight++) {
-            for (int tileWidth = 0; tileWidth <= getCertificatesMap().getWidth(); tileWidth++) {
-                if (getCertificatesMap().getCell(tileWidth, tileHeight) != null) {
-                    cert.spawn(world, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }
         }
@@ -179,7 +101,7 @@ public class MapLayerController {
         for (int tileHeight = 0; tileHeight <= getLightMap().getHeight();  tileHeight++) {
             for (int tileWidth = 0; tileWidth <= getLightMap().getWidth(); tileWidth++) {
                 if (getLightMap().getCell(tileWidth, tileHeight) != null) {
-                    new PointLight(rayHandler, 5000, new Color(.9f, .5f, .9f, .5f),
+                    new PointLight(rayHandler, 100, new Color(.9f, .5f, .9f, .5f),
                             20f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }

@@ -4,17 +4,28 @@ import box2dLight.PointLight;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
+import java.awt.*;
+
 /**
  * Created by matthiasdietrich on 24.10.17.
  */
 public class CertificateModel {
     private PointLight light;
+    private Point position;
+
+    public Point getPosition () {
+        return position;
+    }
+
+    public void setPosition (Point position) {
+        this.position = position;
+    }
 
     public void spawn(World world, float x, float y) {
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
         // Set its world position
-        groundBodyDef.position.set(new Vector2(x, y));
+        groundBodyDef.position.set(new Vector2(x + 0.5f, y+ 0.5f));
 
         // Create a body from the defintion and add it to the world
         Body body = world.createBody(groundBodyDef);

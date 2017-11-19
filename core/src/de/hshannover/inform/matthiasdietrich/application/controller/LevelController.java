@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
 
 import java.awt.*;
@@ -20,6 +21,8 @@ public class LevelController {
     private World world;
     private static ArrayList<GoblinActor> goblins = new ArrayList<GoblinActor>();
     private ArrayList<Point> collisionTiles = new ArrayList<Point>();
+    private ArrayList<Point> trapTiles = new ArrayList<Point>();
+    private ArrayList<CertificateModel> certificates = new ArrayList<CertificateModel>();
 
     public LevelController(World world) {
         this.world = world;
@@ -47,14 +50,14 @@ public class LevelController {
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
-        mapLayerController.setCollisionMap(getMapData("collision"));
+
         mapLayerController.setPlayerMap(getMapData("player"));
-        mapLayerController.setCertificatesMap(getMapData("certificates"));
         mapLayerController.setMathGoblinMap(getMapData("goblin"));
-        mapLayerController.setTrapMap(getMapData("trap"));
         mapLayerController.setLightMap(getMapData("light"));
 
         buildCollisionMap();
+        buildTrapMap();
+        buildCertificatesMap();
     }
 
     public MapLayerController getMapLayerController() {
@@ -69,6 +72,22 @@ public class LevelController {
         return collisionTiles;
     }
 
+    public ArrayList<Point> getTrapTiles () {
+        return trapTiles;
+    }
+
+    public ArrayList<CertificateModel> getCertificates () {
+        return certificates;
+    }
+
+    public ArrayList<Point> getGoblinsAsPoints () {
+        ArrayList<Point> list = new ArrayList<Point>();
+        for (GoblinActor goblin : goblins) {
+            list.add(new Point((int)goblin.getX(), (int)goblin.getY()));
+        }
+        return list;
+    }
+
     public void spawnGoblins() {
         getMapLayerController().setMathGoblinPosition(new GoblinActor(world), goblins);
         for (GoblinActor goblin : goblins) {
@@ -80,8 +99,9 @@ public class LevelController {
         goblins.clear();
     }
 
+    // COLLISION TILES
     private void buildCollisionMap() {
-        collisionTiles = mapLayerController.getCollisionMapData();
+        collisionTiles = mapLayerController.getTiledMapData(getMapData("collision"));
         for (Point tile : collisionTiles) {
             createCollisionTile(tile.x, tile.y);
         }
@@ -106,4 +126,44 @@ public class LevelController {
         groundBody.createFixture(groundFix);
         groundBox.dispose();
     }
+
+    // TRAP TILES
+    private void buildTrapMap() {
+        trapTiles= mapLayerController.getTiledMapData(getMapData("trap"));
+        for (Point tile : trapTiles) {
+            createTrapTile(tile.x, tile.y);
+        }
+    }
+    private void createTrapTile(int x,int y) {
+        BodyDef groundBodyDef = new BodyDef();
+
+        // set its world position
+        groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH+0.5f, y*GameConstants.TILE_WIDTH+0.5f));
+        Body groundBody = world.createBody(groundBodyDef);
+
+        // create a polygon shape
+        PolygonShape groundBox = new PolygonShape();
+        // achtung halbe-hoehe und halbe-weite:
+        groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/4f);
+
+        FixtureDef groundFix = new FixtureDef();
+        groundFix.shape = groundBox;
+        groundFix.density = 1.0f;
+        groundFix.friction = 1.0f;
+        groundBody.createFixture(groundFix).setUserData("trap");;
+        groundBox.dispose();
+    }
+
+    // CERTIFICATES TILES
+    private void buildCertificatesMap() {
+        ArrayList<Point> list = mapLayerController.getTiledMapData(getMapData("certificates"));
+        CertificateModel temp;
+        for (Point point : list) {
+            temp = new CertificateModel();
+            temp.setPosition(point);
+            certificates.add(temp);
+            temp.spawn(world, temp.getPosition().x, temp.getPosition().y);
+        }
+    }
+
 }

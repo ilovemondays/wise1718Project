@@ -44,7 +44,10 @@ public class GameScreen implements Screen {
         // Render
         spriteRenderer = new SpriteRenderer();
         mapRenderer = new MapRenderer();
-        mapRenderer.setCollisionTiles(gameController.getLevelController().getCollisionTiles());
+        mapRenderer.setMapTiles(gameController.getLevelController().getCollisionTiles());
+        mapRenderer.setTraps(gameController.getLevelController().getTrapTiles());
+        mapRenderer.setGoblins(gameController.getLevelController().getGoblinsAsPoints());
+        mapRenderer.setCertificates(gameController.getLevelController().getCertificates());
     }
 
     @Override
@@ -87,7 +90,9 @@ public class GameScreen implements Screen {
             dispose();
         }
 
-        mapRenderer.render(game.batch);
+        game.batch.begin();
+        mapRenderer.render(game.batch, (Camera) camera);
+        game.batch.end();
 
         game.batch.begin();
         stage.act();

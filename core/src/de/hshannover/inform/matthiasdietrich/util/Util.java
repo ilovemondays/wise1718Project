@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.util;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
@@ -16,11 +17,6 @@ public class Util {
     }
 
     public static Sprite adjustSize(Sprite imageToBeScaled) {
-        imageToBeScaled.setSize(scale(imageToBeScaled.getWidth()), scale(imageToBeScaled.getHeight()));
-        return imageToBeScaled;
-    }
-
-    public static Sprite adjustSizeUp(Sprite imageToBeScaled) {
         imageToBeScaled.setSize(scale(imageToBeScaled.getWidth()), scale(imageToBeScaled.getHeight()));
         return imageToBeScaled;
     }

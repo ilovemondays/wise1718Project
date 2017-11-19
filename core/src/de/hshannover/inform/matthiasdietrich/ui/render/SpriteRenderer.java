@@ -23,7 +23,7 @@ public class SpriteRenderer {
     private Texture test = new Texture("actors/dummy/dummy.png");
 
     public SpriteRenderer() {
-        playerRunAnimation = SpriteAnimation.create("actors/dummy/run.png", 1, 3, 0.1f);
+        playerRunAnimation = SpriteAnimation.create("actors/player/run.png", 1, 3, 0.1f);
     }
 
     public void render(Batch batch) {

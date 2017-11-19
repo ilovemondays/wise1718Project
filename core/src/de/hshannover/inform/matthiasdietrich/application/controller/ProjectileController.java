@@ -27,10 +27,6 @@ public class ProjectileController implements Observer {
         return projectiles;
     }
 
-    public void setProjectiles(ArrayList<ProjectileActor> projectiles) {
-        this.projectiles = projectiles;
-    }
-
     public void update() {
         for (ProjectileActor projectile : projectiles) {
             if (projectile.isSpawned() == false) {
@@ -58,6 +54,7 @@ public class ProjectileController implements Observer {
             if(!gameController.getLightsToDestroy().contains(projectile.getLight())) {
                 gameController.getLightsToDestroy().add(projectile.getLight());
             }
+            projectiles.remove(((Fixture)arg).getUserData());
         }
     }
 }

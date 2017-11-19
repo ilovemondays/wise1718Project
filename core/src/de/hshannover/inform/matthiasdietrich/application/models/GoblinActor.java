@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.util.Util;
 
 /**
  * Created by matthiasdietrich on 04.11.17.
@@ -27,7 +28,7 @@ public class GoblinActor extends BaseActor {
         body = super.world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(GameConstants.TILE_WIDTH/2f, GameConstants.TILE_WIDTH/2f);
+        shape.setAsBox(Util.scale(12f), GameConstants.TILE_WIDTH/2f);
 
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = shape;

@@ -64,21 +64,22 @@ public class GUIController extends Observable {
         skin.add("white", new Texture(pixmap));
 
         // SETUP FONTS
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        parameter.size = 20;
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/WildYouth-Regular.otf"));
-        fontBig = generator.generateFont(parameter);
-        fontBig.setColor(1f, 1f, 1f, 1f);
-
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 16;
         fontSmall = generator.generateFont(parameter);
 
-        parameter.size = 128;
-        parameter.color = new Color(0xff3377ff);
+        parameter.size = 20;
         parameter.shadowColor = new Color(0x333333ff);
-        parameter.shadowOffsetX = 1;
-        parameter.shadowOffsetY = 1;
+        parameter.shadowOffsetX = 2;
+        parameter.shadowOffsetY = 2;
+        fontBig = generator.generateFont(parameter);
+        fontBig.setColor(1f, 1f, 1f, 1f);
+
+        parameter.size = 128;
+        parameter.shadowOffsetX = 3;
+        parameter.shadowOffsetY = 3;
+        parameter.color = new Color(0xff3377ff);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Last-Paradise.otf"));
         fontTitle = generator.generateFont(parameter);
 
@@ -91,8 +92,8 @@ public class GUIController extends Observable {
         buttonStyleDefault.up = skin.newDrawable("white", new Color(0xff3377ff));
         buttonStyleDefault.over = skin.newDrawable("white", new Color(0x333333ff));
         buttonStyleDefault.font = skinButton.getFont("default");
-        buttonStyleDefault.fontColor = new Color(0x333333ff);
-        buttonStyleDefault.overFontColor = new Color(0xff3377ff);
+        //buttonStyleDefault.fontColor = new Color(0x333333ff);
+        //buttonStyleDefault.overFontColor = new Color(0xff3377ff);
         skinButton.add("default", buttonStyleDefault);
 
         buttonStartGame = new TextButton("START", skinButton);
@@ -103,7 +104,7 @@ public class GUIController extends Observable {
         buttonExitGame.pad(10);
 
         labelTitle = new Label("Study Race", new Label.LabelStyle(fontTitle, Color.WHITE));
-        labelSubTitle = new Label("A Jump And Run Game", new Label.LabelStyle(fontSmall, Color.WHITE));
+        labelSubTitle = new Label("A Jump And Run Game", new Label.LabelStyle(fontBig, Color.WHITE));
 
         // tableMainMenu.setDebug(true);
         tableMainMenu.add(labelTitle).colspan(3);

@@ -81,7 +81,7 @@ public class GameController implements Observer {
         // level/map
         levelController.setMap(gameModel.getActLevel());
         // trap layer
-        levelController.getMapLayerController().constructTrapMap(getWorld());
+        //levelController.getMapLayerController().constructTrapMap(getWorld());
 
         // player
         playerController = PlayerController.getInstance();
@@ -94,7 +94,7 @@ public class GameController implements Observer {
         player.spawn();
 
         // distribute certificates in level
-        levelController.getMapLayerController().setCertificatesPosition(getWorld(), new CertificateModel());
+       // levelController.getMapLayerController().setCertificatesPosition(getWorld(), new CertificateModel());
 
         // distribute goblins in level
         // @TODO: levelController sollte nicht die goblins spawnen
@@ -113,7 +113,7 @@ public class GameController implements Observer {
     public void endWorld() {
         levelController.clear();
         //sound.stop();
-        //rayHandler.dispose();
+       // rayHandler.dispose();
         //sound.dispose();
     }
 
@@ -199,6 +199,7 @@ public class GameController implements Observer {
             if(!bodiesToDestroy.contains(b)) {
                 bodiesToDestroy.add(b);
             }
+            levelController.getCertificates().remove(((Fixture)arg).getUserData());
         }
 
         if(arg instanceof String) {
