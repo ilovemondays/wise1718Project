@@ -2,14 +2,9 @@ package de.hshannover.inform.matthiasdietrich.application.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
-import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,14 +14,12 @@ import java.util.Observer;
  */
 public class MainMenuScreen implements Screen, Observer {
     final Semester3Project game;
-    //private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/title.mp3"));
-
 
     public MainMenuScreen(final Semester3Project game) {
         this.game = game;
         game.guiController.addMeAsObserver(this);
         game.guiController.setMainMenuStage();
-        //sound.play();
+        game.assetManager.playMusic("music-title");
     }
 
     @Override

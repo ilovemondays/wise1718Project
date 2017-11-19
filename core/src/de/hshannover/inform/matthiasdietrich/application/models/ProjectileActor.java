@@ -39,7 +39,7 @@ public class ProjectileActor extends BaseActor {
     }
 
     public void spawn(Vector2 direction, RayHandler rayHandler) {
-        this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung ist.
+        //this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung ist.
         spawned = true;
 
         bodyDef = new BodyDef();

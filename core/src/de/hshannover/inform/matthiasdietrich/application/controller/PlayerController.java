@@ -2,6 +2,7 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.MassData;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
@@ -24,7 +25,8 @@ public class PlayerController implements Observer {
     private GameConstants.ActAnimation actAnimation = GameConstants.ActAnimation.IDLE;
     private GameConstants.Direction actDirection = GameConstants.Direction.LEFT;
 
-    private PlayerController() {}
+    private PlayerController() {
+    }
 
     public static PlayerController getInstance() {
         if(playerController != null) {
@@ -111,8 +113,8 @@ public class PlayerController implements Observer {
                 moveRight();
             }
         }
-        if (input.isJump()) {
-            if(playerIsOnGround > 0) {
+        if (input.isJump() && player.getBody().getLinearVelocity().y < GameConstants.MAX_JUMP_VELOCITY) {
+            if (playerIsOnGround > 0) {
                 jump();
             }
         }
@@ -124,7 +126,6 @@ public class PlayerController implements Observer {
         if(arg instanceof String) {
             // TRAPS
             if (arg.equals("player-hit-trap")) {
-                System.out.println("TRAP");
                 player.setTired(1);
             }
             if (arg.equals("player-hit-by-projectile-START")) {
@@ -134,7 +135,6 @@ public class PlayerController implements Observer {
                 if(isHittingProjectile == true) {
                     isHittingProjectile = false;
                     player.setTired(player.getTired() + 0.1f);
-                    System.out.println(player.getTired());
                 }
             }
             // MOVEMENT

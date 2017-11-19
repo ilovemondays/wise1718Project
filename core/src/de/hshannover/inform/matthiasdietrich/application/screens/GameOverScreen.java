@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
-public class GameOverScreen implements Screen {
+public class GameOverScreen implements Screen, Observer {
     final Semester3Project game;
     private InputController input;
 
@@ -17,25 +21,25 @@ public class GameOverScreen implements Screen {
         this.game = game;
         input = InputController.getInstance();
         game.clearWorld();
+        game.guiController.addMeAsObserver(this);
     }
 
     @Override
     public void show() {
-
+        game.guiController.setGameOverStage();
+        game.assetManager.stopMusic();
+        game.assetManager.playSound("sound-game-over");
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.5f, 0.3f, 0.3f, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
+        game.guiController.getActStage().act();
+        game.guiController.getActStage().draw();
         game.batch.end();
-
-        if(input.isJump()) {
-            game.setScreen(new MainMenuScreen(game));
-            dispose();
-        }
     }
 
     @Override
@@ -61,5 +65,15 @@ public class GameOverScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void update (Observable o, Object arg) {
+        if (arg instanceof String) {
+            if (arg.equals("button-gameover")) {
+                game.setScreen(new MainMenuScreen(game));
+                dispose();
+            }
+        }
     }
 }

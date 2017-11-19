@@ -5,6 +5,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
@@ -30,14 +31,14 @@ public class GameController implements Observer {
     private CollisionDetectionController collisionDetectionController;
     private MathGoblinController mathGoblinController;
     private boolean isCollectingCertificate = false;
+    private Semester3Project game;
     // @TODO: Das hier in eine render/light class verschieben
     private RayHandler rayHandler;
-    // @TODO: sound in einen audio manager verschieben
-   // private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/sneaky-2.mp3"));
 
     private GameController() {
         world = new World(new Vector2(0, -2f), true);
         gameModel = GameModel.getInstance();
+        this.game = game;
     }
 
     public static GameController getInstance() {
@@ -60,6 +61,10 @@ public class GameController implements Observer {
     }
     public int getLevel(){
         return gameModel.getActLevel();
+    }
+
+    public void setGame (Semester3Project game) {
+        this.game = game;
     }
 
     public void startWorld(World world) {
@@ -104,7 +109,7 @@ public class GameController implements Observer {
         // set collision detection
         setContactListener(collisionDetectionController);
 
-        //sound.play();
+        //sound.playMusic();
         levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
     }
 
@@ -178,7 +183,6 @@ public class GameController implements Observer {
         mathGoblinController.update();
 
         if(playerController.playerIsTired()) {
-            System.out.println("play is tired");
             gameModel.increaseTrials();
             bodiesToDestroy.add(player.getBody());
 
@@ -214,6 +218,7 @@ public class GameController implements Observer {
                 if (isCollectingCertificate == true) {
                     isCollectingCertificate = false;
                     gameModel.increaseCertificates();
+                    game.assetManager.playSound("sound-certificate");
                 }
             }
         }

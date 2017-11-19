@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 import java.util.Observable;
@@ -24,28 +23,38 @@ import java.util.Observer;
 public class GUIController extends Observable {
     // Stage & Elements
     private Stage stage;
+
     private Table tableGameHUD;
     private Table tableMainMenu;
     private Table tableLevelCompletedMenu;
+    private Table tableGameOverMenu;
+
+    private TextButton.TextButtonStyle buttonStyleDefault;
+    private Skin skinButton;
+
     // game
     private Label labelTrials;
     private Label labelCertificatesFound;
     private Label labelSemester;
+    private ProgressBar healthBar;
+    private ProgressBar.ProgressBarStyle healthBarStyle;
+
     // main menu
     private Label labelTitle;
     private Label labelSubTitle;
-    // level completed
-    private Label labelCompletedTop;
-    private Label labelCompletedBottom;
-
     private TextButton buttonStartGame;
     private TextButton buttonExitGame;
     private TextButton buttonShowHelp;
+
+    // level completed
+    private Label labelCompletedTop;
+    private Label labelCompletedBottom;
     private TextButton buttonLevelCompletedNext;
-    private TextButton.TextButtonStyle buttonStyleDefault;
-    private Skin skinButton;
-    private ProgressBar healthBar;
-    private ProgressBar.ProgressBarStyle healthBarStyle;
+
+    // game over
+    private Label labelGameOverTop;
+    private Label labelGameOverBottom;
+    private TextButton buttonGameOver;
 
     // Fonts
     private BitmapFont fontBig;
@@ -67,6 +76,9 @@ public class GUIController extends Observable {
 
         tableLevelCompletedMenu = new Table();
         tableLevelCompletedMenu.setFillParent(true);
+
+        tableGameOverMenu = new Table();
+        tableGameOverMenu.setFillParent(true);
 
         tableGameHUD = new Table();
         tableGameHUD.setFillParent(true);
@@ -100,7 +112,7 @@ public class GUIController extends Observable {
         parameter.size = 128;
         parameter.shadowOffsetX = 3;
         parameter.shadowOffsetY = 3;
-        parameter.color = new Color(0xff3377ff);
+        parameter.color = new Color(0xff0071ff);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Last-Paradise.otf"));
         fontTitle = generator.generateFont(parameter);
 
@@ -110,7 +122,7 @@ public class GUIController extends Observable {
         skinButton.add("default", fontBig);
 
         buttonStyleDefault = new TextButton.TextButtonStyle();
-        buttonStyleDefault.up = skin.newDrawable("white", new Color(0xff3377ff));
+        buttonStyleDefault.up = skin.newDrawable("white", new Color(0xff0071ff));
         buttonStyleDefault.over = skin.newDrawable("white", new Color(0x333333ff));
         buttonStyleDefault.font = skinButton.getFont("default");
         skinButton.add("default", buttonStyleDefault);
@@ -192,6 +204,23 @@ public class GUIController extends Observable {
         tableLevelCompletedMenu.add(labelCompletedBottom).pad(10);
         tableLevelCompletedMenu.row();
         tableLevelCompletedMenu.add(buttonLevelCompletedNext).pad(10);
+
+        // GAME OVER
+        buttonGameOver = new TextButton("ZUM HAUPTMENÜ", skinButton);
+        buttonGameOver.pad(10);
+        buttonGameOver.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                setChanged();
+                notifyObservers("button-gameover");
+            }
+        });
+        labelGameOverTop = new Label("Exmatrikuliert", new Label.LabelStyle(fontBig, Color.WHITE));
+        labelGameOverBottom = new Label("Das war dein letzter Versuch.", new Label.LabelStyle(fontBig, Color.WHITE));
+        tableGameOverMenu.add(labelGameOverTop).pad(10);
+        tableGameOverMenu.row();
+        tableGameOverMenu.add(labelGameOverBottom).pad(10);
+        tableGameOverMenu.row();
+        tableGameOverMenu.add(buttonGameOver).pad(10);
     }
 
     public Label getLabelTrials() {
@@ -230,6 +259,11 @@ public class GUIController extends Observable {
         }
         stage.clear();
         stage.addActor(tableLevelCompletedMenu);
+    }
+
+    public void setGameOverStage() {
+        stage.clear();
+        stage.addActor(tableGameOverMenu);
     }
 
     public Stage getActStage() {

@@ -40,7 +40,6 @@ public class GameModel {
 
     public void increaseLevel() {
         actLevel++;
-        System.out.println(actLevel);
     }
 
     public void increaseCertificates() {

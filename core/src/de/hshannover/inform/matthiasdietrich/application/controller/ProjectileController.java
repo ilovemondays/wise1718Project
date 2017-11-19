@@ -35,7 +35,7 @@ public class ProjectileController implements Observer {
                 projectile.spawn(
                         // richtungsvektor zum spieler
                         //new Vector2(playerPosition.x - projectile.getX(), playerPosition.y - projectile.getY()),
-                        new Vector2(1,0),
+                        new Vector2(5,0),
                         gameController.getRayHandler());
             }
             projectile.update();

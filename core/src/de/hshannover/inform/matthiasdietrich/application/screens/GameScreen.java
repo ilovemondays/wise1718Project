@@ -37,6 +37,7 @@ public class GameScreen implements Screen {
         // CONTROLLER
         gameController = GameController.getInstance();
         gameController.startWorld(game.world);
+        gameController.setGame(game);
 
         // Box2D
         debugRenderer = new Box2DDebugRenderer();
@@ -52,7 +53,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        switch (gameController.getLevel()){
+            case 1: game.assetManager.playMusic("music-stage-1");
+                break;
+            case 2: game.assetManager.playMusic("music-stage-2");
+                break;
+            case 3: game.assetManager.playMusic("music-stage-3");
+                break;
+            default: game.assetManager.playMusic("music-stage-6");
+                break;
+        }
     }
 
     @Override
@@ -85,7 +95,7 @@ public class GameScreen implements Screen {
 
         if (gameController.checkGameOverCondition()) {
             gameController.endWorld();
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(game.getGameOverScreen());
             dispose();
         }
 
