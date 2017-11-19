@@ -12,6 +12,7 @@ public class PlayerActor extends BaseActor {
     private float tired;
     private static PlayerActor player = null;
     private Vector2 startingPoint;
+    private Body playerBody = null;
 
     private PlayerActor(World world) {
         super(world);
@@ -41,7 +42,14 @@ public class PlayerActor extends BaseActor {
         this.startingPoint = startingPoint;
     }
 
+    public Body getPlayerBody () {
+        return playerBody;
+    }
+
     public void spawn() {
+        if(GameConstants.DEV_MODE) {
+            System.out.println("PLAYER SPAWN");
+        }
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
@@ -80,5 +88,6 @@ public class PlayerActor extends BaseActor {
         body.createFixture(fixDef).setUserData("player-right");
 
         shape.dispose();
+        playerBody = body;
     }
 }

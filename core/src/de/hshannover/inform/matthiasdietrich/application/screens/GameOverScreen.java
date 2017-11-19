@@ -30,9 +30,6 @@ public class GameOverScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-       /* game.fontLight.draw(game.batch, "EXMATRIKULIERT", 100f, 400f);
-        game.fontLight.draw(game.batch, "Hauptmenue!: Leertaste", 100, 350f);
-        game.fontLight.draw(game.batch, "Ende: Drücke CMD+Q ;)", 100, 300f);*/
         game.batch.end();
 
         if(input.isJump()) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
@@ -24,15 +25,14 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
-    private Stage stage;
     private SpriteRenderer spriteRenderer;
     private MapRenderer mapRenderer;
 
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
-        camera = new Camera();
-        stage = game.guiController.getGameStage();
+        camera = game.camera;
+        game.guiController.setGameStage();
 
         // CONTROLLER
         gameController = GameController.getInstance();
@@ -79,8 +79,7 @@ public class GameScreen implements Screen {
         // auch braucht er nicht wissen was der nächste screen ist
         if (gameController.checkWinCondition()) {
             gameController.endWorld();
-            gameController.nextLevel();
-            game.setScreen(new LevelCompletedScreen(game));
+            game.setScreen(game.getLevelCompletedScreen());
             dispose();
         }
 
@@ -95,12 +94,12 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         game.batch.begin();
-        stage.act();
-        game.guiController.getLabelTrials().setText("VERSUCHE: "+gameController.getTrials());
+        game.guiController.getActStage().act();
+        game.guiController.getLabelTrials().setText("VERSUCH: "+gameController.getTrials());
         game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
         game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
         game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
-        stage.draw();
+        game.guiController.getActStage().draw();
         game.batch.end();
 
         spriteRenderer.render(game.batch);

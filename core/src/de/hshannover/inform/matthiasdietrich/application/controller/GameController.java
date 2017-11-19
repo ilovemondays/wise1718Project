@@ -2,8 +2,6 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -39,6 +37,7 @@ public class GameController implements Observer {
 
     private GameController() {
         world = new World(new Vector2(0, -2f), true);
+        gameModel = GameModel.getInstance();
     }
 
     public static GameController getInstance() {
@@ -53,7 +52,6 @@ public class GameController implements Observer {
         gameModel.resetGame();
 
     }
-
     public int getTrials(){
         return gameModel.getTrials();
     }
@@ -69,10 +67,10 @@ public class GameController implements Observer {
         bodiesToDestroy = new ArrayList<Body>();
         lightsToDestroy = new ArrayList<PointLight>();
 
-        gameModel = GameModel.getInstance();
-
         rayHandler = new RayHandler(getWorld());
         rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
+
+        nextLevel();
 
         levelController = new LevelController(world);
         collisionDetectionController = new CollisionDetectionController();
@@ -111,6 +109,11 @@ public class GameController implements Observer {
     }
 
     public void endWorld() {
+        if (GameConstants.DEV_MODE) {
+            System.out.println("END WORLD");
+        }
+        player.setTired(0);
+        world.destroyBody(player.getBody());
         levelController.clear();
         //sound.stop();
        // rayHandler.dispose();
@@ -119,7 +122,7 @@ public class GameController implements Observer {
 
     public void nextLevel() {
         gameModel.increaseLevel();
-        gameModel.setTrials(0);
+        gameModel.setTrials(1);
         gameModel.setCertificatesFound(0);
     }
 
@@ -178,6 +181,7 @@ public class GameController implements Observer {
             System.out.println("play is tired");
             gameModel.increaseTrials();
             bodiesToDestroy.add(player.getBody());
+
             player.setTired(0);
             player.setBody(null);
             player.setBodyDef(null);
@@ -186,7 +190,7 @@ public class GameController implements Observer {
 
         }
 
-        if(gameModel.getTrials() >= 3) {
+        if(gameModel.getTrials() > 3) {
             endWorld();
         }
 
@@ -238,6 +242,6 @@ public class GameController implements Observer {
     }
 
     public boolean checkGameOverCondition() {
-        return (gameModel.getTrials() >= GameConstants.MAX_TRIALS);
+        return (gameModel.getTrials() > GameConstants.MAX_TRIALS);
     }
 }

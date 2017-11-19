@@ -97,6 +97,9 @@ public class LevelController {
 
     public void clear() {
         goblins.clear();
+        collisionTiles.clear();
+        certificates.clear();
+        trapTiles.clear();
     }
 
     // COLLISION TILES

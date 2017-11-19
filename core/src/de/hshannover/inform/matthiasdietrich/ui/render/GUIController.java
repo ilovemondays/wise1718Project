@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -24,14 +26,22 @@ public class GUIController extends Observable {
     private Stage stage;
     private Table tableGameHUD;
     private Table tableMainMenu;
+    private Table tableLevelCompletedMenu;
+    // game
     private Label labelTrials;
     private Label labelCertificatesFound;
     private Label labelSemester;
+    // main menu
     private Label labelTitle;
     private Label labelSubTitle;
+    // level completed
+    private Label labelCompletedTop;
+    private Label labelCompletedBottom;
+
     private TextButton buttonStartGame;
     private TextButton buttonExitGame;
     private TextButton buttonShowHelp;
+    private TextButton buttonLevelCompletedNext;
     private TextButton.TextButtonStyle buttonStyleDefault;
     private Skin skinButton;
     private ProgressBar healthBar;
@@ -46,15 +56,26 @@ public class GUIController extends Observable {
 
     public GUIController() {
         stage = new Stage();
-        // stage.setDebugAll(true);
+        if (GameConstants.DEV_MODE) {
+            System.out.println("NEW GUI CONTROLLER");
+            stage.setDebugAll(true);
+        }
         Gdx.input.setInputProcessor(stage);
 
         tableMainMenu = new Table();
         tableMainMenu.setFillParent(true);
 
+        tableLevelCompletedMenu = new Table();
+        tableLevelCompletedMenu.setFillParent(true);
+
         tableGameHUD = new Table();
         tableGameHUD.setFillParent(true);
         tableGameHUD.top().left();
+        if (GameConstants.DEV_MODE) {
+            tableMainMenu.setDebug(true);
+            tableLevelCompletedMenu.setDebug(true);
+            tableGameHUD.setDebug(true);
+        }
 
         // TEXTURES
         Pixmap pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
@@ -84,7 +105,7 @@ public class GUIController extends Observable {
         fontTitle = generator.generateFont(parameter);
 
         // GUI ELEMENTS
-        // MAIN MENU:
+        // Default Button
         skinButton = new Skin();
         skinButton.add("default", fontBig);
 
@@ -92,10 +113,9 @@ public class GUIController extends Observable {
         buttonStyleDefault.up = skin.newDrawable("white", new Color(0xff3377ff));
         buttonStyleDefault.over = skin.newDrawable("white", new Color(0x333333ff));
         buttonStyleDefault.font = skinButton.getFont("default");
-        //buttonStyleDefault.fontColor = new Color(0x333333ff);
-        //buttonStyleDefault.overFontColor = new Color(0xff3377ff);
         skinButton.add("default", buttonStyleDefault);
 
+        // MAIN MENU:
         buttonStartGame = new TextButton("START", skinButton);
         buttonStartGame.pad(10);
         buttonShowHelp = new TextButton("HILFE", skinButton);
@@ -152,6 +172,26 @@ public class GUIController extends Observable {
                 notifyObservers("button-exit-game");
             }
         });
+
+        // LEVEL COMPLETED
+        buttonLevelCompletedNext = new TextButton("WEITER", skinButton);
+        buttonLevelCompletedNext.pad(10);
+        buttonLevelCompletedNext.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                if (GameConstants.DEV_MODE) {
+                    System.out.println("BUTTON NEXT LISTENER ADDED");
+                }
+                setChanged();
+                notifyObservers("button-levelCompleted-next");
+            }
+        });
+        labelCompletedTop = new Label("", new Label.LabelStyle(fontBig, Color.WHITE));
+        labelCompletedBottom = new Label("", new Label.LabelStyle(fontBig, Color.WHITE));
+        tableLevelCompletedMenu.add(labelCompletedTop).pad(10);
+        tableLevelCompletedMenu.row();
+        tableLevelCompletedMenu.add(labelCompletedBottom).pad(10);
+        tableLevelCompletedMenu.row();
+        tableLevelCompletedMenu.add(buttonLevelCompletedNext).pad(10);
     }
 
     public Label getLabelTrials() {
@@ -166,15 +206,33 @@ public class GUIController extends Observable {
         return labelSemester;
     }
 
-    public Stage getGameStage() {
-        stage.clear();
-        stage.addActor(tableGameHUD);
-        return stage;
+    public Label getLabelCompletedTop () {
+        return labelCompletedTop;
     }
 
-    public Stage getMainMenuStage() {
+    public Label getLabelCompletedBottom () {
+        return labelCompletedBottom;
+    }
+
+    public void setGameStage() {
+        stage.clear();
+        stage.addActor(tableGameHUD);
+    }
+
+    public void setMainMenuStage() {
         stage.clear();
         stage.addActor(tableMainMenu);
+    }
+
+    public void setLevelCompletedStage() {
+        if (GameConstants.DEV_MODE) {
+            System.out.println("set level completed stage");
+        }
+        stage.clear();
+        stage.addActor(tableLevelCompletedMenu);
+    }
+
+    public Stage getActStage() {
         return stage;
     }
 

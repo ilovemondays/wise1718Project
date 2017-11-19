@@ -19,16 +19,13 @@ import java.util.Observer;
  */
 public class MainMenuScreen implements Screen, Observer {
     final Semester3Project game;
-    private Stage stage;
-    private InputController input;
     //private Sound sound = Gdx.audio.newSound(Gdx.files.internal("music/title.mp3"));
 
 
     public MainMenuScreen(final Semester3Project game) {
         this.game = game;
-        input = InputController.getInstance();
-        stage = game.guiController.getMainMenuStage();
         game.guiController.addMeAsObserver(this);
+        game.guiController.setMainMenuStage();
         //sound.play();
     }
 
@@ -36,7 +33,7 @@ public class MainMenuScreen implements Screen, Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof String) {
             if (arg.equals("button-start-game")) {
-                game.setScreen(new LevelCompletedScreen(game));
+                game.setScreen(game.getLevelCompletedScreen());
                 dispose();
             }
             if (arg.equals("button-exit-game")) {
@@ -64,8 +61,8 @@ public class MainMenuScreen implements Screen, Observer {
        game.batch.end();
 
         game.batch.begin();
-        stage.act();
-        stage.draw();
+        game.guiController.getActStage().act();
+        game.guiController.getActStage().draw();
         game.batch.end();
     }
 
