@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
+import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 import de.hshannover.inform.matthiasdietrich.ui.render.MapRenderer;
 import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
@@ -27,12 +28,15 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private SpriteRenderer spriteRenderer;
     private MapRenderer mapRenderer;
+    private InputController input;
+    private float cameraRotation = 0;
 
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
         camera = game.camera;
         game.guiController.setGameStage();
+        input = InputController.getInstance();
 
         // CONTROLLER
         gameController = GameController.getInstance();
@@ -113,6 +117,26 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         spriteRenderer.render(game.batch);
+
+//        if (input.isLeft() && cameraRotation > -2) {
+//            cameraRotation -= GameConstants.CAMERA_ROTATION_SPEED;
+//            camera.rotate(-GameConstants.CAMERA_ROTATION_SPEED);
+//        }
+//        if (input.isRight() && cameraRotation < 2) {
+//            cameraRotation += GameConstants.CAMERA_ROTATION_SPEED;
+//            camera.rotate(GameConstants.CAMERA_ROTATION_SPEED);
+//        }
+//        if (!input.isRight() && !input.isLeft()) {
+//            if (cameraRotation < 0) {
+//                cameraRotation += GameConstants.CAMERA_ROTATION_SPEED;
+//                camera.rotate(GameConstants.CAMERA_ROTATION_SPEED);
+//            }
+//            if (cameraRotation > 0) {
+//                cameraRotation -= GameConstants.CAMERA_ROTATION_SPEED;
+//                camera.rotate(-GameConstants.CAMERA_ROTATION_SPEED);
+//            }
+//        }
+//        camera.update();
     }
 
     @Override

@@ -2,6 +2,8 @@ package de.hshannover.inform.matthiasdietrich.ui.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.Random;
 
@@ -17,9 +19,12 @@ public class AssetManager {
     private Sound actMusic = null;
 
     // SOUNDS
-    private Sound levelCompleted;
-    private Sound certificate;
-    private Sound gameover;
+    private Sound soundLevelCompleted;
+    private Sound soundCertificate;
+    private Sound soundGameover;
+
+    // TEXTURES
+    private Sprite imageTitle;
 
     public AssetManager() {
         musicTitle = Gdx.audio.newSound(Gdx.files.internal("music/title.mp3"));
@@ -28,9 +33,11 @@ public class AssetManager {
         musicStage3 = Gdx.audio.newSound(Gdx.files.internal("music/stage-3.mp3"));
         musicStage6 = Gdx.audio.newSound(Gdx.files.internal("music/stage-6.mp3"));
 
-        levelCompleted = Gdx.audio.newSound(Gdx.files.internal("sounds/levelcompleted.wav"));
-        certificate = Gdx.audio.newSound(Gdx.files.internal("sounds/certificate.wav"));
-        gameover = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.wav"));
+        soundLevelCompleted = Gdx.audio.newSound(Gdx.files.internal("sounds/levelcompleted.wav"));
+        soundCertificate = Gdx.audio.newSound(Gdx.files.internal("sounds/certificate.wav"));
+        soundGameover = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.wav"));
+
+        imageTitle = new Sprite(new Texture("images/title.jpeg"));
     }
 
     public void playMusic (String music) {
@@ -62,15 +69,23 @@ public class AssetManager {
     }
 
     public void playSound(String sound) {
-        if (sound.equals("sound-certificate")) {
-            certificate.play();
+        if (sound.equals("sound-soundCertificate")) {
+            soundCertificate.play();
         }
         if (sound.equals("sound-level-completed")) {
-            levelCompleted.play();
+            soundLevelCompleted.play();
         }
         if (sound.equals("sound-game-over")) {
-            gameover.play();
+            soundGameover.play();
         }
+    }
+
+    public Sprite getImage(String img) {
+        if (img.equals("image-title")) {
+            imageTitle.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            return imageTitle;
+        }
+        return null;
     }
 
 }

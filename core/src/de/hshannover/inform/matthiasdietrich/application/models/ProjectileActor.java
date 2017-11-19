@@ -65,7 +65,7 @@ public class ProjectileActor extends BaseActor {
 
         shape.dispose();
 
-        light = new PointLight(rayHandler, 10, new Color(1f, .0f, .1f, .7f), 2f, body.getPosition().x, body.getPosition().y);
+        light = new PointLight(rayHandler, 10, new Color(1f, .0f, .3f, .8f), 2f, body.getPosition().x, body.getPosition().y);
         body.applyLinearImpulse(direction, body.getPosition(), true);
     }
 

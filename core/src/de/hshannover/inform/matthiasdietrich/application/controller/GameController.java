@@ -73,7 +73,7 @@ public class GameController implements Observer {
         lightsToDestroy = new ArrayList<PointLight>();
 
         rayHandler = new RayHandler(getWorld());
-        rayHandler.setAmbientLight(new Color(.1f, .3f, .7f, .4f));
+        rayHandler.setAmbientLight(new Color(.05f, .0f, .7f, .4f));
 
         nextLevel();
 

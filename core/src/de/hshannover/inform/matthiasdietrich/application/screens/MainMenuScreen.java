@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 
 import java.util.Observable;
@@ -14,6 +15,7 @@ import java.util.Observer;
  */
 public class MainMenuScreen implements Screen, Observer {
     final Semester3Project game;
+    private Sprite backgroundImage;
 
     public MainMenuScreen(final Semester3Project game) {
         this.game = game;
@@ -41,17 +43,16 @@ public class MainMenuScreen implements Screen, Observer {
 
     @Override
     public void show() {
-
+        backgroundImage = game.assetManager.getImage("image-title");
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-       game.batch.begin();
-       game.batch.draw(new Texture("images/title.jpeg"), 0, 0);
-       game.batch.end();
+        game.batch.begin();
+        backgroundImage.draw(game.batch);
+        game.batch.end();
 
         game.batch.begin();
         game.guiController.getActStage().act();
