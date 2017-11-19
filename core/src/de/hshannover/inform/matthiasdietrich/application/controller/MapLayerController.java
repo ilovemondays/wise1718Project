@@ -11,6 +11,7 @@ import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel
 import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -72,38 +73,17 @@ public class MapLayerController {
         this.lightMap = lightMap;
     }
 
-    /**
-     * Takes the map tmx data and translates it into box2d bodies
-     * @param world
-     */
-    public void constructCollisionMap(World world) {
+    public ArrayList<Point> getCollisionMapData() {
+        ArrayList<Point> collisionTiles = new ArrayList<Point>();
         for (int collisionHeight = 0; collisionHeight <= getCollisionMap().getHeight();  collisionHeight++) {
             for (int collisionWidth = 0; collisionWidth <= getCollisionMap().getWidth(); collisionWidth++) {
                 if (getCollisionMap().getCell(collisionWidth, collisionHeight) != null) {
-                    createCollisionTile(world, collisionWidth, collisionHeight);
+                    //createCollisionTile(world, collisionWidth, collisionHeight);
+                    collisionTiles.add(new Point(collisionWidth, collisionHeight));
                 }
             }
         }
-    }
-
-    private void createCollisionTile(World world, int x,int y) {
-        BodyDef groundBodyDef = new BodyDef();
-
-        // set its world position
-        groundBodyDef.position.set(new Vector2(x * GameConstants.TILE_WIDTH+0.5f, y*GameConstants.TILE_WIDTH+0.5f));
-        Body groundBody = world.createBody(groundBodyDef);
-
-        // create a polygon shape
-        PolygonShape groundBox = new PolygonShape();
-        // achtung halbe-hoehe und halbe-weite:
-        groundBox.setAsBox(GameConstants.TILE_WIDTH/2, GameConstants.TILE_WIDTH/2);
-
-        FixtureDef groundFix = new FixtureDef();
-        groundFix.shape = groundBox;
-        groundFix.density = 1.0f;
-        groundFix.friction = 1.0f;
-        groundBody.createFixture(groundFix);
-        groundBox.dispose();
+        return collisionTiles;
     }
 
     /**

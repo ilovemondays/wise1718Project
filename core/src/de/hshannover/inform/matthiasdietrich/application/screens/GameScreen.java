@@ -10,6 +10,7 @@ import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
+import de.hshannover.inform.matthiasdietrich.ui.render.MapRenderer;
 import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
 // @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Stage stage;
     private SpriteRenderer spriteRenderer;
+    private MapRenderer mapRenderer;
 
 
     public GameScreen(final Semester3Project game) {
@@ -41,6 +43,8 @@ public class GameScreen implements Screen {
 
         // Render
         spriteRenderer = new SpriteRenderer();
+        mapRenderer = new MapRenderer();
+        mapRenderer.setCollisionTiles(gameController.getLevelController().getCollisionTiles());
     }
 
     @Override
@@ -82,6 +86,8 @@ public class GameScreen implements Screen {
             game.setScreen(new GameOverScreen(game));
             dispose();
         }
+
+        mapRenderer.render(game.batch);
 
         game.batch.begin();
         stage.act();

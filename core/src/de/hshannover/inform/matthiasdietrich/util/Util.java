@@ -11,7 +11,16 @@ public class Util {
         return valueToBeScaled/ GameConstants.SCALE;
     }
 
+    public static float scaleUp(float valueToBeScaled) {
+        return valueToBeScaled* GameConstants.SCALE;
+    }
+
     public static Sprite adjustSize(Sprite imageToBeScaled) {
+        imageToBeScaled.setSize(scale(imageToBeScaled.getWidth()), scale(imageToBeScaled.getHeight()));
+        return imageToBeScaled;
+    }
+
+    public static Sprite adjustSizeUp(Sprite imageToBeScaled) {
         imageToBeScaled.setSize(scale(imageToBeScaled.getWidth()), scale(imageToBeScaled.getHeight()));
         return imageToBeScaled;
     }

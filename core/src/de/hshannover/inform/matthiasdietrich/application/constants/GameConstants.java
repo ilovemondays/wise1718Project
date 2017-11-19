@@ -9,7 +9,7 @@ public class GameConstants {
     public static final int MAX_VELOCITY = 5; // player movement
     public static final int CAMERA_X = 384; // interpolated value for game window width
     public static final int CAMERA_Y = 216; // interpolated value for game window height
-    public static final boolean DEV_MODE = true; // show debug information
+    public static final boolean DEV_MODE = false; // show debug information
 
     public static final int WIN_CONDITION = 5; // collect # of certificates
     public static final int MAX_TRIALS = 3; // max # of tirals before game over

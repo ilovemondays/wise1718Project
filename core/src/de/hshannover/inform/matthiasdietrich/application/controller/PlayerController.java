@@ -80,7 +80,7 @@ public class PlayerController implements Observer {
      * moves the player up
      */
     public void jump() {
-        getPlayer().getBody().applyForce(0f, 15f, 0f, 1f, true);
+        getPlayer().getBody().applyForce(0f, 20f, 0f, 1f, true);
         actAnimation = GameConstants.ActAnimation.JUMP;
     }
 

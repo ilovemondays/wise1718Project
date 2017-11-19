@@ -80,9 +80,6 @@ public class GameController implements Observer {
         // SETUP CONTROLLER
         // level/map
         levelController.setMap(gameModel.getActLevel());
-        System.out.println(gameModel.getActLevel());
-        // collision layer
-        levelController.getMapLayerController().constructCollisionMap(getWorld());
         // trap layer
         levelController.getMapLayerController().constructTrapMap(getWorld());
 
@@ -132,6 +129,10 @@ public class GameController implements Observer {
 
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    public LevelController getLevelController () {
+        return levelController;
     }
 
     public static ArrayList<Body> getBodiesToDestroy() {

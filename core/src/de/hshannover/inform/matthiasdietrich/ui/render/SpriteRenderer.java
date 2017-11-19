@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.PlayerController;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -37,8 +35,6 @@ public class SpriteRenderer {
         // RENDER PLAYER
         playerCurrentFrame = (TextureRegion) playerRunAnimation.getKeyFrame(stateTime, true);
         playerFlip = (playerController.getActDirection() == GameConstants.Direction.LEFT);
-        System.out.println(player.getX());
-        System.out.println(player.getWidth());
         batch.draw(playerCurrentFrame,
                 playerFlip ? player.getX()+0.5f : player.getX() - 0.5f,
                 player.getY() - 0.5f,
