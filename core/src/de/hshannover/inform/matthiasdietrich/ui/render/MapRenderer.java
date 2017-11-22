@@ -41,22 +41,22 @@ public class MapRenderer {
     }
 
     public void setMapTiles (ArrayList<Point> mapTiles) {
-        this.mapTiles.clear();
+        this.mapTiles = null;
         this.mapTiles = mapTiles;
     }
 
     public void setTraps (ArrayList<Point> traps) {
-        this.traps.clear();
+        this.traps = null;
         this.traps = traps;
     }
 
     public void setGoblins (ArrayList<Point> goblins) {
-        this.goblins.clear();
+        this.goblins = null;
         this.goblins = goblins;
     }
 
     public void setCertificates (ArrayList<CertificateModel> certificates) {
-        this.certificates.clear();
+        this.certificates = null;
         this.certificates = certificates;
     }
 
