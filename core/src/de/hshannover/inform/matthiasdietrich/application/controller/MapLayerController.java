@@ -79,13 +79,14 @@ class MapLayerController {
 
     /**
      * Get goblin position from map tmx data.
-     * @param goblin
      * @param list
      */
-    public void setMathGoblinPosition(GoblinActor goblin, ArrayList<GoblinActor> list) {
+    public void setMathGoblinPosition(World world, ArrayList<GoblinActor> list) {
+        GoblinActor goblin;
         for (int tileHeight = 0; tileHeight <= getMathGoblinMap().getHeight();  tileHeight++) {
             for (int tileWidth = 0; tileWidth <= getMathGoblinMap().getWidth(); tileWidth++) {
                 if (getMathGoblinMap().getCell(tileWidth, tileHeight) != null) {
+                    goblin = new GoblinActor(world);
                     goblin.setPosition(tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                     list.add(goblin);
                 }

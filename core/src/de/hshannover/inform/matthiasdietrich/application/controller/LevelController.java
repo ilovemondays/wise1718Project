@@ -54,30 +54,12 @@ public class LevelController {
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
 
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: SET PLAYER");
-        }
         mapLayerController.setPlayerMap(getMapData("player"));
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: SET GOBLINS");
-        }
         mapLayerController.setMathGoblinMap(getMapData("goblin"));
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: SET LIGHT");
-        }
         mapLayerController.setLightMap(getMapData("light"));
 
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: BUILD MAP");
-        }
         buildCollisionMap();
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: SET TRAPS");
-        }
         buildTrapMap();
-        if (GameConstants.DEV_MODE) {
-            System.out.println("LevelController: SET CERTIFICATES");
-        }
         buildCertificatesMap();
     }
 
@@ -110,7 +92,7 @@ public class LevelController {
     }
 
     public void spawnGoblins() {
-        getMapLayerController().setMathGoblinPosition(new GoblinActor(world), goblins);
+        getMapLayerController().setMathGoblinPosition(world, goblins);
         for (GoblinActor goblin : goblins) {
             goblin.spawn();
         }
