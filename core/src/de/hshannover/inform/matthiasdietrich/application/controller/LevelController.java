@@ -59,12 +59,17 @@ public class LevelController {
             case 1:
                 ambientColor = new Color(0xffffff55);
                 lightColor = new Color(0xffffff77);
-                this.map = new TmxMapLoader().load("maps/level-1.tmx");
+                this.map = new TmxMapLoader().load("maps/level-2.tmx");
                 break;
             case 2:
+                ambientColor = new Color(0x22770055);
+                lightColor = new Color(0x22770077);
+                this.map = new TmxMapLoader().load("maps/level-2.tmx");
+                break;
+            case 3:
                 ambientColor = new Color(0x22007755);
                 lightColor = new Color(0x22007777);
-                this.map = new TmxMapLoader().load("maps/level-2.tmx");
+                this.map = new TmxMapLoader().load("maps/level-3.tmx");
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
