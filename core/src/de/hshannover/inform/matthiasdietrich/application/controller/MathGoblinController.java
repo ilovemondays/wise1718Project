@@ -32,6 +32,7 @@ public class MathGoblinController {
 
     public void setWorld(World world) {
         this.world = world;
+        projectileController.setWorld(world);
     }
 
     public ArrayList<GoblinActor> getGoblins() {
@@ -48,7 +49,7 @@ public class MathGoblinController {
             if(goblin.getTime() >= shootIntervalTime) {
                 goblin.setTime(0);
                 // spawn evil math projectile
-                projectileController.getProjectiles().add(new ProjectileActor(world, goblin.getX()+1, goblin.getY()+0.5f));
+                projectileController.newProjectile(goblin.getX(), goblin.getY());
             }
             goblin.setTime(goblin.getTime() + Gdx.graphics.getDeltaTime());
         }

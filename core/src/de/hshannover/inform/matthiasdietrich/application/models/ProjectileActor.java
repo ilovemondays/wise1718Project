@@ -14,12 +14,14 @@ public class ProjectileActor extends BaseActor {
     private Vector2 direction;
     private boolean spawned = false;
     private PointLight light;
+    private String leftOrRight;
 
-    public ProjectileActor(World world, float x, float y) {
+    public ProjectileActor(World world, float x, float y, String leftOrRight) {
         super(world);
         setX(x);
         setY(y);
         type = "Projectile";
+        this.leftOrRight = leftOrRight;
     }
 
     public boolean isSpawned() {
@@ -38,8 +40,18 @@ public class ProjectileActor extends BaseActor {
         this.light = light;
     }
 
+    public String getLeftOrRight () {
+        return leftOrRight;
+    }
+
+    public void setLeftOrRight (String leftOrRight) {
+        this.leftOrRight = leftOrRight;
+    }
+
     public void spawn(Vector2 direction, RayHandler rayHandler) {
-        //this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung ist.
+        this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung/laenge des vectors ist.
+        this.direction.x *= 5; // speed
+
         spawned = true;
 
         bodyDef = new BodyDef();
