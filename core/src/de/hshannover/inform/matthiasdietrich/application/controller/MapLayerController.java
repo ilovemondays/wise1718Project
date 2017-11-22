@@ -98,11 +98,11 @@ class MapLayerController {
      * Get light position from map tmx data.
      * @param world
      */
-    public void setLightPosition(World world, RayHandler rayHandler) {
+    public void setLightPosition(World world, RayHandler rayHandler, Color color) {
         for (int tileHeight = 0; tileHeight <= getLightMap().getHeight();  tileHeight++) {
             for (int tileWidth = 0; tileWidth <= getLightMap().getWidth(); tileWidth++) {
                 if (getLightMap().getCell(tileWidth, tileHeight) != null) {
-                    new PointLight(rayHandler, 800, new Color(.05f, .0f, .7f, .7f),
+                    new PointLight(rayHandler, 800, color,
                             20f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }

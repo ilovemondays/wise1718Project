@@ -1,5 +1,6 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -23,6 +24,8 @@ public class LevelController {
     private ArrayList<Point> collisionTiles = new ArrayList<Point>();
     private ArrayList<Point> trapTiles = new ArrayList<Point>();
     private ArrayList<CertificateModel> certificates = new ArrayList<CertificateModel>();
+    private Color ambientColor;
+    private Color lightColor;
 
     public LevelController(World world) {
         this.world = world;
@@ -36,6 +39,14 @@ public class LevelController {
         return goblins;
     }
 
+    public Color getAmbientColor () {
+        return ambientColor;
+    }
+
+    public Color getLightColor () {
+        return lightColor;
+    }
+
     /**
      * load given level. range 1-6, default is 1;
      * @param level
@@ -46,10 +57,14 @@ public class LevelController {
         }
         switch (level) {
             case 1:
+                ambientColor = new Color(0xffffff55);
+                lightColor = new Color(0xffffff77);
                 this.map = new TmxMapLoader().load("maps/level-1.tmx");
                 break;
             case 2:
-                this.map = new TmxMapLoader().load("maps/level-1.tmx");
+                ambientColor = new Color(0x22007755);
+                lightColor = new Color(0x22007777);
+                this.map = new TmxMapLoader().load("maps/level-2.tmx");
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
