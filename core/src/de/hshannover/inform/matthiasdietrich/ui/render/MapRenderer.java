@@ -108,15 +108,15 @@ public class MapRenderer {
      * @return
      */
     private boolean isTileVisible(Camera camera, Point tile) {
-        return (camera.frustum.pointInFrustum(tile.x + 2, tile.y, 0) ||
-        camera.frustum.pointInFrustum(tile.x - 2, tile.y, 0) ||
-        camera.frustum.pointInFrustum(tile.x, tile.y + 2, 0) ||
-        camera.frustum.pointInFrustum(tile.x + 2, tile.y - 2, 0));
+        return (camera.frustum.pointInFrustum(tile.x + 2, tile.y + 2, 0) ||
+        camera.frustum.pointInFrustum(tile.x + 2, tile.y - 2, 0) ||
+        camera.frustum.pointInFrustum(tile.x - 2, tile.y + 2, 0) ||
+        camera.frustum.pointInFrustum(tile.x - 2, tile.y - 2, 0));
     }
     private boolean isTileVisible(Camera camera, float x, float y) {
-        return (camera.frustum.pointInFrustum(x + 2, y, 0) ||
-                camera.frustum.pointInFrustum(x - 2, y, 0) ||
-                camera.frustum.pointInFrustum(x, y + 2, 0) ||
-                camera.frustum.pointInFrustum(x + 2, y - 2, 0));
+        return (camera.frustum.pointInFrustum(x + 2, y + 2, 0) ||
+                camera.frustum.pointInFrustum(x + 2, y - 2, 0) ||
+                camera.frustum.pointInFrustum(x - 2, y + 2, 0) ||
+                camera.frustum.pointInFrustum(x - 2, y - 2, 0));
     }
 }
