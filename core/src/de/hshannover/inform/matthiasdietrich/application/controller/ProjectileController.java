@@ -46,6 +46,12 @@ public class ProjectileController implements Observer {
         }
         projectiles.add(new ProjectileActor(world, x + spawnLeftOrRight, y+0.5f, leftOrRight));
     }
+
+    public void clearProjectiles() {
+        projectiles = null;
+        projectiles = new ArrayList<ProjectileActor>();
+    }
+
     public void update() {
         for (ProjectileActor projectile : projectiles) {
             if (projectile.isSpawned() == false) {

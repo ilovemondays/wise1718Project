@@ -31,6 +31,7 @@ public class GameController implements Observer {
     private LevelController levelController;
     private CollisionDetectionController collisionDetectionController;
     private MathGoblinController mathGoblinController;
+    private ProjectileController projectileController;
     private boolean isCollectingCertificate = false;
     private Semester3Project game;
     // @TODO: Das hier in eine render/light class verschieben
@@ -87,22 +88,9 @@ public class GameController implements Observer {
         if (GameConstants.DEV_MODE) {
             System.out.println("GameController: START WORLD");
         }
-        //setWorld(world);
 
         rayHandler = new RayHandler(getWorld());
-        if (GameConstants.DEV_MODE) {
-            System.out.println("GameController: NEW RAY HANDLER");
-        }
-        rayHandler.setAmbientLight(new Color(.05f, .0f, .7f, .4f));
-
-        if (GameConstants.DEV_MODE) {
-            System.out.println("GameController: NEXT LEVEL");
-        }
         nextLevel();
-
-        if (GameConstants.DEV_MODE) {
-            System.out.println("GameController: SET LEVEL");
-        }
 
         // SETUP CONTROLLER
         // level/map
@@ -140,7 +128,8 @@ public class GameController implements Observer {
         setContactListener(collisionDetectionController);
 
         //sound.playMusic();
-        levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
+        levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler, levelController.getLightColor());
+        rayHandler.setAmbientLight(levelController.getAmbientColor());
         isSetup = true;
     }
 
@@ -148,6 +137,8 @@ public class GameController implements Observer {
         isSetup = false;
         player.setTired(0);
         //world.destroyBody(player.getBody());
+        projectileController = ProjectileController.getInstance();
+        projectileController.clearProjectiles();
         levelController.clear();
         //sound.stop();
        // rayHandler.dispose();
