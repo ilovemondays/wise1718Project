@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.width = 800;
 		config.height = 450;
 		config.fullscreen = true;
+		config.resizable = false;
 		new LwjglApplication(new Semester3Project(), config);
 	}
 }

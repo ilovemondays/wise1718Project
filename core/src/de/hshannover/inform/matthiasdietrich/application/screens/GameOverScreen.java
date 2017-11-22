@@ -20,7 +20,6 @@ public class GameOverScreen implements Screen, Observer {
     public GameOverScreen(final Semester3Project game) {
         this.game = game;
         input = InputController.getInstance();
-        game.clearWorld();
         game.guiController.addMeAsObserver(this);
     }
 
@@ -71,7 +70,7 @@ public class GameOverScreen implements Screen, Observer {
     public void update (Observable o, Object arg) {
         if (arg instanceof String) {
             if (arg.equals("button-gameover")) {
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(game.getMainMenuScreen());
                 dispose();
             }
         }

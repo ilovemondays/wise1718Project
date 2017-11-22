@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 import java.util.Random;
 
@@ -41,6 +42,9 @@ public class AssetManager {
     }
 
     public void playMusic (String music) {
+        if (GameConstants.DEV_MODE) {
+            return;
+        }
         if (actMusic != null) {
             actMusic.stop();
         }
@@ -59,7 +63,6 @@ public class AssetManager {
         if (music.equals("music-stage-6")) {
             actMusic = musicStage6;
         }
-
         actMusic.loop();
     }
 
@@ -69,6 +72,9 @@ public class AssetManager {
     }
 
     public void playSound(String sound) {
+        if (GameConstants.DEV_MODE) {
+            return;
+        }
         if (sound.equals("sound-soundCertificate")) {
             soundCertificate.play();
         }

@@ -15,6 +15,7 @@ import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
 
 /**
  * Created by matthiasdietrich on 24.10.17.
@@ -34,11 +35,14 @@ public class GameController implements Observer {
     private Semester3Project game;
     // @TODO: Das hier in eine render/light class verschieben
     private RayHandler rayHandler;
+    private boolean isSetup = false;
 
     private GameController() {
-        world = new World(new Vector2(0, -2f), true);
+        // world = new World(new Vector2(0, -2f), true);
         gameModel = GameModel.getInstance();
         this.game = game;
+        bodiesToDestroy = new ArrayList<Body>();
+        lightsToDestroy = new ArrayList<PointLight>();
     }
 
     public static GameController getInstance() {
@@ -67,18 +71,38 @@ public class GameController implements Observer {
         this.game = game;
     }
 
+    public void setLevelController(LevelController levelController) {
+        this.levelController = levelController;
+    }
+
+    public void setCollisionDetectionController(CollisionDetectionController collisionDetectionController) {
+        this.collisionDetectionController = collisionDetectionController;
+    }
+
+    public boolean isSetup () {
+        return isSetup;
+    }
+
     public void startWorld(World world) {
-        setWorld(world);
-        bodiesToDestroy = new ArrayList<Body>();
-        lightsToDestroy = new ArrayList<PointLight>();
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: START WORLD");
+        }
+        //setWorld(world);
 
         rayHandler = new RayHandler(getWorld());
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: NEW RAY HANDLER");
+        }
         rayHandler.setAmbientLight(new Color(.05f, .0f, .7f, .4f));
 
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: NEXT LEVEL");
+        }
         nextLevel();
 
-        levelController = new LevelController(world);
-        collisionDetectionController = new CollisionDetectionController();
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: SET LEVEL");
+        }
 
         // SETUP CONTROLLER
         // level/map
@@ -87,10 +111,16 @@ public class GameController implements Observer {
         //levelController.getMapLayerController().constructTrapMap(getWorld());
 
         // player
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: SETUP PLAYER");
+        }
         playerController = PlayerController.getInstance();
         playerController.setInput(InputController.getInstance());
         player = PlayerActor.getInstance(getWorld());
         playerController.setPlayer(player);
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameController: PLAYER WAS SET");
+        }
 
         // player position
         levelController.getMapLayerController().setPlayerPosition(getWorld(), player);
@@ -111,14 +141,13 @@ public class GameController implements Observer {
 
         //sound.playMusic();
         levelController.getMapLayerController().setLightPosition(getWorld(), rayHandler);
+        isSetup = true;
     }
 
     public void endWorld() {
-        if (GameConstants.DEV_MODE) {
-            System.out.println("END WORLD");
-        }
+        isSetup = false;
         player.setTired(0);
-        world.destroyBody(player.getBody());
+        //world.destroyBody(player.getBody());
         levelController.clear();
         //sound.stop();
        // rayHandler.dispose();
@@ -247,6 +276,12 @@ public class GameController implements Observer {
     }
 
     public boolean checkGameOverCondition() {
-        return (gameModel.getTrials() > GameConstants.MAX_TRIALS);
+        if (gameModel.getTrials() > GameConstants.MAX_TRIALS) {
+            resetGameModel();
+            destroyBodies();
+            destroyLights();
+            return true;
+        }
+        return false;
     }
 }

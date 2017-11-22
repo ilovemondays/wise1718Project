@@ -168,6 +168,9 @@ public class GUIController extends Observable {
         // ADD MAIN MENU LISTENER
         buttonStartGame.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
+                if (GameConstants.DEV_MODE) {
+                    System.out.println("BUTTON START GAME LISTENER ADDED");
+                }
                 setChanged();
                 notifyObservers("button-start-game");
             }

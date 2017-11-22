@@ -69,5 +69,6 @@ public class GameModel {
     public void resetGame() {
         setCertificatesFound(0);
         setTrials(1);
+        setActLevel(0);
     }
 }

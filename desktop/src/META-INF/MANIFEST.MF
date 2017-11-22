@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: de.hshannover.inform.matthiasdietrich.desktop.DesktopLaunc
+ her
+

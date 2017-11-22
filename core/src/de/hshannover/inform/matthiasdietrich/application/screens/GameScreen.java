@@ -30,33 +30,62 @@ public class GameScreen implements Screen {
     private MapRenderer mapRenderer;
     private InputController input;
     private float cameraRotation = 0;
+    private boolean show = false;
 
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
         camera = game.camera;
-        game.guiController.setGameStage();
         input = InputController.getInstance();
-
-        // CONTROLLER
-        gameController = GameController.getInstance();
-        gameController.startWorld(game.world);
-        gameController.setGame(game);
 
         // Box2D
         debugRenderer = new Box2DDebugRenderer();
 
+        // CONTROLLER
+        gameController = GameController.getInstance();
+        gameController.setWorld(game.world);
+        gameController.setLevelController(new LevelController(game.world));
+        gameController.setCollisionDetectionController(new CollisionDetectionController());
+
         // Render
         spriteRenderer = new SpriteRenderer();
         mapRenderer = new MapRenderer();
-        mapRenderer.setMapTiles(gameController.getLevelController().getCollisionTiles());
-        mapRenderer.setTraps(gameController.getLevelController().getTrapTiles());
-        mapRenderer.setGoblins(gameController.getLevelController().getGoblinsAsPoints());
-        mapRenderer.setCertificates(gameController.getLevelController().getCertificates());
+
     }
 
     @Override
     public void show() {
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: WORLD BODY COUNT: "+game.world.getBodyCount());
+            game.clearWorld();
+            System.out.println("GameScreen: WORLD BODY COUNT: "+game.world.getBodyCount());
+        }
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: SHOW GAME_SCREEN");
+        }
+        game.guiController.setGameStage();
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: SET GAME STAGE");
+        }
+        gameController.startWorld(game.world);
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: START WORLD");
+        }
+        gameController.setGame(game);
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: SET PLAYER TO SPRITE RENDERER");
+        }
+        spriteRenderer.setPlayer(gameController.getPlayer());
+
+        if (GameConstants.DEV_MODE) {
+            System.out.println("GameScreen: MAP RENDERER");
+        }
+
+        mapRenderer.setMapTiles(gameController.getLevelController().getCollisionTiles());
+        mapRenderer.setTraps(gameController.getLevelController().getTrapTiles());
+        mapRenderer.setGoblins(gameController.getLevelController().getGoblinsAsPoints());
+        mapRenderer.setCertificates(gameController.getLevelController().getCertificates());
+
         switch (gameController.getLevel()){
             case 1: game.assetManager.playMusic("music-stage-1");
                 break;
@@ -67,56 +96,58 @@ public class GameScreen implements Screen {
             default: game.assetManager.playMusic("music-stage-6");
                 break;
         }
+        show = true;
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(camera.combined);
+        if(show && gameController.isSetup()) {
+            Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            game.batch.setProjectionMatrix(camera.combined);
 
-        // @TODO: das hier in camera class
-        camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
-        camera.update();
+            // @TODO: das hier in camera class
+            camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
+            camera.update();
 
-        gameController.loop();
+            gameController.loop();
 
-        if(GameConstants.DEV_MODE) {
-            debugRenderer.render(gameController.getWorld(), camera.combined);
-        }
+            if(GameConstants.DEV_MODE) {
+                debugRenderer.render(gameController.getWorld(), camera.combined);
+            }
 
-        // @TODO: verschieben in render/lighting class
-        gameController.getRayHandler().setCombinedMatrix(camera);
-        gameController.getRayHandler().updateAndRender();
+            // @TODO: verschieben in render/lighting class
+            gameController.getRayHandler().setCombinedMatrix(camera);
+            gameController.getRayHandler().updateAndRender();
 
-        // @TODO: der screen sollte nichts über win bedingungen wissen
-        // auch braucht er nicht wissen was der nächste screen ist
-        if (gameController.checkWinCondition()) {
-            gameController.endWorld();
-            game.setScreen(game.getLevelCompletedScreen());
-            dispose();
-        }
+            // @TODO: der screen sollte nichts über win bedingungen wissen
+            // auch braucht er nicht wissen was der nächste screen ist
+            if (gameController.checkWinCondition()) {
+                gameController.endWorld();
+                game.setScreen(game.getLevelCompletedScreen());
+                dispose();
+            }
 
-        if (gameController.checkGameOverCondition()) {
-            gameController.endWorld();
-            game.setScreen(game.getGameOverScreen());
-            dispose();
-        }
+            if (gameController.checkGameOverCondition()) {
+                gameController.endWorld();
+                game.setScreen(game.getGameOverScreen());
+                dispose();
+            }
 
-        game.batch.begin();
-        mapRenderer.render(game.batch, (Camera) camera);
-        game.batch.end();
+            game.batch.begin();
+            mapRenderer.render(game.batch, (Camera) camera);
+            game.batch.end();
 
-        game.batch.begin();
-        game.guiController.getActStage().act();
-        game.guiController.getLabelTrials().setText("VERSUCH: "+gameController.getTrials());
-        game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
-        game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
-        game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
-        game.guiController.getActStage().draw();
-        game.batch.end();
+            game.batch.begin();
+            game.guiController.getActStage().act();
+            game.guiController.getLabelTrials().setText("VERSUCH: "+gameController.getTrials());
+            game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
+            game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
+            game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
+            game.guiController.getActStage().draw();
+            game.batch.end();
 
-        spriteRenderer.render(game.batch);
+            spriteRenderer.render(game.batch);
 
 //        if (input.isLeft() && cameraRotation > -2) {
 //            cameraRotation -= GameConstants.CAMERA_ROTATION_SPEED;
@@ -137,6 +168,8 @@ public class GameScreen implements Screen {
 //            }
 //        }
 //        camera.update();
+        }
+
     }
 
     @Override
@@ -146,17 +179,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        show = false;
     }
 
     @Override
     public void resume() {
-
+        show = true;
     }
 
     @Override
     public void hide() {
-
+        show = false;
     }
 
     @Override

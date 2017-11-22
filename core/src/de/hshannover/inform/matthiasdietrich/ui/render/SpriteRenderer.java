@@ -15,7 +15,7 @@ public class SpriteRenderer {
 
     // Player Animation
     private PlayerController playerController = PlayerController.getInstance();
-    private PlayerActor player = playerController.getPlayer();
+    private PlayerActor player;
     private Animation playerRunAnimation;
     private TextureRegion playerCurrentFrame;
     private boolean playerFlip;
@@ -24,6 +24,10 @@ public class SpriteRenderer {
 
     public SpriteRenderer() {
         playerRunAnimation = SpriteAnimation.create("actors/player/run.png", 1, 3, 0.1f);
+    }
+
+    public void setPlayer (PlayerActor player) {
+        this.player = player;
     }
 
     public void render(Batch batch) {
@@ -35,11 +39,14 @@ public class SpriteRenderer {
         // RENDER PLAYER
         playerCurrentFrame = (TextureRegion) playerRunAnimation.getKeyFrame(stateTime, true);
         playerFlip = (playerController.getActDirection() == GameConstants.Direction.LEFT);
-        batch.draw(playerCurrentFrame,
-                playerFlip ? player.getX()+0.5f : player.getX() - 0.5f,
-                player.getY() - 0.5f,
-                playerFlip ? -1*1 : 1,
-                1);
+         if(player != null) {
+            batch.draw(playerCurrentFrame,
+                    playerFlip ? player.getX()+0.5f : player.getX() - 0.5f,
+                    player.getY() - 0.5f,
+                    playerFlip ? -1*1 : 1,
+                    1);
+        }
+
 
         batch.end();
     }

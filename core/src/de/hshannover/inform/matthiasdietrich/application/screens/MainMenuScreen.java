@@ -20,8 +20,6 @@ public class MainMenuScreen implements Screen, Observer {
     public MainMenuScreen(final Semester3Project game) {
         this.game = game;
         game.guiController.addMeAsObserver(this);
-        game.guiController.setMainMenuStage();
-        game.assetManager.playMusic("music-title");
     }
 
     @Override
@@ -44,6 +42,8 @@ public class MainMenuScreen implements Screen, Observer {
     @Override
     public void show() {
         backgroundImage = game.assetManager.getImage("image-title");
+        game.guiController.setMainMenuStage();
+        game.assetManager.playMusic("music-title");
     }
 
     @Override

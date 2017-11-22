@@ -41,22 +41,43 @@ public class LevelController {
      * @param level
      */
     public void setMap(int level) {
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: LOAD MAP");
+        }
         switch (level) {
             case 1:
-                this.map = new TmxMapLoader().load("maps/map.tmx");
+                this.map = new TmxMapLoader().load("maps/level-1.tmx");
                 break;
             case 2:
-                this.map = new TmxMapLoader().load("maps/level-2.tmx");
+                this.map = new TmxMapLoader().load("maps/level-1.tmx");
                 break;
             default: this.map = new TmxMapLoader().load("maps/map.tmx");
         }
 
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: SET PLAYER");
+        }
         mapLayerController.setPlayerMap(getMapData("player"));
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: SET GOBLINS");
+        }
         mapLayerController.setMathGoblinMap(getMapData("goblin"));
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: SET LIGHT");
+        }
         mapLayerController.setLightMap(getMapData("light"));
 
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: BUILD MAP");
+        }
         buildCollisionMap();
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: SET TRAPS");
+        }
         buildTrapMap();
+        if (GameConstants.DEV_MODE) {
+            System.out.println("LevelController: SET CERTIFICATES");
+        }
         buildCertificatesMap();
     }
 

@@ -1,7 +1,6 @@
 package de.hshannover.inform.matthiasdietrich;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import de.hshannover.inform.matthiasdietrich.application.screens.GameOverScreen;
+import de.hshannover.inform.matthiasdietrich.application.screens.GameScreen;
 import de.hshannover.inform.matthiasdietrich.application.screens.LevelCompletedScreen;
 import de.hshannover.inform.matthiasdietrich.application.screens.MainMenuScreen;
 import de.hshannover.inform.matthiasdietrich.ui.assets.AssetManager;
@@ -28,6 +28,9 @@ public class Semester3Project extends Game {
 
 	private LevelCompletedScreen levelCompletedScreen;
 	private GameOverScreen gameOverScreen;
+	private MainMenuScreen mainMenuScreen;
+	private GameScreen gameScreen;
+
 
 	public LevelCompletedScreen getLevelCompletedScreen () {
 		return levelCompletedScreen;
@@ -35,6 +38,14 @@ public class Semester3Project extends Game {
 
     public GameOverScreen getGameOverScreen () {
         return gameOverScreen;
+    }
+
+	public MainMenuScreen getMainMenuScreen () {
+		return mainMenuScreen;
+	}
+
+    public GameScreen getGameScreen () {
+        return gameScreen;
     }
 
     @Override
@@ -51,8 +62,10 @@ public class Semester3Project extends Game {
 		// setup screens
         levelCompletedScreen = new LevelCompletedScreen(this);
         gameOverScreen = new GameOverScreen(this);
+        mainMenuScreen = new MainMenuScreen(this);
+        gameScreen = new GameScreen(this);
 
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(mainMenuScreen);
 	}
 
 	@Override
@@ -69,8 +82,9 @@ public class Semester3Project extends Game {
 	public void clearWorld() {
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
-		for (Body body: bodies) {
-		    world.destroyBody(body);
+        int bodyCount = world.getBodyCount();
+        for (int i = 0; i<bodyCount; i++) {
+            world.destroyBody(bodies.get(i));
         }
 	}
 }

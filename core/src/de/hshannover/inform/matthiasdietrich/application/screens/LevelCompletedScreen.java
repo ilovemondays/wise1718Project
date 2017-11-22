@@ -31,13 +31,11 @@ public class LevelCompletedScreen implements Screen, Observer {
 
     @Override
     public void show() {
-        shown = true;
-        game.clearWorld();
-        game.guiController.setLevelCompletedStage();
-
         if (GameConstants.DEV_MODE) {
             System.out.println("show level completed screen");
         }
+        shown = true;
+        game.guiController.setLevelCompletedStage();
 
         if (gameController.getLevel() == 0) {
             game.guiController.getLabelCompletedTop().setText("Semester 1");
@@ -48,6 +46,9 @@ public class LevelCompletedScreen implements Screen, Observer {
             game.guiController.getLabelCompletedTop().setText("Semester "+gameController.getLevel());
             game.guiController.getLabelCompletedBottom().setText("Im "+gameController.getTrials() + ". Versuch bestanden!");
         }
+
+        game.world.step(1/60f, 1, 1);
+        game.clearWorld();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class LevelCompletedScreen implements Screen, Observer {
                 if (GameConstants.DEV_MODE) {
                     System.out.println("BUTTON NEXT LEVEL CLICKED");
                 }
-                game.setScreen(new GameScreen(game));
+                game.setScreen(game.getGameScreen());
                 dispose();
             }
         }
