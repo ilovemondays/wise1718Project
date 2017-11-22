@@ -50,7 +50,7 @@ public class ProjectileActor extends BaseActor {
 
     public void spawn(Vector2 direction, RayHandler rayHandler) {
         this.direction = direction.nor(); // normalisiert, damit geschwindigkeit unabhängig der entfernung/laenge des vectors ist.
-        this.direction.x *= 5; // speed
+        this.direction.x *= GameConstants.PROJECTILE_SPEED;
 
         spawned = true;
 

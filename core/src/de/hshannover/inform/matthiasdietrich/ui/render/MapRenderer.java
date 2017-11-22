@@ -74,7 +74,7 @@ public class MapRenderer {
         }
         for (Point tile: traps) {
             if (isTileVisible(camera, tile)) {
-                    trapTexture.setPosition(tile.x, tile.y  + 0.25f);
+                    trapTexture.setPosition(tile.x, tile.y);
                     trapTexture.draw(batch);
             }
         }
