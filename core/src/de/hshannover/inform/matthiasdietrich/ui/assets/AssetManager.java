@@ -75,7 +75,7 @@ public class AssetManager {
         if (GameConstants.DEV_MODE) {
             return;
         }
-        if (sound.equals("sound-soundCertificate")) {
+        if (sound.equals("sound-certificate")) {
             soundCertificate.play();
         }
         if (sound.equals("sound-level-completed")) {
