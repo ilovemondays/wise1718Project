@@ -24,6 +24,7 @@ public class PlayerController implements Observer {
     private boolean isHittingProjectile = false;
     private GameConstants.ActAnimation actAnimation = GameConstants.ActAnimation.IDLE;
     private GameConstants.Direction actDirection = GameConstants.Direction.LEFT;
+    private boolean isInTrap = false;
 
     private PlayerController() {
     }
@@ -58,6 +59,14 @@ public class PlayerController implements Observer {
 
     public void setActDirection (GameConstants.Direction actDirection) {
         this.actDirection = actDirection;
+    }
+
+    public boolean isInTrap () {
+        return isInTrap;
+    }
+
+    public void setInTrap (boolean inTrap) {
+        isInTrap = inTrap;
     }
 
     /**
@@ -126,7 +135,13 @@ public class PlayerController implements Observer {
         if(arg instanceof String) {
             // TRAPS
             if (arg.equals("player-hit-trap")) {
-                player.setTired(1);
+                isInTrap = true;
+            }
+            if (arg.equals("player-hit-trap-END")) {
+                if(isInTrap) {
+                    isInTrap = false;
+                    player.setTired(1);
+                }
             }
             if (arg.equals("player-hit-by-projectile-START")) {
                 isHittingProjectile = true;

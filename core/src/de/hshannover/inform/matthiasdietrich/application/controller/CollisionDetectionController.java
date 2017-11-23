@@ -95,6 +95,16 @@ public class CollisionDetectionController extends Observable implements ContactL
             setChanged();
             notifyObservers("player-hit-by-projectile-END");
         }
+
+        // TRAP
+        if( a.getUserData() != null && a.getUserData().equals("trap")) {
+            setChanged();
+            notifyObservers("player-hit-trap-END");
+        }
+        if( b.getUserData() != null && b.getUserData().equals("trap")) {
+            setChanged();
+            notifyObservers("player-hit-trap-END");
+        }
     }
 
     @Override

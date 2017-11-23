@@ -211,13 +211,20 @@ public class GameController implements Observer {
             player.setBodyDef(null);
             player.setPosition(player.getStartingPoint().x, player.getStartingPoint().y);
             player.spawn();
+        }
 
+        if (playerController.isInTrap()) {
+            bodiesToDestroy.add(player.getBody());
+            player.setTired(0);
+            player.setBody(null);
+            player.setBodyDef(null);
+            player.setPosition(player.getStartingPoint().x, player.getStartingPoint().y);
+            player.spawn();
         }
 
         if(gameModel.getTrials() > 3) {
             endWorld();
         }
-
     }
 
     @Override
