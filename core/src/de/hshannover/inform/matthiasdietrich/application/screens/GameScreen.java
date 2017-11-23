@@ -32,6 +32,9 @@ public class GameScreen implements Screen {
     private float cameraRotation = 0;
     private boolean show = false;
 
+    private final float pauseGameTime = 0;
+    private float pause = 0;
+
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
@@ -44,6 +47,7 @@ public class GameScreen implements Screen {
         // CONTROLLER
         gameController = GameController.getInstance();
         gameController.setWorld(game.world);
+        gameController.setGameScreen(this);
         gameController.setLevelController(new LevelController(game.world));
         gameController.setCollisionDetectionController(new CollisionDetectionController());
 
@@ -51,6 +55,10 @@ public class GameScreen implements Screen {
         spriteRenderer = new SpriteRenderer();
         mapRenderer = new MapRenderer();
 
+    }
+
+    public void setPause (float pause) {
+        this.pause = pause;
     }
 
     @Override
@@ -101,18 +109,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(show && gameController.isSetup()) {
+        if(pause < pauseGameTime) {
+            pause += Gdx.graphics.getDeltaTime();
+        }
+
+        if((show && gameController.isSetup())) {
             Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             game.batch.setProjectionMatrix(camera.combined);
 
-            // @TODO: das hier in camera class
-            camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
-            camera.update();
 
-            gameController.loop();
-
-            if(GameConstants.DEV_MODE) {
+            if (GameConstants.DEV_MODE) {
                 debugRenderer.render(gameController.getWorld(), camera.combined);
             }
 
@@ -120,18 +127,26 @@ public class GameScreen implements Screen {
             gameController.getRayHandler().setCombinedMatrix(camera);
             gameController.getRayHandler().updateAndRender();
 
-            // @TODO: der screen sollte nichts über win bedingungen wissen
-            // auch braucht er nicht wissen was der nächste screen ist
-            if (gameController.checkWinCondition()) {
-                gameController.endWorld();
-                game.setScreen(game.getLevelCompletedScreen());
-                dispose();
-            }
+            if(pause >= pauseGameTime) {
+                // @TODO: das hier in camera class
+                camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
+                camera.update();
 
-            if (gameController.checkGameOverCondition()) {
-                gameController.endWorld();
-                game.setScreen(game.getGameOverScreen());
-                dispose();
+                gameController.loop();
+
+                // @TODO: der screen sollte nichts über win bedingungen wissen
+                // auch braucht er nicht wissen was der nächste screen ist
+                if (gameController.checkWinCondition()) {
+                    gameController.endWorld();
+                    game.setScreen(game.getLevelCompletedScreen());
+                    dispose();
+                }
+
+                if (gameController.checkGameOverCondition()) {
+                    gameController.endWorld();
+                    game.setScreen(game.getGameOverScreen());
+                    dispose();
+                }
             }
 
             game.batch.begin();
@@ -140,36 +155,15 @@ public class GameScreen implements Screen {
 
             game.batch.begin();
             game.guiController.getActStage().act();
-            game.guiController.getLabelTrials().setText("VERSUCH: "+gameController.getTrials());
-            game.guiController.getLabelCertificatesFound().setText("SCHEINE: "+gameController.getCertificates());
-            game.guiController.getLabelSemester().setText("SEMESTER: "+gameController.getLevel());
+            game.guiController.getLabelTrials().setText("VERSUCH: " + gameController.getTrials());
+            game.guiController.getLabelCertificatesFound().setText("SCHEINE: " + gameController.getCertificates());
+            game.guiController.getLabelSemester().setText("SEMESTER: " + gameController.getLevel());
             game.guiController.setPlayerHealth(gameController.getPlayer().getTired());
             game.guiController.getActStage().draw();
             game.batch.end();
 
             spriteRenderer.render(game.batch);
-
-//        if (input.isLeft() && cameraRotation > -2) {
-//            cameraRotation -= GameConstants.CAMERA_ROTATION_SPEED;
-//            camera.rotate(-GameConstants.CAMERA_ROTATION_SPEED);
-//        }
-//        if (input.isRight() && cameraRotation < 2) {
-//            cameraRotation += GameConstants.CAMERA_ROTATION_SPEED;
-//            camera.rotate(GameConstants.CAMERA_ROTATION_SPEED);
-//        }
-//        if (!input.isRight() && !input.isLeft()) {
-//            if (cameraRotation < 0) {
-//                cameraRotation += GameConstants.CAMERA_ROTATION_SPEED;
-//                camera.rotate(GameConstants.CAMERA_ROTATION_SPEED);
-//            }
-//            if (cameraRotation > 0) {
-//                cameraRotation -= GameConstants.CAMERA_ROTATION_SPEED;
-//                camera.rotate(-GameConstants.CAMERA_ROTATION_SPEED);
-//            }
-//        }
-//        camera.update();
         }
-
     }
 
     @Override

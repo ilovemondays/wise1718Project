@@ -10,6 +10,7 @@ import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GameModel;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
+import de.hshannover.inform.matthiasdietrich.application.screens.GameScreen;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class GameController implements Observer {
     // @TODO: Das hier in eine render/light class verschieben
     private RayHandler rayHandler;
     private boolean isSetup = false;
+    private GameScreen gameScreen = null;
 
     private GameController() {
         // world = new World(new Vector2(0, -2f), true);
         gameModel = GameModel.getInstance();
-        this.game = game;
         bodiesToDestroy = new ArrayList<Body>();
         lightsToDestroy = new ArrayList<PointLight>();
     }
@@ -70,6 +71,10 @@ public class GameController implements Observer {
 
     public void setGame (Semester3Project game) {
         this.game = game;
+    }
+
+    public void setGameScreen (GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 
     public void setLevelController(LevelController levelController) {
@@ -220,6 +225,7 @@ public class GameController implements Observer {
             player.setBodyDef(null);
             player.setPosition(player.getStartingPoint().x, player.getStartingPoint().y);
             player.spawn();
+            gameScreen.setPause(-1f);
         }
 
         if(gameModel.getTrials() > 3) {
