@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
+import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
+import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -12,44 +14,28 @@ import java.util.Observer;
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
-public class MainMenuScreen implements Screen, Observer {
+public class HelpScreen implements Screen, Observer {
     final Semester3Project game;
+    private InputController input;
     private Sprite backgroundImage;
 
-    public MainMenuScreen(final Semester3Project game) {
+    public HelpScreen(final Semester3Project game) {
         this.game = game;
+        input = InputController.getInstance();
         game.guiController.addMeAsObserver(this);
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof String) {
-            if (arg.equals("button-start-game")) {
-                game.setScreen(game.getLevelCompletedScreen());
-                dispose();
-            }
-            if (arg.equals("button-exit-game")) {
-                dispose();
-                System.exit(0);
-            }
-            if (arg.equals("button-show-help")) {
-                game.setScreen(game.getHelpScreen());
-                dispose();
-            }
-        }
-    }
-
-    @Override
     public void show() {
+        game.guiController.setHelpScreenStage();
         backgroundImage = game.assetManager.getImage("image-title");
-        game.guiController.setMainMenuStage();
-        game.assetManager.playMusic("music-title");
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClearColor(0.4f, 0.4f, 0.4f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         game.batch.begin();
         backgroundImage.draw(game.batch);
         game.batch.end();
@@ -59,8 +45,6 @@ public class MainMenuScreen implements Screen, Observer {
         game.guiController.getActStage().draw();
         game.batch.end();
     }
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -87,5 +71,13 @@ public class MainMenuScreen implements Screen, Observer {
 
     }
 
-
+    @Override
+    public void update (Observable o, Object arg) {
+        if (arg instanceof String) {
+            if (arg.equals("button-help-back")) {
+                game.setScreen(game.getMainMenuScreen());
+                dispose();
+            }
+        }
+    }
 }

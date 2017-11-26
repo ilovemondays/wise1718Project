@@ -8,10 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import de.hshannover.inform.matthiasdietrich.application.screens.GameOverScreen;
-import de.hshannover.inform.matthiasdietrich.application.screens.GameScreen;
-import de.hshannover.inform.matthiasdietrich.application.screens.LevelCompletedScreen;
-import de.hshannover.inform.matthiasdietrich.application.screens.MainMenuScreen;
+import de.hshannover.inform.matthiasdietrich.application.screens.*;
 import de.hshannover.inform.matthiasdietrich.ui.assets.AssetManager;
 import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 import de.hshannover.inform.matthiasdietrich.ui.render.GUIController;
@@ -30,10 +27,15 @@ public class Semester3Project extends Game {
 	private GameOverScreen gameOverScreen;
 	private MainMenuScreen mainMenuScreen;
 	private GameScreen gameScreen;
+	private HelpScreen helpScreen;
 
 
 	public LevelCompletedScreen getLevelCompletedScreen () {
 		return levelCompletedScreen;
+	}
+
+	public HelpScreen getHelpScreen () {
+		return helpScreen;
 	}
 
     public GameOverScreen getGameOverScreen () {
@@ -64,6 +66,7 @@ public class Semester3Project extends Game {
         gameOverScreen = new GameOverScreen(this);
         mainMenuScreen = new MainMenuScreen(this);
         gameScreen = new GameScreen(this);
+        helpScreen = new HelpScreen(this);
 
         this.setScreen(mainMenuScreen);
 	}
