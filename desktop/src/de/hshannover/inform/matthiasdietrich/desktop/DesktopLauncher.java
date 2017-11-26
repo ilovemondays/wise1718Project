@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.title = "BIN S3 PROJECT";
 		config.width = 800;
 		config.height = 450;
-		config.fullscreen = false;
+		config.fullscreen = true;
 		config.resizable = false;
 		new LwjglApplication(new Semester3Project(), config);
 	}
