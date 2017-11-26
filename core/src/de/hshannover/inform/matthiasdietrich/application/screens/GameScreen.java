@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
@@ -15,11 +13,14 @@ import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 import de.hshannover.inform.matthiasdietrich.ui.render.MapRenderer;
 import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
+import java.util.Observable;
+import java.util.Observer;
+
 // @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
 /**
  * Created by matthiasdietrich on 25.10.17.
  */
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, Observer {
     final Semester3Project game;
 
     private GameController gameController;
@@ -33,11 +34,12 @@ public class GameScreen implements Screen {
     private boolean show = false;
 
     private final float pauseGameTime = 0;
-    private float pause = 0;
-
+    private float pauseTime = 0;
+    private boolean pause = false;
 
     public GameScreen(final Semester3Project game) {
         this.game = game;
+        game.guiController.addMeAsObserver(this);
         camera = game.camera;
         input = InputController.getInstance();
 
@@ -57,8 +59,8 @@ public class GameScreen implements Screen {
 
     }
 
-    public void setPause (float pause) {
-        this.pause = pause;
+    public void setPauseTime (float pauseTime) {
+        this.pauseTime = pauseTime;
     }
 
     @Override
@@ -109,8 +111,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(pause < pauseGameTime) {
-            pause += Gdx.graphics.getDeltaTime();
+        if(isPause()) {
+            pauseTime += Gdx.graphics.getDeltaTime();
         }
 
         if((show && gameController.isSetup())) {
@@ -127,7 +129,7 @@ public class GameScreen implements Screen {
             gameController.getRayHandler().setCombinedMatrix(camera);
             gameController.getRayHandler().updateAndRender();
 
-            if(pause >= pauseGameTime) {
+            if(!isPause()) {
                 // @TODO: das hier in camera class
                 camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
                 camera.update();
@@ -153,6 +155,8 @@ public class GameScreen implements Screen {
             mapRenderer.render(game.batch, (Camera) camera);
             game.batch.end();
 
+            spriteRenderer.render(game.batch);
+
             game.batch.begin();
             game.guiController.getActStage().act();
             game.guiController.getLabelTrials().setText("VERSUCH: " + gameController.getTrials());
@@ -162,8 +166,16 @@ public class GameScreen implements Screen {
             game.guiController.getActStage().draw();
             game.batch.end();
 
-            spriteRenderer.render(game.batch);
+            if (input.isESC() && !pause) {
+                pause = true;
+                game.guiController.getButtonGameExit().setVisible(true);
+                game.guiController.getButtonGameResume().setVisible(true);
+            }
         }
+    }
+
+    private boolean isPause() {
+        return ((pauseTime < pauseGameTime) || pause);
     }
 
     @Override
@@ -188,5 +200,23 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+    }
+
+    @Override
+    public void update (Observable o, Object arg) {
+        if (arg instanceof String) {
+            if (arg.equals("button-game-exit-to-menu")) {
+                pause = false;
+                gameController.endWorld();
+                gameController.resetGameModel();
+                game.setScreen(game.getMainMenuScreen());
+                dispose();
+            }
+            if (arg.equals("button-game-resume")) {
+                game.guiController.getButtonGameExit().setVisible(false);
+                game.guiController.getButtonGameResume().setVisible(false);
+                pause = false;
+            }
+        }
     }
 }

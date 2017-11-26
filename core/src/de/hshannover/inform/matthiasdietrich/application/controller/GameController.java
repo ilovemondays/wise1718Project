@@ -2,8 +2,6 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
@@ -16,7 +14,6 @@ import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
 
 /**
  * Created by matthiasdietrich on 24.10.17.
@@ -225,7 +222,7 @@ public class GameController implements Observer {
             player.setBodyDef(null);
             player.setPosition(player.getStartingPoint().x, player.getStartingPoint().y);
             player.spawn();
-            gameScreen.setPause(-1f);
+            gameScreen.setPauseTime(-1f);
         }
 
         if(gameModel.getTrials() > 3) {

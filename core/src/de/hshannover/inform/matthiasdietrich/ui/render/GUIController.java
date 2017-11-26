@@ -11,16 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 13.11.17.
+ * GUI Controller is responsible for all UI Elements the user sees and can click
  */
 public class GUIController extends Observable {
     // Stage & Elements
@@ -42,6 +41,8 @@ public class GUIController extends Observable {
     private Label labelSemester;
     private ProgressBar healthBar;
     private ProgressBar.ProgressBarStyle healthBarStyle;
+    private TextButton buttonGameResume;
+    private TextButton buttonGameExit;
 
     // main menu
     private Label labelTitle;
@@ -94,6 +95,7 @@ public class GUIController extends Observable {
 
         tableGameHUD = new Table();
         tableGameHUD.setFillParent(true);
+        tableGameHUD.columnDefaults(5);
         tableGameHUD.top().left();
         if (GameConstants.DEV_MODE) {
             tableMainMenu.setDebug(true);
@@ -174,6 +176,14 @@ public class GUIController extends Observable {
         return labelCompletedBottom;
     }
 
+    public TextButton getButtonGameResume () {
+        return buttonGameResume;
+    }
+
+    public TextButton getButtonGameExit () {
+        return buttonGameExit;
+    }
+
     public void setGameStage() {
         stage.clear();
         stage.addActor(tableGameHUD);
@@ -202,6 +212,10 @@ public class GUIController extends Observable {
         stage.addActor(tableGameOverMenu);
     }
 
+    /**
+     * Returns the set stage object
+     * @return Stage
+     */
     public Stage getActStage() {
         return stage;
     }
@@ -210,6 +224,10 @@ public class GUIController extends Observable {
         return healthBar;
     }
 
+    /**
+     * Sets ProgressBar to given value
+     * @param playerHealth
+     */
     public void setPlayerHealth(float playerHealth) {
         healthBar.setValue(playerHealth);
     }
@@ -218,6 +236,9 @@ public class GUIController extends Observable {
         addObserver(obj);
     }
 
+    /**
+     * GameOver Screen UI
+     */
     private void setupGameOverUi () {
         buttonGameOver = new TextButton("ZUM HAUPTMENÜ", skinButton);
         buttonGameOver.pad(10);
@@ -236,6 +257,9 @@ public class GUIController extends Observable {
         tableGameOverMenu.add(buttonGameOver).pad(10);
     }
 
+    /**
+     * Main Menu UI
+     */
     private void setupMainMenu() {
         buttonStartGame = new TextButton("START", skinButton);
         buttonStartGame.pad(10);
@@ -280,7 +304,11 @@ public class GUIController extends Observable {
         });
     }
 
+    /**
+     * GameScreen UI
+     */
     private void setupGameGui() {
+        Label labelTired = new Label("Erschöpfung:", new Label.LabelStyle(fontSmall, Color.WHITE));
         labelTrials = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
         labelCertificatesFound = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
         labelSemester = new Label("", new Label.LabelStyle(fontSmall, Color.WHITE));
@@ -293,12 +321,40 @@ public class GUIController extends Observable {
         healthBar.setSize(100f, 16);
         healthBar.setAnimateDuration(0.3f);
 
+        buttonGameResume = new TextButton("ZURÜCK ZUM SPIEL", buttonStyleDefault);
+        buttonGameResume.pad(10).setVisible(false);
+        buttonGameExit = new TextButton("SPIEL BEENDEN", buttonStyleDefault);
+        buttonGameExit.pad(10).setVisible(false);
+
         tableGameHUD.add(labelTrials).padTop(10).padLeft(10);
         tableGameHUD.add(labelCertificatesFound).padTop(10).padLeft(10);
         tableGameHUD.add(labelSemester).padTop(10).padLeft(10);
-        tableGameHUD.add(healthBar).padTop(10).padLeft(10);
+        tableGameHUD.add(labelTired).padTop(10).padLeft(10).align(Align.right);
+        tableGameHUD.add(healthBar).padTop(10).padLeft(10).align(Align.left);
+        tableGameHUD.row().expandX();
+        tableGameHUD.add(buttonGameResume).colspan(5).padTop(100);
+        tableGameHUD.row();
+        tableGameHUD.add(buttonGameExit).colspan(5).padTop(20);
+
+        buttonGameResume.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                setChanged();
+                notifyObservers("button-game-resume");
+            }
+        });
+        buttonGameExit.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                setChanged();
+                notifyObservers("button-game-exit-to-menu");
+            }
+        });
     }
 
+    /**
+     * Level Completed UI
+     */
     private void setupLevelCompletedUi() {
         buttonLevelCompletedNext = new TextButton("WEITER", skinButton);
         buttonLevelCompletedNext.pad(10);
@@ -320,6 +376,9 @@ public class GUIController extends Observable {
         tableLevelCompletedMenu.add(buttonLevelCompletedNext).pad(10);
     }
 
+    /**
+     * Help Screen UI
+     */
     private void setupHelpUi() {
         Label.LabelStyle style = new Label.LabelStyle(fontSmall, Color.BLACK);
         Pixmap pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
