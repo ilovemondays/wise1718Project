@@ -136,9 +136,7 @@ public class GameScreen implements Screen, Observer {
 
                 gameController.loop();
 
-                // @TODO: der screen sollte nichts über win bedingungen wissen
-                // auch braucht er nicht wissen was der nächste screen ist
-                if (gameController.checkWinCondition()) {
+                if (gameController.checkLevelCompleteCondition()) {
                     gameController.endWorld();
                     game.setScreen(game.getLevelCompletedScreen());
                     dispose();
@@ -147,6 +145,13 @@ public class GameScreen implements Screen, Observer {
                 if (gameController.checkGameOverCondition()) {
                     gameController.endWorld();
                     game.setScreen(game.getGameOverScreen());
+                    dispose();
+                }
+
+                if (gameController.checkGameWinCondition()) {
+                    gameController.endWorld();
+                    gameController.resetGameModel();
+                    game.setScreen(game.getWinScreen());
                     dispose();
                 }
             }

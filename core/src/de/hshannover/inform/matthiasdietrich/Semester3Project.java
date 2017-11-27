@@ -28,6 +28,7 @@ public class Semester3Project extends Game {
 	private MainMenuScreen mainMenuScreen;
 	private GameScreen gameScreen;
 	private HelpScreen helpScreen;
+	private WinScreen winScreen;
 
 
 	public LevelCompletedScreen getLevelCompletedScreen () {
@@ -50,6 +51,10 @@ public class Semester3Project extends Game {
         return gameScreen;
     }
 
+    public WinScreen getWinScreen () {
+        return winScreen;
+    }
+
     @Override
 	public void create () {
         Box2D.init();
@@ -67,6 +72,7 @@ public class Semester3Project extends Game {
         mainMenuScreen = new MainMenuScreen(this);
         gameScreen = new GameScreen(this);
         helpScreen = new HelpScreen(this);
+        winScreen = new WinScreen(this);
 
         this.setScreen(mainMenuScreen);
 	}

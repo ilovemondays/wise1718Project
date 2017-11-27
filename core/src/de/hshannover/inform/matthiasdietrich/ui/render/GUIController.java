@@ -29,6 +29,7 @@ public class GUIController extends Observable {
     private Table tableMainMenu;
     private Table tableLevelCompletedMenu;
     private Table tableGameOverMenu;
+    private Table tableGameWinMenu;
     private Table tableHelpScreen;
 
     private TextButton.TextButtonStyle buttonStyleDefault;
@@ -66,6 +67,11 @@ public class GUIController extends Observable {
     private Label labelGameOverBottom;
     private TextButton buttonGameOver;
 
+    // game win
+    private Label labelGameWinTop;
+    private Label labelGameWinBottom;
+    private TextButton buttonGameWin;
+
     // Fonts
     private BitmapFont fontBig;
     private BitmapFont fontSmall;
@@ -89,6 +95,9 @@ public class GUIController extends Observable {
 
         tableGameOverMenu = new Table();
         tableGameOverMenu.setFillParent(true);
+
+        tableGameWinMenu = new Table();
+        tableGameWinMenu.setFillParent(true);
 
         tableHelpScreen = new Table();
         tableHelpScreen.setFillParent(true);
@@ -154,6 +163,9 @@ public class GUIController extends Observable {
 
         // GAME OVER
         setupGameOverUi();
+
+        // GAME WIN
+        setupGameWinUi();
     }
 
     public Label getLabelTrials() {
@@ -211,6 +223,10 @@ public class GUIController extends Observable {
         stage.clear();
         stage.addActor(tableGameOverMenu);
     }
+    public void setGameWinStage() {
+        stage.clear();
+        stage.addActor(tableGameWinMenu);
+    }
 
     /**
      * Returns the set stage object
@@ -255,6 +271,27 @@ public class GUIController extends Observable {
         tableGameOverMenu.add(labelGameOverBottom).pad(10);
         tableGameOverMenu.row();
         tableGameOverMenu.add(buttonGameOver).pad(10);
+    }
+
+    /**
+     * Win Screen UI
+     */
+    private void setupGameWinUi () {
+        buttonGameWin = new TextButton("ZUM HAUPTMENÜ", skinButton);
+        buttonGameWin.pad(10);
+        buttonGameWin.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                setChanged();
+                notifyObservers("button-gamewin");
+            }
+        });
+        labelGameWinTop = new Label("Glüsckwunsch, das war der letzte Schein!", new Label.LabelStyle(fontBig, Color.WHITE));
+        labelGameWinBottom = new Label("Du hast das Studium bestanden. OMFG!!1", new Label.LabelStyle(fontBig, Color.WHITE));
+        tableGameWinMenu.add(labelGameWinTop).pad(10);
+        tableGameWinMenu.row();
+        tableGameWinMenu.add(labelGameWinBottom).pad(10);
+        tableGameWinMenu.row();
+        tableGameWinMenu.add(buttonGameWin).pad(10);
     }
 
     /**

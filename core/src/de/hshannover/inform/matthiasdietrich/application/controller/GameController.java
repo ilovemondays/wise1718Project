@@ -54,7 +54,6 @@ public class GameController implements Observer {
 
     public void resetGameModel() {
         gameModel.resetGame();
-
     }
     public int getTrials(){
         return gameModel.getTrials();
@@ -272,8 +271,12 @@ public class GameController implements Observer {
         getLightsToDestroy().clear();
     }
 
-    public boolean checkWinCondition() {
+    public boolean checkLevelCompleteCondition () {
         return (gameModel.getCertificatesFound() >= GameConstants.WIN_CONDITION);
+    }
+
+    public boolean checkGameWinCondition () {
+        return (gameModel.getActLevel() > GameConstants.MAX_LEVELS);
     }
 
     public boolean checkGameOverCondition() {
