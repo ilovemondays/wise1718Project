@@ -102,7 +102,7 @@ class MapLayerController {
         for (int tileHeight = 0; tileHeight <= getLightMap().getHeight();  tileHeight++) {
             for (int tileWidth = 0; tileWidth <= getLightMap().getWidth(); tileWidth++) {
                 if (getLightMap().getCell(tileWidth, tileHeight) != null) {
-                    new PointLight(rayHandler, 800, color,
+                    new PointLight(rayHandler, 100, color,
                             20f, tileWidth + GameConstants.TILE_WIDTH/2, tileHeight + GameConstants.TILE_WIDTH/2);
                 }
             }
