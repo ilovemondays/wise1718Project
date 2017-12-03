@@ -12,10 +12,11 @@ public class GameConstants {
     public static final int CAMERA_X = 384; // interpolated value for game window width
     public static final int CAMERA_Y = 216; // interpolated value for game window height
     public static final boolean DEV_MODE = false; // show debug information
+    public static final boolean NO_MUSIC = true; // show debug information
     public static final float CAMERA_ROTATION_SPEED = 0.05f;
-    public static final int WIN_CONDITION = 1; // collect # of certificates
+    public static final int WIN_CONDITION = 5; // collect # of certificates
     public static final int MAX_TRIALS = 3; // max # of trials before game over
-    public static final int MAX_LEVELS = 1; // Number of Levels
+    public static final int MAX_LEVELS = 6; // Number of Levels
 
     public enum ActAnimation {
         JUMP, RUN, IDLE

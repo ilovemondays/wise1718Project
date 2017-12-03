@@ -17,13 +17,17 @@ public class SpriteRenderer {
     private PlayerController playerController = PlayerController.getInstance();
     private PlayerActor player;
     private Animation playerRunAnimation;
+    private Animation playerIdleAnimation;
+    private Animation playerJumpAnimation;
     private TextureRegion playerCurrentFrame;
     private boolean playerFlip;
 
     private Texture test = new Texture("actors/dummy/dummy.png");
 
     public SpriteRenderer() {
-        playerRunAnimation = SpriteAnimation.create("actors/player/run.png", 1, 3, 0.1f);
+        playerRunAnimation = SpriteAnimation.create("actors/player/run.png", 1, 7, 0.08f);
+        playerIdleAnimation = SpriteAnimation.create("actors/player/idle.png", 1, 6, 0.08f);
+        playerJumpAnimation = SpriteAnimation.create("actors/player/jump.png", 1, 1, 0.1f);
     }
 
     public void setPlayer (PlayerActor player) {
@@ -37,17 +41,34 @@ public class SpriteRenderer {
        //batch.draw(test, player.getX() , player.getY(), 1, 1);
 
         // RENDER PLAYER
-        playerCurrentFrame = (TextureRegion) playerRunAnimation.getKeyFrame(stateTime, true);
+        playerCurrentFrame = getActPlayerAnimation();
         playerFlip = (playerController.getActDirection() == GameConstants.Direction.LEFT);
          if(player != null) {
             batch.draw(playerCurrentFrame,
                     playerFlip ? player.getX()+0.5f : player.getX() - 0.5f,
-                    player.getY() - 0.5f,
+                    player.getY() - 0.35f,
                     playerFlip ? -1*1 : 1,
                     1);
         }
 
 
         batch.end();
+    }
+
+    private TextureRegion getActPlayerAnimation() {
+        // RUN
+        if (playerController.getActAnimation() == GameConstants.ActAnimation.RUN) {
+            return (TextureRegion) playerRunAnimation.getKeyFrame(stateTime, true);
+        }
+        // JUMP
+        if (playerController.getActAnimation() == GameConstants.ActAnimation.JUMP) {
+           return (TextureRegion) playerJumpAnimation.getKeyFrame(stateTime, true);
+        }
+        // IDLE
+        if (playerController.getActAnimation() == GameConstants.ActAnimation.IDLE) {
+            return (TextureRegion) playerIdleAnimation.getKeyFrame(stateTime, true);
+        }
+        // DEFAULT IDLE
+        return (TextureRegion) playerIdleAnimation.getKeyFrame(stateTime, true);
     }
 }

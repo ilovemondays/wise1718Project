@@ -74,7 +74,9 @@ public class PlayerController implements Observer {
      */
     private void moveLeft() {
         getPlayer().getBody().applyLinearImpulse(-0.07f, 0, 0, 0, true);
-        actAnimation = GameConstants.ActAnimation.RUN;
+        if (playerIsOnGround > 0) {
+            actAnimation = GameConstants.ActAnimation.RUN;
+        }
         actDirection = GameConstants.Direction.LEFT;
     }
 
@@ -83,7 +85,9 @@ public class PlayerController implements Observer {
      */
     private void moveRight() {
         getPlayer().getBody().applyLinearImpulse(0.07f, 0, 0, 0, true);
-        actAnimation = GameConstants.ActAnimation.RUN;
+        if (playerIsOnGround > 0) {
+            actAnimation = GameConstants.ActAnimation.RUN;
+        }
         actDirection = GameConstants.Direction.RIGHT;
     }
 
@@ -103,7 +107,9 @@ public class PlayerController implements Observer {
         updatePlayerMovement();
         player.update();
         if(!player.getBody().isAwake()) {
-            actAnimation = GameConstants.ActAnimation.IDLE;
+            if (playerIsOnGround > 0) {
+                actAnimation = GameConstants.ActAnimation.IDLE;
+            }
         }
     }
 
@@ -149,7 +155,7 @@ public class PlayerController implements Observer {
             if (arg.equals("player-hit-by-projectile-END")) {
                 if(isHittingProjectile == true) {
                     isHittingProjectile = false;
-                    player.setTired(player.getTired() + 0.1f);
+                    player.setTired(player.getTired() + 0.2f);
                 }
             }
             // MOVEMENT

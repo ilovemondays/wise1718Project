@@ -57,29 +57,36 @@ public class LevelController {
         }
         switch (level) {
             case 1:
-                ambientColor = new Color(0xffffff55);
-                lightColor = new Color(0xffffff77);
+                ambientColor = new Color(0x24C2CB99);
+                lightColor = new Color(0xEF525B99);
 
-//                ambientColor = new Color(0x44007755);
-//                lightColor = new Color(0x44007777);
                 this.map = new TmxMapLoader().load("maps/level-1.tmx");
                 break;
             case 2:
-                ambientColor = new Color(0x22770055);
-                lightColor = new Color(0x22770077);
+                ambientColor = new Color(0x86DDB299);
+                lightColor = new Color(0xF8E7A299);;
                 this.map = new TmxMapLoader().load("maps/level-2.tmx");
                 break;
             case 3:
-                ambientColor = new Color(0x22007755);
-                lightColor = new Color(0x22007777);
+                ambientColor = new Color(0x2E112D99);
+                lightColor = new Color(0xF0433A99);
                 this.map = new TmxMapLoader().load("maps/level-3.tmx");
                 break;
             case 4:
-                ambientColor = new Color(0x44007755);
-                lightColor = new Color(0x44007777);
+                ambientColor = new Color(0xEFFC2199);
+                lightColor = new Color(0xF835A499);
                 this.map = new TmxMapLoader().load("maps/level-4.tmx");
                 break;
-            default: this.map = new TmxMapLoader().load("maps/map.tmx");
+            case 5:
+                ambientColor = new Color(0x4835E855);
+                lightColor = new Color(0xFF005899);
+                this.map = new TmxMapLoader().load("maps/level-5.tmx");
+                break;
+            case 6:
+                ambientColor = new Color(0x99002255);
+                lightColor = new Color(0x00ff3399);
+                this.map = new TmxMapLoader().load("maps/level-6.tmx");
+                break;
         }
 
         mapLayerController.setPlayerMap(getMapData("player"));

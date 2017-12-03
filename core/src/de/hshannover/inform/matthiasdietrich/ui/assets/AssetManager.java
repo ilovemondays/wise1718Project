@@ -42,7 +42,7 @@ public class AssetManager {
     }
 
     public void playMusic (String music) {
-        if (GameConstants.DEV_MODE) {
+        if (GameConstants.DEV_MODE || GameConstants.NO_MUSIC) {
             return;
         }
         if (actMusic != null) {
