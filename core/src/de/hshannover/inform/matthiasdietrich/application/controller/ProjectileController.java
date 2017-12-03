@@ -86,11 +86,11 @@ public class ProjectileController extends Observable implements Observer {
             ProjectileActor projectile = (ProjectileActor)((Fixture)arg).getUserData();
             if (!projectile.getType().equals("Projectile")) return;
             Body b = ((Fixture) arg).getBody();
-            if(!gameController.getBodiesToDestroy().contains(b)) {
-                gameController.getBodiesToDestroy().add(b);
+            if(!GameController.getBodiesToDestroy().contains(b)) {
+                GameController.getBodiesToDestroy().add(b);
             }
-            if(!gameController.getLightsToDestroy().contains(projectile.getLight())) {
-                gameController.getLightsToDestroy().add(projectile.getLight());
+            if(!GameController.getLightsToDestroy().contains(projectile.getLight())) {
+                GameController.getLightsToDestroy().add(projectile.getLight());
             }
             setChanged();
             notifyObservers(new Vector2(projectile.getX(), projectile.getY()));

@@ -191,7 +191,7 @@ public class LevelController {
         groundFix.shape = groundBox;
         groundFix.density = 1.0f;
         groundFix.friction = 1.0f;
-        groundBody.createFixture(groundFix).setUserData("trap");;
+        groundBody.createFixture(groundFix).setUserData("trap");
         groundBox.dispose();
     }
 

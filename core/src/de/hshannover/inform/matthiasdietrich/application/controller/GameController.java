@@ -157,7 +157,7 @@ public class GameController implements Observer {
     }
 
     public void setWorld(World world) {
-        this.world = world;
+        GameController.world = world;
     }
 
     public LevelController getLevelController () {
@@ -169,7 +169,7 @@ public class GameController implements Observer {
     }
 
     private void setBodiesToDestroy(ArrayList<Body> bodiesToDestroy) {
-        this.bodiesToDestroy = bodiesToDestroy;
+        GameController.bodiesToDestroy = bodiesToDestroy;
     }
 
     public static ArrayList<PointLight> getLightsToDestroy() {

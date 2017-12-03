@@ -21,30 +21,18 @@ public class InputController {
     }
 
     public boolean isLeft() {
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            return true;
-        }
-        return false;
+        return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A);
     }
 
     public boolean isRight() {
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            return true;
-        }
-        return false;
+        return Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D);
     }
 
     public boolean isJump() {
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            return true;
-        }
-        return false;
+        return Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W);
     }
 
     public boolean isESC() {
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            return true;
-        }
-        return false;
+        return Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
     }
 }
