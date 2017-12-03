@@ -1,10 +1,13 @@
 package de.hshannover.inform.matthiasdietrich.ui.render;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.ProjectileController;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
@@ -13,9 +16,11 @@ import de.hshannover.inform.matthiasdietrich.util.Util;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class MapRenderer {
+public class MapRenderer implements Observer {
     private ArrayList<Point> mapTiles = new ArrayList<Point>();
     private ArrayList<Point> traps = new ArrayList<Point>();
     private ArrayList<Point> goblins = new ArrayList<Point>();
@@ -27,8 +32,10 @@ public class MapRenderer {
     private Sprite goblinTexture;
     private Sprite certificateTexture;
     private Sprite projectileTexture;
+    private ParticleEffect explosion = null;
 
     public MapRenderer() {
+        projectileController.addMeAsObserver(this);
         pixmap = new Pixmap((int)GameConstants.TILE_WIDTH, (int)GameConstants.TILE_WIDTH, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.BLACK);
         pixmap.fill();
@@ -38,6 +45,9 @@ public class MapRenderer {
         goblinTexture = Util.adjustSize(new Sprite(new Texture("actors/goblin/goblin.png")));
         certificateTexture = Util.adjustSize(new Sprite(new Texture("images/map/certificate.png")));
         projectileTexture = Util.adjustSize(new Sprite(new Texture("actors/projectiles/sqrt.png")));
+//        explosion = new ParticleEffect();
+//        explosion.load(Gdx.files.internal("particles/explosion.particle"), Gdx.files.internal("particles"));
+//        explosion.scaleEffect(0.01f);
     }
 
     public void setMapTiles (ArrayList<Point> mapTiles) {
@@ -98,6 +108,11 @@ public class MapRenderer {
             }
         }
 
+        if (explosion != null) {
+            explosion.update(Gdx.graphics.getDeltaTime());
+            explosion.draw(batch);
+        }
+
     }
 
     /**
@@ -118,5 +133,13 @@ public class MapRenderer {
                 camera.frustum.pointInFrustum(x + 2, y - 2, 0) ||
                 camera.frustum.pointInFrustum(x - 2, y + 2, 0) ||
                 camera.frustum.pointInFrustum(x - 2, y - 2, 0));
+    }
+
+    @Override
+    public void update (Observable o, Object arg) {
+//        if (arg instanceof Vector2) {
+//            explosion.getEmitters().first().setPosition(((Vector2) arg).x ,((Vector2) arg).y);
+//            explosion.start();
+//        }
     }
 }

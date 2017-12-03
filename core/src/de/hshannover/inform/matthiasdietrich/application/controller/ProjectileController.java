@@ -1,5 +1,7 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -13,13 +15,14 @@ import java.util.Observer;
 /**
  * Created by matthiasdietrich on 10.11.17.
  */
-public class ProjectileController implements Observer {
+public class ProjectileController extends Observable implements Observer {
     private static ProjectileController projectileController = new ProjectileController();
     private ArrayList<ProjectileActor> projectiles = new ArrayList<ProjectileActor>();
     private GameController gameController = GameController.getInstance();
     private World world;
 
-    private ProjectileController () {}
+    private ProjectileController () {
+    }
 
     public void setWorld(World world) {
         this.world = world;
@@ -50,6 +53,10 @@ public class ProjectileController implements Observer {
     public void clearProjectiles() {
         projectiles = null;
         projectiles = new ArrayList<ProjectileActor>();
+    }
+
+    public void addMeAsObserver(Observer o) {
+        addObserver(o);
     }
 
     public void update() {
@@ -85,6 +92,8 @@ public class ProjectileController implements Observer {
             if(!gameController.getLightsToDestroy().contains(projectile.getLight())) {
                 gameController.getLightsToDestroy().add(projectile.getLight());
             }
+            setChanged();
+            notifyObservers(new Vector2(projectile.getX(), projectile.getY()));
             projectiles.remove(((Fixture)arg).getUserData());
         }
     }
