@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.ProjectileController;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
@@ -18,6 +20,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.sun.tools.doclint.Entity.delta;
 
 
 public class MapRenderer implements Observer {
@@ -33,6 +37,9 @@ public class MapRenderer implements Observer {
     private Sprite certificateTexture;
     private Sprite projectileTexture;
     private ParticleEffect explosion = null;
+    private ParticleEffectPool explosionPool;
+    private Array<ParticleEffectPool.PooledEffect> explosions = new Array();
+    private ParticleEffectPool.PooledEffect pooledExlosion;
 
     public MapRenderer() {
         projectileController.addMeAsObserver(this);
@@ -45,9 +52,10 @@ public class MapRenderer implements Observer {
         goblinTexture = Util.adjustSize(new Sprite(new Texture("actors/goblin/goblin.png")));
         certificateTexture = Util.adjustSize(new Sprite(new Texture("images/map/certificate.png")));
         projectileTexture = Util.adjustSize(new Sprite(new Texture("actors/projectiles/sqrt.png")));
-//        explosion = new ParticleEffect();
-//        explosion.load(Gdx.files.internal("particles/explosion.particle"), Gdx.files.internal("particles"));
-//        explosion.scaleEffect(0.01f);
+        explosion = new ParticleEffect();
+        explosion.load(Gdx.files.internal("particles/explosion.particle"), Gdx.files.internal("particles"));
+        explosion.scaleEffect(0.01f);
+        explosionPool = new ParticleEffectPool(explosion, 1,9);
     }
 
     public void setMapTiles (ArrayList<Point> mapTiles) {
@@ -108,9 +116,14 @@ public class MapRenderer implements Observer {
             }
         }
 
-        if (explosion != null) {
-            explosion.update(Gdx.graphics.getDeltaTime());
-            explosion.draw(batch);
+        // Update and draw effects:
+        for (int i = explosions.size - 1; i >= 0; i--) {
+            ParticleEffectPool.PooledEffect effect = explosions.get(i);
+            effect.draw(batch, Gdx.graphics.getDeltaTime());
+            if (effect.isComplete()) {
+                effect.free();
+                explosions.removeIndex(i);
+            }
         }
 
     }
@@ -137,9 +150,10 @@ public class MapRenderer implements Observer {
 
     @Override
     public void update (Observable o, Object arg) {
-//        if (arg instanceof Vector2) {
-//            explosion.getEmitters().first().setPosition(((Vector2) arg).x ,((Vector2) arg).y);
-//            explosion.start();
-//        }
+        if (arg instanceof Vector2) {
+            pooledExlosion = explosionPool.obtain();
+            pooledExlosion.setPosition(((Vector2) arg).x, ((Vector2) arg).y - 0.5f);
+            explosions.add(pooledExlosion);
+        }
     }
 }
