@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
+import de.hshannover.inform.matthiasdietrich.application.controller.GameController;
+import de.hshannover.inform.matthiasdietrich.application.controller.LevelController;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
@@ -14,10 +16,12 @@ import java.util.Observer;
  */
 public class WinScreen implements Screen, Observer {
     final Semester3Project game;
+    private GameController gameController;
 
     public WinScreen(final Semester3Project game) {
         this.game = game;
         game.guiController.addMeAsObserver(this);
+        gameController = GameController.getInstance();
     }
 
     @Override
@@ -31,6 +35,8 @@ public class WinScreen implements Screen, Observer {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.guiController.getLabelGameWinBottom().setText("Du hast das Studium in "+ gameController.getOverallTrials()+" Versuchen bestanden.");
 
         game.batch.begin();
         game.guiController.getActStage().act();
@@ -67,6 +73,7 @@ public class WinScreen implements Screen, Observer {
     public void update (Observable o, Object arg) {
         if (arg instanceof String) {
             if (arg.equals("button-gamewin")) {
+                gameController.resetGameModel();
                 game.setScreen(game.getMainMenuScreen());
                 dispose();
             }

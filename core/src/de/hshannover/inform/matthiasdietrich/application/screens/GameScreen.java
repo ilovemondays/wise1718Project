@@ -150,7 +150,6 @@ public class GameScreen implements Screen, Observer {
 
                 if (gameController.checkGameWinCondition()) {
                     gameController.endWorld();
-                    gameController.resetGameModel();
                     game.setScreen(game.getWinScreen());
                     dispose();
                 }
