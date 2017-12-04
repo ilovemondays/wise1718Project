@@ -56,7 +56,7 @@ public class GameScreen implements Screen, Observer {
         // Render
         spriteRenderer = new SpriteRenderer();
         mapRenderer = new MapRenderer();
-
+        mapRenderer.setAssetManager(game.assetManager);
     }
 
     public void setPauseTime (float pauseTime) {

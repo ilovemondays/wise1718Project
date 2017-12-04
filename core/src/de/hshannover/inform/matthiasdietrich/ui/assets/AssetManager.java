@@ -23,6 +23,7 @@ public class AssetManager {
     private Sound soundLevelCompleted;
     private Sound soundCertificate;
     private Sound soundGameover;
+    private Sound soundBoom;
 
     // TEXTURES
     private Sprite imageTitle;
@@ -37,6 +38,7 @@ public class AssetManager {
         soundLevelCompleted = Gdx.audio.newSound(Gdx.files.internal("sounds/levelcompleted.wav"));
         soundCertificate = Gdx.audio.newSound(Gdx.files.internal("sounds/certificate.wav"));
         soundGameover = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.wav"));
+        soundBoom = Gdx.audio.newSound(Gdx.files.internal("sounds/boom.wav"));
 
         imageTitle = new Sprite(new Texture("images/title.jpeg"));
     }
@@ -83,6 +85,9 @@ public class AssetManager {
         }
         if (sound.equals("sound-game-over")) {
             soundGameover.play();
+        }
+        if (sound.equals("sound-boom")) {
+            soundBoom.play();
         }
     }
 

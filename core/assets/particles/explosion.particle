@@ -6,12 +6,12 @@ lowMin: 300.0
 lowMax: 300.0
 - Count - 
 min: 0
-max: 300
+max: 50
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 300.0
-highMax: 300.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,17 +20,17 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 500.0
-highMax: 900.0
+highMin: 400.0
+highMax: 500.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
-scaling1: 0.078431375
-scaling2: 0.88235295
+scaling1: 0.54901963
+scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.739726
-timeline2: 0.9109589
+timeline1: 0.56164384
+timeline2: 0.96575344
 - Life Offset - 
 active: false
 - X Offset - 
@@ -38,9 +38,7 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: ellipse
-edges: false
-side: both
+shape: point
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
@@ -64,8 +62,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 24.0
-highMax: 24.0
+highMin: 18.0
+highMax: 18.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -76,7 +74,7 @@ active: true
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
-highMax: 200.0
+highMax: 360.0
 relative: false
 scalingCount: 1
 scaling0: 0.627451
@@ -90,13 +88,13 @@ highMin: 0.0
 highMax: 360.0
 relative: false
 scalingCount: 3
-scaling0: 0.8039216
-scaling1: 0.64705884
-scaling2: 0.0
+scaling0: 1.0
+scaling1: 1.0
+scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.65068495
-timeline2: 0.9589041
+timeline1: 0.5410959
+timeline2: 0.9726027
 - Rotation - 
 active: false
 - Wind - 
@@ -105,9 +103,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.9
+colors0: 1.0
 colors1: 0.0
-colors2: 0.3
+colors2: 0.44313726
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -145,12 +143,12 @@ lowMin: 300.0
 lowMax: 300.0
 - Count - 
 min: 0
-max: 300
+max: 50
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 300.0
-highMax: 300.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -159,8 +157,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 500.0
-highMax: 900.0
+highMin: 400.0
+highMax: 500.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -201,8 +199,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 24.0
-highMax: 24.0
+highMin: 18.0
+highMax: 18.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -213,7 +211,7 @@ active: true
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
-highMax: 200.0
+highMax: 360.0
 relative: false
 scalingCount: 1
 scaling0: 0.627451
@@ -227,13 +225,13 @@ highMin: 0.0
 highMax: 360.0
 relative: false
 scalingCount: 3
-scaling0: 0.8039216
-scaling1: 0.64705884
-scaling2: 0.0
+scaling0: 1.0
+scaling1: 1.0
+scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.65068495
-timeline2: 0.9589041
+timeline1: 0.49315068
+timeline2: 0.94520545
 - Rotation - 
 active: false
 - Wind - 
@@ -242,9 +240,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.9
+colors0: 1.0
 colors1: 0.0
-colors2: 0.3
+colors2: 0.44313726
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -267,8 +265,8 @@ timeline3: 1.0
 attached: false
 continuous: false
 aligned: false
-additive: true
+additive: false
 behind: false
-premultipliedAlpha: true
+premultipliedAlpha: false
 - Image Path -
 eins_p.png

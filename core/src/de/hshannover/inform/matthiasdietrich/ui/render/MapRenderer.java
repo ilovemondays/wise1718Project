@@ -14,15 +14,13 @@ import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants
 import de.hshannover.inform.matthiasdietrich.application.controller.ProjectileController;
 import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
+import de.hshannover.inform.matthiasdietrich.ui.assets.AssetManager;
 import de.hshannover.inform.matthiasdietrich.util.Util;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-
-import static com.sun.tools.doclint.Entity.delta;
-
 
 public class MapRenderer implements Observer {
     private ArrayList<Point> mapTiles = new ArrayList<Point>();
@@ -40,6 +38,9 @@ public class MapRenderer implements Observer {
     private ParticleEffectPool explosionPool;
     private Array<ParticleEffectPool.PooledEffect> explosions = new Array();
     private ParticleEffectPool.PooledEffect pooledExlosion;
+    private AssetManager assetManager;
+
+    private Camera camera;
 
     public MapRenderer() {
         projectileController.addMeAsObserver(this);
@@ -56,6 +57,10 @@ public class MapRenderer implements Observer {
         explosion.load(Gdx.files.internal("particles/explosion.particle"), Gdx.files.internal("particles"));
         explosion.scaleEffect(0.01f);
         explosionPool = new ParticleEffectPool(explosion, 1,9);
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 
     public void setMapTiles (ArrayList<Point> mapTiles) {
@@ -85,6 +90,7 @@ public class MapRenderer implements Observer {
      * @param camera
      */
     public void render(Batch batch, Camera camera) {
+        this.camera = camera;
         for (Point tile: mapTiles) {
             if (isTileVisible(camera, tile)) {
                 batch.draw(titleTexture, tile.x, tile.y);
@@ -151,9 +157,12 @@ public class MapRenderer implements Observer {
     @Override
     public void update (Observable o, Object arg) {
         if (arg instanceof Vector2) {
-            pooledExlosion = explosionPool.obtain();
-            pooledExlosion.setPosition(((Vector2) arg).x, ((Vector2) arg).y - 0.5f);
-            explosions.add(pooledExlosion);
+            if(camera.frustum.pointInFrustum( ((Vector2) arg).x, ((Vector2) arg).y, 0) ) {
+                assetManager.playSound("sound-boom");
+                pooledExlosion = explosionPool.obtain();
+                pooledExlosion.setPosition(((Vector2) arg).x, ((Vector2) arg).y - 0.5f);
+                explosions.add(pooledExlosion);
+            }
         }
     }
 }
