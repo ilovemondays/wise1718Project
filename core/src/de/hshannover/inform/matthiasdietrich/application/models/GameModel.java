@@ -7,7 +7,7 @@ public class GameModel {
     private int actLevel = 0;
     private int certificatesFound;
     private int trials = 1;
-    private int overallTrials = 0;
+    private int overallTrials = -1;
     private static GameModel gameModel = null;
 
     private GameModel() {
@@ -40,6 +40,7 @@ public class GameModel {
 
     public void increaseLevel() {
         actLevel++;
+        increaseOverallTrials();
     }
 
     public void increaseCertificates() {
@@ -64,11 +65,16 @@ public class GameModel {
 
     public void increaseTrials() {
         trials++;
+        increaseOverallTrials();
+    }
+    public void increaseOverallTrials() {
+        overallTrials++;
     }
 
     public void resetGame() {
         setCertificatesFound(0);
         setTrials(1);
         setActLevel(0);
+        setOverallTrials(-1);
     }
 }

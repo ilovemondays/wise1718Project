@@ -196,6 +196,14 @@ public class GameController implements Observer {
         this.player = player;
     }
 
+    public int getOverallTrials() {
+        return gameModel.getOverallTrials();
+    }
+
+    public void increaseOverallTrials() {
+        gameModel.increaseOverallTrials();
+    }
+
     public void loop() {
         getWorld().step(1/60f, 1, 1);
         destroyBodies(); // if there are any to destroy, like collected certificates, projectiles...

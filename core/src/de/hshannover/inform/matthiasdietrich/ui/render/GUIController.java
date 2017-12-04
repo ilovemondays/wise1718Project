@@ -172,6 +172,10 @@ public class GUIController extends Observable {
         return labelTrials;
     }
 
+    public Label getLabelGameWinBottom() {
+        return labelGameWinBottom;
+    }
+
     public Label getLabelCertificatesFound() {
         return labelCertificatesFound;
     }
@@ -286,7 +290,7 @@ public class GUIController extends Observable {
             }
         });
         labelGameWinTop = new Label("Glüsckwunsch, das war der letzte Schein!", new Label.LabelStyle(fontBig, Color.WHITE));
-        labelGameWinBottom = new Label("Du hast das Studium bestanden. OMFG!!1", new Label.LabelStyle(fontBig, Color.WHITE));
+        labelGameWinBottom = new Label("", new Label.LabelStyle(fontBig, Color.WHITE));
         tableGameWinMenu.add(labelGameWinTop).pad(10);
         tableGameWinMenu.row();
         tableGameWinMenu.add(labelGameWinBottom).pad(10);
