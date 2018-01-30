@@ -1,7 +1,7 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
 /**
- * Created by matthiasdietrich on 24.10.17.
+ * Holds all data for game progression like level, how many trials, certificates found
  */
 public class GameModel {
     private int actLevel = 0;
@@ -71,10 +71,13 @@ public class GameModel {
         overallTrials++;
     }
 
+    /**
+     * sets all data back to default/start
+     */
     public void resetGame() {
         setCertificatesFound(0);
         setTrials(1);
-        setActLevel(4);
+        setActLevel(0);
         setOverallTrials(-1);
     }
 }

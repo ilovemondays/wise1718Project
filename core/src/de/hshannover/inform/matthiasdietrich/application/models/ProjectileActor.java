@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 /**
- * Created by matthiasdietrich on 07.11.17.
+ * Projectiles hav a light attached, flying in given direction. Gravity shouldn't affect it.
  */
 public class ProjectileActor extends BaseActor {
     private Vector2 direction;

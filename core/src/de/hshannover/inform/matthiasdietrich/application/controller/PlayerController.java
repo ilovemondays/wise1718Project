@@ -1,18 +1,16 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.MassData;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
-import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 14.10.17.
+ * Controlls player movement
+ * Gets collision infos from CollisionController
+ * Sets animation should be played
  */
 public class PlayerController implements Observer {
     private int playerIsOnGround = 0;

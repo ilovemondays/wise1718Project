@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 
 /**
  * Abstraction layer for handling user input
- * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class InputController {
     private static InputController inputController = null;
@@ -34,5 +33,9 @@ public class InputController {
 
     public boolean isESC() {
         return Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
+    }
+
+    public boolean isToggleFullscreen() {
+        return Gdx.input.isKeyPressed(Input.Keys.V);
     }
 }

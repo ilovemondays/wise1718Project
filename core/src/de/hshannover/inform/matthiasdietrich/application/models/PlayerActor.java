@@ -5,8 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 /**
- * The PlayerActor is controlled by the user
- * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
+ * The PlayerActor is steered by the user/ controlled by PlayerController
  */
 public class PlayerActor extends BaseActor {
     private float tired;

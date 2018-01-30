@@ -9,7 +9,6 @@ import static com.badlogic.gdx.physics.box2d.BodyDef.*;
 
 /**
  * A base model for every object/actor in game
- * @author Matthias Dietrich (matthias.dietrich@stud.hs-hannover.de)
  */
 public class BaseActor extends Actor {
     protected BodyDef bodyDef;
@@ -46,6 +45,9 @@ public class BaseActor extends Actor {
         this.bodyDef = bodyDef;
     }
 
+    /**
+     * creates all necessary box2d objects (physic body, fixtures for collision detecting)
+     */
     public void spawn() {
         bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
@@ -87,7 +89,9 @@ public class BaseActor extends Actor {
         shape.dispose();
     }
 
-
+    /**
+     * updates a Vector2 with box2d body position
+     */
     public void update() {
         if(body != null) {
             Vector2 position = body.getPosition();

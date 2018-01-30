@@ -16,7 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 24.10.17.
+ * Checks winning/loosing condition, sets up controller for all game objects. Cleans up after world ends.
  */
 public class GameController implements Observer {
     private static World world;
@@ -32,13 +32,12 @@ public class GameController implements Observer {
     private ProjectileController projectileController;
     private boolean isCollectingCertificate = false;
     private Semester3Project game;
-    // @TODO: Das hier in eine render/light class verschieben
+
     private RayHandler rayHandler;
     private boolean isSetup = false;
     private GameScreen gameScreen = null;
 
     private GameController() {
-        // world = new World(new Vector2(0, -2f), true);
         gameModel = GameModel.getInstance();
         bodiesToDestroy = new ArrayList<Body>();
         lightsToDestroy = new ArrayList<PointLight>();
@@ -94,10 +93,9 @@ public class GameController implements Observer {
         nextLevel();
 
         // SETUP CONTROLLER
-        // level/map
+
+        // level
         levelController.setMap(gameModel.getActLevel());
-        // trap layer
-        //levelController.getMapLayerController().constructTrapMap(getWorld());
 
         // player
         if (GameConstants.DEV_MODE) {
@@ -115,11 +113,7 @@ public class GameController implements Observer {
         levelController.getMapLayerController().setPlayerPosition(getWorld(), player);
         player.spawn();
 
-        // distribute certificates in level
-       // levelController.getMapLayerController().setCertificatesPosition(getWorld(), new CertificateModel());
-
         // distribute goblins in level
-        // @TODO: levelController sollte nicht die goblins spawnen
         levelController.spawnGoblins();
         mathGoblinController = MathGoblinController.getInstance();
         mathGoblinController.setGoblins(LevelController.getGoblins());
@@ -137,13 +131,9 @@ public class GameController implements Observer {
     public void endWorld() {
         isSetup = false;
         player.setTired(0);
-        //world.destroyBody(player.getBody());
         projectileController = ProjectileController.getInstance();
         projectileController.clearProjectiles();
         levelController.clear();
-        //sound.stop();
-       // rayHandler.dispose();
-        //sound.dispose();
     }
 
     public void nextLevel() {
@@ -204,6 +194,11 @@ public class GameController implements Observer {
         gameModel.increaseOverallTrials();
     }
 
+    /**
+     * Checks and removes box2d bodies from world.
+     * Updates Player and MathGoblins
+     * Checks if level needs to restart/end or if player reaches next level
+     */
     public void loop() {
         getWorld().step(1/60f, 1, 1);
         destroyBodies(); // if there are any to destroy, like collected certificates, projectiles...

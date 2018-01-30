@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Converts the given lists of map features and renders them to the screen
+ */
 public class MapRenderer implements Observer {
     private ArrayList<Point> mapTiles = new ArrayList<Point>();
     private ArrayList<Point> traps = new ArrayList<Point>();
@@ -83,14 +86,18 @@ public class MapRenderer implements Observer {
         this.certificates = certificates;
     }
 
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
     /**
      * Draws all map parts;:map tiles, traps, goblins, projectiles and certificates
      *
      * @param batch
-     * @param camera
      */
-    public void render(Batch batch, Camera camera) {
-        this.camera = camera;
+    public void render(Batch batch) {
+        batch.begin();
+
         for (Point tile: mapTiles) {
             if (isTileVisible(camera, tile)) {
                 batch.draw(titleTexture, tile.x, tile.y);
@@ -131,6 +138,8 @@ public class MapRenderer implements Observer {
                 explosions.removeIndex(i);
             }
         }
+
+        batch.end();
 
     }
 

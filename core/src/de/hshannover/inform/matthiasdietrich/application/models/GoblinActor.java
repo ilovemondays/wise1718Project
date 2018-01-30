@@ -1,14 +1,12 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Timer;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.util.Util;
 
 /**
- * Created by matthiasdietrich on 04.11.17.
+ * GoblinActor have time attributes for fire projectiles in intervals
  */
 public class GoblinActor extends BaseActor {
     private float time;

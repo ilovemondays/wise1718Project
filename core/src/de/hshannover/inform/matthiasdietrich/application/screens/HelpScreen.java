@@ -5,14 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
-import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * Entered by main menu, displays game information
  */
 public class HelpScreen implements Screen, Observer {
     final Semester3Project game;

@@ -8,6 +8,9 @@ import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants
 
 import java.util.Random;
 
+/**
+ * Stores assets which can be accessed global
+ */
 public class AssetManager {
     private Random random = new Random();
 
@@ -24,6 +27,9 @@ public class AssetManager {
     private Sound soundCertificate;
     private Sound soundGameover;
     private Sound soundBoom;
+    private Sound soundWhistle;
+    private Sound soundCheering;
+    private Sound soundPartyHorn;
 
     // TEXTURES
     private Sprite imageTitle;
@@ -39,6 +45,9 @@ public class AssetManager {
         soundCertificate = Gdx.audio.newSound(Gdx.files.internal("sounds/certificate.wav"));
         soundGameover = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.wav"));
         soundBoom = Gdx.audio.newSound(Gdx.files.internal("sounds/boom.wav"));
+        soundWhistle = Gdx.audio.newSound(Gdx.files.internal("sounds/whistle.mp3"));
+        soundCheering = Gdx.audio.newSound(Gdx.files.internal("sounds/cheering.mp3"));
+        soundPartyHorn = Gdx.audio.newSound(Gdx.files.internal("sounds/party-horn.mp3"));
 
         imageTitle = new Sprite(new Texture("images/title.jpeg"));
     }
@@ -88,6 +97,15 @@ public class AssetManager {
         }
         if (sound.equals("sound-boom")) {
             soundBoom.play();
+        }
+        if (sound.equals("sound-whistle")) {
+            soundWhistle.play();
+        }
+        if (sound.equals("sound-cheering")) {
+            soundCheering.play();
+        }
+        if (sound.equals("sound-party-horn")) {
+            soundPartyHorn.play();
         }
     }
 

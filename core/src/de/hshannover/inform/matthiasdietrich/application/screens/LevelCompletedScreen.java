@@ -1,11 +1,11 @@
 package de.hshannover.inform.matthiasdietrich.application.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.utils.Array;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.GameController;
@@ -15,7 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * Is displayed after each level
  */
 public class LevelCompletedScreen implements Screen, Observer {
     final Semester3Project game;
@@ -23,10 +23,19 @@ public class LevelCompletedScreen implements Screen, Observer {
     private boolean shown = false;
     private GameController gameController = GameController.getInstance();
 
+    private ParticleEffect konfetti = null;
+    private ParticleEffectPool konfettiPool;
+    private Array<ParticleEffectPool.PooledEffect> kenfettis = new Array();
+    private ParticleEffectPool.PooledEffect pooledKonfetti;
+
     public LevelCompletedScreen(final Semester3Project game) {
         this.game = game;
         input = InputController.getInstance();
         game.guiController.addMeAsObserver(this);
+        konfetti = new ParticleEffect();
+        konfetti.load(Gdx.files.internal("particles/konfetti.particle"), Gdx.files.internal("particles"));
+        konfetti.scaleEffect(0.005f);
+        konfettiPool = new ParticleEffectPool(konfetti, 1,9);
     }
 
     @Override
@@ -36,6 +45,7 @@ public class LevelCompletedScreen implements Screen, Observer {
         }
         shown = true;
         game.guiController.setLevelCompletedStage();
+        kenfettis.clear();
 
         if (gameController.getLevel() == 0) {
             game.guiController.getLabelCompletedTop().setText("Semester 1");
@@ -53,15 +63,35 @@ public class LevelCompletedScreen implements Screen, Observer {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        game.world.step(1/60f, 1, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        // Update and draw effects:
+        for (int i = kenfettis.size - 1; i >= 0; i--) {
+            ParticleEffectPool.PooledEffect effect = kenfettis.get(i);
+            effect.draw(game.batch, Gdx.graphics.getDeltaTime());
+            if (effect.isComplete()) {
+                effect.free();
+                kenfettis.removeIndex(i);
+            }
+        }
+
         if(shown) {
-            game.batch.begin();
             game.guiController.getActStage().act();
             game.guiController.getActStage().draw();
-            game.batch.end();
+
+            if(input.isJump() && kenfettis.size == 0 && gameController.getLevel() >= 0) {
+                pooledKonfetti = konfettiPool.obtain();
+                pooledKonfetti.setPosition(game.batch.getProjectionMatrix().getScaleX()+0.5f, game.batch.getProjectionMatrix().getScaleY() + 1f);
+                kenfettis.add(pooledKonfetti);
+                //game.assetManager.playSound("sound-cheering");
+                game.assetManager.playSound("sound-party-horn");
+            }
         }
+
+        game.batch.end();
     }
 
     @Override

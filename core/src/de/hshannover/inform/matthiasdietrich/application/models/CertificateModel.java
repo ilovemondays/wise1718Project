@@ -1,16 +1,14 @@
 package de.hshannover.inform.matthiasdietrich.application.models;
 
-import box2dLight.PointLight;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 import java.awt.*;
 
 /**
- * Created by matthiasdietrich on 24.10.17.
+ * Certificates don't need a physic simulation, so there is a different model and box2d setup
  */
 public class CertificateModel {
-    private PointLight light;
     private Point position;
 
     public Point getPosition () {

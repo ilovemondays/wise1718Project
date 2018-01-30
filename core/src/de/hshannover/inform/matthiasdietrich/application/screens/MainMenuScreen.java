@@ -5,16 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * From here players start the game, view help screen or exit the game
  */
 public class MainMenuScreen implements Screen, Observer {
     final Semester3Project game;

@@ -1,7 +1,5 @@
 package de.hshannover.inform.matthiasdietrich.application.controller;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -13,7 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 10.11.17.
+ * Spawns projectile object with given data for direction and position
  */
 public class ProjectileController extends Observable implements Observer {
     private static ProjectileController projectileController = new ProjectileController();

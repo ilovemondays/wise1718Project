@@ -1,11 +1,10 @@
 package de.hshannover.inform.matthiasdietrich.util;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 
 /**
- * Created by matthiasdietrich on 22.10.17.
+ * Helps to scale between pixel and the units box2d uses. Box2d 1px = 1 meter
  */
 public class Util {
     public static float scale(float valueToBeScaled) {

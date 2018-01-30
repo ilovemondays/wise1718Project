@@ -5,7 +5,7 @@ import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants
 import de.hshannover.inform.matthiasdietrich.util.Util;
 
 /**
- * Created by matthiasdietrich on 22.10.17.
+ * Viewport for the game. It moves with the player
  */
 public class Camera extends OrthographicCamera {
 

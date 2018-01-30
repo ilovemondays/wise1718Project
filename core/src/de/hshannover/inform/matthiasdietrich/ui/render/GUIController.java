@@ -427,13 +427,12 @@ public class GUIController extends Observable {
         pixmap.fill();
 
         labelHelpTitle = new Label("Anleitung", new Label.LabelStyle(fontBig, new Color(0xff0071ff)));
-        labelHelpText = new Label("In diesem Spiel geht es darum in jedem Semester (Level) 5 Scheine zu sammeln.\n\n " +
-                "Dafür hat man 3 Versuche je Semester. Fallen und Mathekobolden gilt es auszuweichen,\n\n " +
-                "denn diese erschöpfen die Spielfigur. Ist die Erschöpfungsleiste komplett gefüllt,\n\n" +
-                " startet ein neuer Versuch, solange dies nicht der dritte war.\n\n" +
-                "Einmal eingesammelte Scheine müssen nicht erneut gesammelt werden.\n\n" +
-                "Es gibt 6 Semester. Gesteuert wird mit den Pfeiltasten.\n\n " +
-                "Mit ESC gelangt man wieder in das Hauptmenu. Spielfortschritt geht dabei verloren.", style);
+        labelHelpText = new Label("In \"Study Race\" geht es darum die fünf Scheine der sechs Semester einzusammeln. " +
+                "Mathekobolde und Stachelfallen sollte man dabei meiden, denn diese erschöpfen die Spielfigur. " +
+                "Ist die Erschöpfungsleiste komplett gefüllt, startet ein neuer Versuch. " +
+                "Nach dem dritten Versuch heißt es \"exmatrikuliert\"! Gesteuert wird mit den Pfeiltasten oder WASD. " +
+                "Mit ESC gelangt man wieder in das Hauptmenü. Der Spielfortschritt geht dabei allerdings verloren. " +
+                "Viel Spaß beim spielen!", style);
         buttonHelpBack = new TextButton("ZURÜCK", skinButton);
         buttonHelpBack.pad(10);
         tableHelpScreen.add(labelHelpTitle).padBottom(20);

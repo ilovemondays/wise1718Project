@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * Created by Matthias on 18.11.2017.
+ * Helps creating a sprite animation in a uniform way
  */
 public class SpriteAnimation {
 

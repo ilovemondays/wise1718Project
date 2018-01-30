@@ -8,7 +8,7 @@ import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 import java.util.Observable;
 
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * Detects box3d collision between game objects / box2d fixtures
  */
 public class CollisionDetectionController extends Observable implements ContactListener {
 

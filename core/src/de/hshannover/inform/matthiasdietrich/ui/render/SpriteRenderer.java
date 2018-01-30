@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 import de.hshannover.inform.matthiasdietrich.util.SpriteAnimation;
 
+/**
+ * Renders objects as sprite images to the screen
+ */
 public class SpriteRenderer {
     private float stateTime = 0f;
 

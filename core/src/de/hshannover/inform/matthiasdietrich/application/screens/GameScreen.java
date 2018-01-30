@@ -9,16 +9,15 @@ import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
 import de.hshannover.inform.matthiasdietrich.application.controller.*;
 import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
-import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 import de.hshannover.inform.matthiasdietrich.ui.render.MapRenderer;
 import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
 import java.util.Observable;
 import java.util.Observer;
 
-// @TODO: Hier ist zu viel Game Logik drin, das gehört in den Game Controller, wird immer schlimmer :o
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * Screen for the game itself.
+ * Sets up controller
  */
 public class GameScreen implements Screen, Observer {
     final Semester3Project game;
@@ -30,7 +29,6 @@ public class GameScreen implements Screen, Observer {
     private SpriteRenderer spriteRenderer;
     private MapRenderer mapRenderer;
     private InputController input;
-    private float cameraRotation = 0;
     private boolean show = false;
 
     private final float pauseGameTime = 0;
@@ -57,6 +55,7 @@ public class GameScreen implements Screen, Observer {
         spriteRenderer = new SpriteRenderer();
         mapRenderer = new MapRenderer();
         mapRenderer.setAssetManager(game.assetManager);
+        mapRenderer.setCamera(game.camera);
     }
 
     public void setPauseTime (float pauseTime) {
@@ -125,12 +124,10 @@ public class GameScreen implements Screen, Observer {
                 debugRenderer.render(gameController.getWorld(), camera.combined);
             }
 
-            // @TODO: verschieben in render/lighting class
             gameController.getRayHandler().setCombinedMatrix(camera);
             gameController.getRayHandler().updateAndRender();
 
             if(!isPause()) {
-                // @TODO: das hier in camera class
                 camera.position.set(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0);
                 camera.update();
 
@@ -155,10 +152,7 @@ public class GameScreen implements Screen, Observer {
                 }
             }
 
-            game.batch.begin();
-            mapRenderer.render(game.batch, (Camera) camera);
-            game.batch.end();
-
+            mapRenderer.render(game.batch);
             spriteRenderer.render(game.batch);
 
             game.batch.begin();

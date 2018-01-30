@@ -14,6 +14,9 @@ import de.hshannover.inform.matthiasdietrich.ui.render.Camera;
 import de.hshannover.inform.matthiasdietrich.ui.render.GUIController;
 import de.hshannover.inform.matthiasdietrich.ui.render.SpriteRenderer;
 
+/**
+ * Starting point for libgdx. Like a Main class.
+ */
 public class Semester3Project extends Game {
 	public SpriteBatch batch;
 	public World world;

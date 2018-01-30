@@ -3,12 +3,13 @@ package de.hshannover.inform.matthiasdietrich.application.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
-import de.hshannover.inform.matthiasdietrich.application.models.ProjectileActor;
 
 import java.util.ArrayList;
 
 /**
- * Created by matthiasdietrich on 10.11.17.
+ * Updates every goblin in level.
+ * Checks in which direction every goblin should fire
+ * Spawns projectile object
  */
 public class MathGoblinController {
     private static MathGoblinController mathGoblinController = null;

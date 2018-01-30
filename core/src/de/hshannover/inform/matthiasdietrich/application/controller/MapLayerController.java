@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.hshannover.inform.matthiasdietrich.application.constants.GameConstants;
-import de.hshannover.inform.matthiasdietrich.application.models.CertificateModel;
 import de.hshannover.inform.matthiasdietrich.application.models.GoblinActor;
 import de.hshannover.inform.matthiasdietrich.application.models.PlayerActor;
 
@@ -15,7 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by matthiasdietrich on 22.10.17.
+ * Get Map Data from TMX files
  */
 class MapLayerController {
     private TiledMapTileLayer playerMap;
@@ -57,8 +56,6 @@ class MapLayerController {
         }
         return tiledMapTiles;
     }
-
-    // @TODO: Das hier unten vereinheitlichen, alles redundanter code
 
     /**
      * Get player position from map tmx data. There should be only on player tile.

@@ -5,14 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import de.hshannover.inform.matthiasdietrich.Semester3Project;
 import de.hshannover.inform.matthiasdietrich.application.controller.GameController;
-import de.hshannover.inform.matthiasdietrich.application.controller.LevelController;
-import de.hshannover.inform.matthiasdietrich.ui.input.InputController;
-
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by matthiasdietrich on 25.10.17.
+ * Shows after a player beats the game
  */
 public class WinScreen implements Screen, Observer {
     final Semester3Project game;

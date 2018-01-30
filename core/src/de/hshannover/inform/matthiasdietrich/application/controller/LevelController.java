@@ -14,7 +14,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by matthiasdietrich on 22.10.17.
+ * Loads map data and creates map tiles from it.
+ * Holds lists for every game object like goblins, lights, traps, certificates
+ * and placed them in current map
  */
 public class LevelController {
     private TiledMap map;
